@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PSTS6.Models
 {
-    public class Task : Entity
+    public class Task : MainEntity
     {
         private int prcCompleted;
         public Project Project { get; set; }

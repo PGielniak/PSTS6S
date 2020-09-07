@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace PSTS6.Models
 {
-    public class TaskTemplate
+    public class TaskTemplate: TemplateEntity
     {
+        
     }
 }

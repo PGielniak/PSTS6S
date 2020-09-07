@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PSTS6.Models
 {
-    public class Activity : Entity
+    public class Activity : MainEntity
     {
 
         private int prcCompleted;
