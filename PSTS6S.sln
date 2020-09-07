@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSTS6", "PSTS6\PSTS6.csproj", "{1CABD297-2419-4B5D-91D1-A8C41839962A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1CABD297-2419-4B5D-91D1-A8C41839962A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CABD297-2419-4B5D-91D1-A8C41839962A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CABD297-2419-4B5D-91D1-A8C41839962A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CABD297-2419-4B5D-91D1-A8C41839962A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C47FF561-24D3-4243-A927-F2FC39332509}
+	EndGlobalSection
+EndGlobal
