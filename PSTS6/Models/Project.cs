@@ -8,6 +8,7 @@ namespace PSTS6.Models
     public class Project : MainEntity
     {
         private int prcCompleted;
+
         public IEnumerable<Task> Tasks { get; set; }
         public User ProjectManager { get; set; }
         public IEnumerable<User> ProjectTeam { get; set; }
