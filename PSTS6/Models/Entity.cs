@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PSTS6.Models
 {
-    public class Entity
+    public abstract class Entity
     {
         public int ID { get; set; }
         public string Name { get; set; }

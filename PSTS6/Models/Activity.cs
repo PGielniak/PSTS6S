@@ -7,5 +7,7 @@ namespace PSTS6.Models
 {
     public class Activity
     {
+        public Task Task { get; set; }
+
     }
 }
