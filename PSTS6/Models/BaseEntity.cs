@@ -12,10 +12,12 @@ namespace PSTS6.Models
         public int ID { get; set; }
 
         [Required(ErrorMessage ="You have to specify the name")]
-        [MaxLength(100)]
+        [StringLength(250)]
+        [DataType(DataType.Text)]
         public string Name { get; set; }
 
-        [MaxLength(500)]
+        [StringLength(500)]
+        [DataType(DataType.Text)]
         public string Description { get; set; }
     }
 }

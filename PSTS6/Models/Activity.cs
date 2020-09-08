@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,9 +10,11 @@ namespace PSTS6.Models
     {
 
         private int prcCompleted;
+        private decimal budget;
         public Task Task { get; set; }
 
         
+        [Range(0,15,ErrorMessage ="Prc Completed cannot be more than 100%")]
         public override int PrcCompleted 
         {
 
@@ -25,6 +28,19 @@ namespace PSTS6.Models
                 PrcCompleted = prcCompleted;
             }
         
+        }
+        [DataType(DataType.Currency)]
+        public override decimal? Budget
+        {
+            get
+            {
+                return budget;
+            }
+            set
+            {
+                Budget = budget;
+
+            }
         }
     }
 }
