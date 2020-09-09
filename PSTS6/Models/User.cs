@@ -1,6 +1,8 @@
-﻿namespace PSTS6.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace PSTS6.Models
 {
-    public class User
+    public class User : IdentityUser
     {
     }
 }

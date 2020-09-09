@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -32,16 +34,29 @@ namespace PSTS6.Models
 
 
         }
+        [DisplayName("Percentage Completed")]
         public override int PrcCompleted
         {
             get
             {
+                double avg = 0;
 
-                var avg = Tasks.Select(x => x.PrcCompleted).Average();
+                if (Tasks.Count()==0)
+                {
+                    avg = 0;
+                }
+          
+                else
+                {
+                    avg = Tasks.Select(x => x.PrcCompleted).Average();
+                }
+                 
 
                 prcCompleted = Convert.ToInt32(avg);
 
-                return prcCompleted;
+              
+                    return prcCompleted;
+    
             }
 
             set
@@ -51,15 +66,21 @@ namespace PSTS6.Models
 
         }
         [DataType(DataType.Currency)]
+        [Column(TypeName = "decimal(18,2)")]
         public override decimal? Budget
         {
             get
             {
-                return Tasks.Select(x => x.Budget).Sum();
+                
+                if (Tasks.Select(x => x.Budget).Sum() == null)
+                    return 0;
+                
+                else
+                    return Tasks.Select(x => x.Budget).Sum();
             }
             set
             {
-                Budget = budget;
+                budget = (decimal)Budget;
             }
         }
 

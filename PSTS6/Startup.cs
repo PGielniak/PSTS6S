@@ -35,6 +35,9 @@ namespace PSTS6
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddDbContext<PSTS6Context>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("PSTS6Context")));
             
         }
 
