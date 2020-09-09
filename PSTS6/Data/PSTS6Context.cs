@@ -15,5 +15,9 @@ namespace PSTS6.Data
         }
 
         public DbSet<PSTS6.Models.Project> Project { get; set; }
+
+        public DbSet<PSTS6.Models.Task> Task { get; set; }
+
+        public DbSet<PSTS6.Models.Activity> Activity { get; set; }
     }
 }

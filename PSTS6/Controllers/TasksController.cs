@@ -10,22 +10,22 @@ using PSTS6.Models;
 
 namespace PSTS6.Controllers
 {
-    public class ProjectsController : Controller
+    public class TasksController : Controller
     {
         private readonly PSTS6Context _context;
 
-        public ProjectsController(PSTS6Context context)
+        public TasksController(PSTS6Context context)
         {
             _context = context;
         }
 
-        // GET: Projects
+        // GET: Tasks
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Project.ToListAsync());
+            return View(await _context.Task.ToListAsync());
         }
 
-        // GET: Projects/Details/5
+        // GET: Tasks/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,41 +33,39 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Project
+            var task = await _context.Task
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (project == null)
+            if (task == null)
             {
                 return NotFound();
             }
 
-            return View(project);
+            return View(task);
         }
 
-        // GET: Projects/Create
+        // GET: Tasks/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Projects/Create
+        // POST: Tasks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Completed,PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description")] Project project)
+        public async Task<IActionResult> Create([Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description")] PSTS6.Models.Task task)
         {
-            project.Tasks = _context.Task.ToList();
-
             if (ModelState.IsValid)
             {
-                _context.Add(project);
+                _context.Add(task);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(project);
+            return View(task);
         }
 
-        // GET: Projects/Edit/5
+        // GET: Tasks/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,22 +73,22 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Project.FindAsync(id);
-            if (project == null)
+            var task = await _context.Task.FindAsync(id);
+            if (task == null)
             {
                 return NotFound();
             }
-            return View(project);
+            return View(task);
         }
 
-        // POST: Projects/Edit/5
+        // POST: Tasks/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Completed,PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description")] PSTS6.Models.Task task)
         {
-            if (id != project.ID)
+            if (id != task.ID)
             {
                 return NotFound();
             }
@@ -99,12 +97,12 @@ namespace PSTS6.Controllers
             {
                 try
                 {
-                    _context.Update(project);
+                    _context.Update(task);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProjectExists(project.ID))
+                    if (!TaskExists(task.ID))
                     {
                         return NotFound();
                     }
@@ -115,10 +113,10 @@ namespace PSTS6.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(project);
+            return View(task);
         }
 
-        // GET: Projects/Delete/5
+        // GET: Tasks/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -126,30 +124,30 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Project
+            var task = await _context.Task
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (project == null)
+            if (task == null)
             {
                 return NotFound();
             }
 
-            return View(project);
+            return View(task);
         }
 
-        // POST: Projects/Delete/5
+        // POST: Tasks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var project = await _context.Project.FindAsync(id);
-            _context.Project.Remove(project);
+            var task = await _context.Task.FindAsync(id);
+            _context.Task.Remove(task);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProjectExists(int id)
+        private bool TaskExists(int id)
         {
-            return _context.Project.Any(e => e.ID == id);
+            return _context.Task.Any(e => e.ID == id);
         }
     }
 }

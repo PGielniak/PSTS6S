@@ -41,6 +41,8 @@ namespace PSTS6.Models
             {
                 double avg = 0;
 
+               
+
                 if (Tasks.Count()==0)
                 {
                     avg = 0;

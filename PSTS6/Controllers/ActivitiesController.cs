@@ -10,22 +10,22 @@ using PSTS6.Models;
 
 namespace PSTS6.Controllers
 {
-    public class ProjectsController : Controller
+    public class ActivitiesController : Controller
     {
         private readonly PSTS6Context _context;
 
-        public ProjectsController(PSTS6Context context)
+        public ActivitiesController(PSTS6Context context)
         {
             _context = context;
         }
 
-        // GET: Projects
+        // GET: Activities
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Project.ToListAsync());
+            return View(await _context.Activity.ToListAsync());
         }
 
-        // GET: Projects/Details/5
+        // GET: Activities/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,41 +33,39 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Project
+            var activity = await _context.Activity
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (project == null)
+            if (activity == null)
             {
                 return NotFound();
             }
 
-            return View(project);
+            return View(activity);
         }
 
-        // GET: Projects/Create
+        // GET: Activities/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Projects/Create
+        // POST: Activities/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Completed,PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description")] Project project)
+        public async Task<IActionResult> Create([Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description")] Activity activity)
         {
-            project.Tasks = _context.Task.ToList();
-
             if (ModelState.IsValid)
             {
-                _context.Add(project);
+                _context.Add(activity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(project);
+            return View(activity);
         }
 
-        // GET: Projects/Edit/5
+        // GET: Activities/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -75,22 +73,22 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Project.FindAsync(id);
-            if (project == null)
+            var activity = await _context.Activity.FindAsync(id);
+            if (activity == null)
             {
                 return NotFound();
             }
-            return View(project);
+            return View(activity);
         }
 
-        // POST: Projects/Edit/5
+        // POST: Activities/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Completed,PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description")] Activity activity)
         {
-            if (id != project.ID)
+            if (id != activity.ID)
             {
                 return NotFound();
             }
@@ -99,12 +97,12 @@ namespace PSTS6.Controllers
             {
                 try
                 {
-                    _context.Update(project);
+                    _context.Update(activity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProjectExists(project.ID))
+                    if (!ActivityExists(activity.ID))
                     {
                         return NotFound();
                     }
@@ -115,10 +113,10 @@ namespace PSTS6.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(project);
+            return View(activity);
         }
 
-        // GET: Projects/Delete/5
+        // GET: Activities/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -126,30 +124,30 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Project
+            var activity = await _context.Activity
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (project == null)
+            if (activity == null)
             {
                 return NotFound();
             }
 
-            return View(project);
+            return View(activity);
         }
 
-        // POST: Projects/Delete/5
+        // POST: Activities/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var project = await _context.Project.FindAsync(id);
-            _context.Project.Remove(project);
+            var activity = await _context.Activity.FindAsync(id);
+            _context.Activity.Remove(activity);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ProjectExists(int id)
+        private bool ActivityExists(int id)
         {
-            return _context.Project.Any(e => e.ID == id);
+            return _context.Activity.Any(e => e.ID == id);
         }
     }
 }
