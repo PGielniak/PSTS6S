@@ -46,7 +46,39 @@ namespace PSTS6.Controllers
         }
 
         // GET: Tasks/Create
-        public async Task<IActionResult> Create()
+        //[HttpGet]
+        //[Route("Tasks/Create")]
+        //public async Task<IActionResult> Create()
+        //{
+        //    var dbUsers = await _identityContext.Users.ToListAsync();
+
+        //    IEnumerable<SelectListItem> users = dbUsers.Select(x => new SelectListItem
+        //    {
+        //        Text = x.UserName,
+        //        Value = x.UserName
+        //    });
+
+        //    var projects = await _context.Project.ToListAsync();
+
+        //    IEnumerable<SelectListItem> projectsToSelect = projects.Select(x => new SelectListItem
+        //    {
+        //        Text = x.Name,
+        //        Value = x.ID.ToString()
+        //    });
+
+        //    var viewModel = new TaskCreateViewModel();
+
+        //    viewModel.availableOwners = users;
+        //    viewModel.StartDate = DateTime.Today;
+        //    viewModel.EstimatedEndDate = DateTime.Today;
+        //    viewModel.availableProjects = projectsToSelect;
+
+
+        //    return View(viewModel);
+        //}
+
+        
+        public async Task<IActionResult> Create(string btnAddTask)
         {
             var dbUsers = await _identityContext.Users.ToListAsync();
 
@@ -54,6 +86,7 @@ namespace PSTS6.Controllers
             {
                 Text = x.UserName,
                 Value = x.UserName
+                
             });
 
             var projects = await _context.Project.ToListAsync();
@@ -61,7 +94,8 @@ namespace PSTS6.Controllers
             IEnumerable<SelectListItem> projectsToSelect = projects.Select(x => new SelectListItem
             {
                 Text = x.Name,
-                Value = x.ID.ToString()
+                Value = x.ID.ToString(),
+                        
             });
 
             var viewModel = new TaskCreateViewModel();
@@ -69,8 +103,10 @@ namespace PSTS6.Controllers
             viewModel.availableOwners = users;
             viewModel.StartDate = DateTime.Today;
             viewModel.EstimatedEndDate = DateTime.Today;
-            viewModel.availableProjects = projectsToSelect;
-
+            
+            viewModel.availableProjects = projectsToSelect.Where(x=>x.Value==btnAddTask);
+            
+            
 
             return View(viewModel);
         }

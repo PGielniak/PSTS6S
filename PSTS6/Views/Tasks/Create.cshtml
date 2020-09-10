@@ -40,8 +40,8 @@
             </div>
             <div class="form-group">
                 @Html.LabelFor(x => Model.Project, new { @class = "control-label" })
-                @Html.DropDownListFor(x => Model.Project, new SelectList(Model.availableProjects, "Value", "Text")
-               , new { @class = "form-control" })
+                @Html.DropDownListFor(x => Model.Project, new SelectList(Model.availableProjects, "Value", "Text", "Selected")
+               , new { @class = "form-control", @readonly="true" })
                 <span asp-validation-for="Project" class="text-danger"></span>
             </div>
 
