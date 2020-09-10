@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +16,12 @@ namespace PSTS6.Controllers
     {
         private readonly PSTS6Context _context;
 
-        public ProjectsController(PSTS6Context context)
+        private readonly ApplicationDbContext _identityContext;
+
+        public ProjectsController(PSTS6Context context, ApplicationDbContext identityContext)
         {
             _context = context;
+            _identityContext = identityContext;
         }
 
         // GET: Projects
@@ -44,9 +49,22 @@ namespace PSTS6.Controllers
         }
 
         // GET: Projects/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var dbUsers = await _identityContext.Users.ToListAsync();
+
+            IEnumerable<SelectListItem> users = dbUsers.Select(x => new SelectListItem
+            {
+                Text = x.UserName,
+                Value = x.UserName
+            });
+
+            var viewModel = new ProjectCreateViewModel();
+
+            viewModel.availableProjectManagers = users;
+            viewModel.StartDate = DateTime.Today;
+            viewModel.EstimatedEndDate = DateTime.Today;
+            return View(viewModel);
         }
 
         // POST: Projects/Create
@@ -54,9 +72,10 @@ namespace PSTS6.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Completed,PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description")] Project project)
+        public async Task<IActionResult> Create([Bind("Completed,PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,ProjectManager")] Project project)
         {
-            project.Tasks = _context.Task.ToList();
+            //var tasks = _context.Task.ToList();
+
 
             if (ModelState.IsValid)
             {
@@ -75,12 +94,37 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Project.FindAsync(id);
+           
+
+            var project = await _context.Project.Where(x=>x.ID==id).Include(x=>x.Tasks).FirstOrDefaultAsync();
+            
+            var dbUsers = await _identityContext.Users.ToListAsync();
+
+            IEnumerable<SelectListItem> users = dbUsers.Select(x => new SelectListItem
+            {
+                Text=x.UserName,
+                Value=x.UserName
+            });
+
+            var viewModel = new ProjectEditViewModel();
+
+
+
+            viewModel.ID = project.ID;
+            viewModel.Name = project.Name;
+            viewModel.Description = project.Description;
+            viewModel.ActualEndDate = project.ActualEndDate;
+            viewModel.EstimatedEndDate = project.EstimatedEndDate;
+            viewModel.StartDate = project.StartDate;
+            viewModel.Tasks = project.Tasks.ToList();
+            viewModel.Users = dbUsers;
+            viewModel.availableProjectManagers = users;
+  
             if (project == null)
             {
                 return NotFound();
             }
-            return View(project);
+            return View(viewModel);
         }
 
         // POST: Projects/Edit/5
@@ -88,7 +132,7 @@ namespace PSTS6.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Completed,PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("Completed,PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,ProjectManager")] Project project)
         {
             if (id != project.ID)
             {
@@ -151,5 +195,7 @@ namespace PSTS6.Controllers
         {
             return _context.Project.Any(e => e.ID == id);
         }
+
+       
     }
 }

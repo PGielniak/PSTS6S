@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PSTS6.Data;
 using PSTS6.Models;
 
@@ -13,10 +14,11 @@ namespace PSTS6.Controllers
     public class TasksController : Controller
     {
         private readonly PSTS6Context _context;
-
-        public TasksController(PSTS6Context context)
+        private readonly ApplicationDbContext _identityContext;
+        public TasksController(PSTS6Context context, ApplicationDbContext identityContext)
         {
             _context = context;
+            _identityContext = identityContext;
         }
 
         // GET: Tasks
@@ -44,9 +46,33 @@ namespace PSTS6.Controllers
         }
 
         // GET: Tasks/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var dbUsers = await _identityContext.Users.ToListAsync();
+
+            IEnumerable<SelectListItem> users = dbUsers.Select(x => new SelectListItem
+            {
+                Text = x.UserName,
+                Value = x.UserName
+            });
+
+            var projects = await _context.Project.ToListAsync();
+
+            IEnumerable<SelectListItem> projectsToSelect = projects.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.ID.ToString()
+            });
+
+            var viewModel = new TaskCreateViewModel();
+
+            viewModel.availableOwners = users;
+            viewModel.StartDate = DateTime.Today;
+            viewModel.EstimatedEndDate = DateTime.Today;
+            viewModel.availableProjects = projectsToSelect;
+
+
+            return View(viewModel);
         }
 
         // POST: Tasks/Create
@@ -54,13 +80,19 @@ namespace PSTS6.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description")] PSTS6.Models.Task task)
+        public async Task<IActionResult> Create([Bind("StartDate,EstimatedEndDate,ID,Name,Description,ProjectID")] PSTS6.Models.Task task)
         {
             if (ModelState.IsValid)
             {
+
+                string selectedProject = Request.Form["Project"].ToString();
+
+                task.ProjectID = Convert.ToInt32(selectedProject);
+
                 _context.Add(task);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                
+                return RedirectToAction("Edit","Projects", new { id= task.ProjectID});
             }
             return View(task);
         }

@@ -1,0 +1,67 @@
+﻿@model ProjectEditViewModel
+
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th>
+               Name
+            </th>
+            <th>
+               Description
+            </th>
+            <th>
+                Start Date
+            </th>
+            <th>
+               Estimated End Date
+            </th>
+            <th>
+                Budget
+            </th>
+            <th>
+               % Completed
+            </th>
+            <th>
+
+            </th>
+            <th></th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Tasks) {
+        <tr >
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EstimatedEndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Budget)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrcCompleted)
+            </td>
+            <td>
+                <button class="btn-sm btn-primary">Open</button>
+                
+            </td>
+            <td>
+                <button class="btn-sm btn-danger">Delete</button>
+            </td>
+            
+
+          
+        </tr>
+}
+    </tbody>
+</table>

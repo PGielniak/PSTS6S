@@ -10,8 +10,8 @@ namespace PSTS6.Models
     public class Activity : MainEntity
     {
 
-        private int prcCompleted;
-        private decimal budget;
+        private readonly int prcCompleted;
+        private readonly decimal budget;
         public Task Task { get; set; }
 
         

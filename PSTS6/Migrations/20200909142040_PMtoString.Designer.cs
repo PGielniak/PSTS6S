@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PSTS6.Data;
 
 namespace PSTS6.Migrations
 {
     [DbContext(typeof(PSTS6Context))]
-    partial class PSTS6ContextModelSnapshot : ModelSnapshot
+    [Migration("20200909142040_PMtoString")]
+    partial class PMtoString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,7 +141,7 @@ namespace PSTS6.Migrations
                     b.Property<int>("PrcCompleted")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProjectID")
+                    b.Property<int?>("ProjectID")
                         .HasColumnType("int");
 
                     b.Property<decimal?>("Spent")
@@ -229,9 +231,7 @@ namespace PSTS6.Migrations
 
                     b.HasOne("PSTS6.Models.Project", "Project")
                         .WithMany("Tasks")
-                        .HasForeignKey("ProjectID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProjectID");
                 });
 
             modelBuilder.Entity("PSTS6.Models.User", b =>

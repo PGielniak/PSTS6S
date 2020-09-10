@@ -10,11 +10,11 @@ namespace PSTS6.Models
 {
     public class Project : MainEntity
     {
-        private int prcCompleted;
+        private readonly int prcCompleted;
         private decimal budget;
 
         public IEnumerable<Task> Tasks { get; set; }
-        public User ProjectManager { get; set; }
+        public string ProjectManager { get; set; }
         public IEnumerable<User> ProjectTeam { get; set; }
         public bool Completed
         {
@@ -39,22 +39,22 @@ namespace PSTS6.Models
         {
             get
             {
-                double avg = 0;
+                //double avg = 0;
 
                
 
-                if (Tasks.Count()==0)
-                {
-                    avg = 0;
-                }
+                //if (Tasks.Count()==0)
+                //{
+                //    avg = 0;
+                //}
           
-                else
-                {
-                    avg = Tasks.Select(x => x.PrcCompleted).Average();
-                }
+                //else
+                //{
+                //    avg = Tasks.Select(x => x.PrcCompleted).Average();
+                //}
                  
 
-                prcCompleted = Convert.ToInt32(avg);
+                //prcCompleted = Convert.ToInt32(avg);
 
               
                     return prcCompleted;
@@ -73,12 +73,13 @@ namespace PSTS6.Models
         {
             get
             {
-                
-                if (Tasks.Select(x => x.Budget).Sum() == null)
-                    return 0;
-                
-                else
-                    return Tasks.Select(x => x.Budget).Sum();
+
+                //if (Tasks.Select(x => x.Budget).Sum() == null)
+                //    return 0;
+
+                //else
+                //    return Tasks.Select(x => x.Budget).Sum();
+                return budget;
             }
             set
             {
