@@ -141,12 +141,24 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var task = await _context.Task.FindAsync(id);
+            var task = await _context.Task.Where(t => t.ID == id).Include(t => t.Activities).FirstOrDefaultAsync();
+
+            var viewModel = new TaskEditViewModel();
+
+            viewModel.ID = task.ID;
+            viewModel.Name = task.Name;
+            viewModel.Description = task.Description;
+            viewModel.ActualEndDate = task.ActualEndDate;
+            viewModel.EstimatedEndDate = task.EstimatedEndDate;
+            viewModel.StartDate = task.StartDate;
+           viewModel.Activities = task.Activities.ToList();
+
+
             if (task == null)
             {
                 return NotFound();
             }
-            return View(task);
+            return View(viewModel);
         }
 
         // POST: Tasks/Edit/5

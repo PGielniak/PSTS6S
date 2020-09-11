@@ -1,4 +1,4 @@
-﻿@model PSTS6.Models.Task
+﻿@model TaskEditViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,14 +13,14 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="PrcCompleted" class="control-label"></label>
-                <input asp-for="PrcCompleted" class="form-control" />
-                <span asp-validation-for="PrcCompleted" class="text-danger"></span>
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Budget" class="control-label"></label>
-                <input asp-for="Budget" class="form-control" />
-                <span asp-validation-for="Budget" class="text-danger"></span>
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
@@ -37,32 +37,27 @@
                 <input asp-for="ActualEndDate" class="form-control" />
                 <span asp-validation-for="ActualEndDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Spent" class="control-label"></label>
-                <input asp-for="Spent" class="form-control" />
-                <span asp-validation-for="Spent" class="text-danger"></span>
-            </div>
+
             <input type="hidden" asp-for="ID" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+            <div>
+                <button class="btn btn-dark" name="btnAddActivity" value="@Model.ID" formmethod="get" asp-area="" asp-controller="Actvities" asp-action="Create">Add a new activity</button>
+            </div>
         </form>
+    </div>
+    <div class="col-md-8">
+
+        <partial name="/Views/Shared/_ActivitiesList.cshtml" />
     </div>
 </div>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
