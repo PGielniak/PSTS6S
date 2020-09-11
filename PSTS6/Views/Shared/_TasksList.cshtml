@@ -52,8 +52,8 @@
                 @Html.DisplayFor(modelItem => item.PrcCompleted)
             </td>
             <td>
-                <button class="btn-sm btn-primary">Open</button>
-                
+                <input type="button" class="btn-sm btn-primary" title="Open" value="Open" onclick="location.href='@Url.Action("Details","Tasks", new {id=item.ID})'"/>
+              
             </td>
             <td>
                 <button class="btn-sm btn-danger">Delete</button>
