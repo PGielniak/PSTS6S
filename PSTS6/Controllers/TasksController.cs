@@ -103,7 +103,7 @@ namespace PSTS6.Controllers
             viewModel.availableOwners = users;
             viewModel.StartDate = DateTime.Today;
             viewModel.EstimatedEndDate = DateTime.Today;
-            
+             
             viewModel.availableProjects = projectsToSelect.Where(x=>x.Value==btnAddTask);
             
             

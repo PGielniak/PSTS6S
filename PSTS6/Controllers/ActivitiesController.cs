@@ -44,9 +44,14 @@ namespace PSTS6.Controllers
         }
 
         // GET: Activities/Create
-        public IActionResult Create()
+        public IActionResult Create(string btnAddActivity)
         {
-            return View();
+
+            var viewModel = new ActivityCreateViewModel();
+            viewModel.TaskID = Convert.ToInt32(btnAddActivity);
+            viewModel.StartDate = DateTime.Today;
+            viewModel.EstimatedEndDate = DateTime.Today;
+            return View(viewModel);
         }
 
         // POST: Activities/Create
@@ -54,13 +59,15 @@ namespace PSTS6.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description")] Activity activity)
+        public async Task<IActionResult> Create([Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,TaskID")] Activity activity)
         {
             if (ModelState.IsValid)
             {
+                 
+
                 _context.Add(activity);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit", "Tasks", new { id = activity.TaskID });
             }
             return View(activity);
         }

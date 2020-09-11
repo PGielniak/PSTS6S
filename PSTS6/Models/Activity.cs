@@ -14,7 +14,9 @@ namespace PSTS6.Models
         private readonly decimal budget;
         public Task Task { get; set; }
 
-        
+        public int TaskID { get; set; }
+
+
         [Range(0,15,ErrorMessage ="Prc Completed cannot be more than 100%")]
         public override int PrcCompleted 
         {
@@ -31,18 +33,8 @@ namespace PSTS6.Models
         
         }
         [DataType(DataType.Currency)]
-        [Column(TypeName= "decimal(18,2)")]
-        public override decimal? Budget
-        {
-            get
-            {
-                return budget;
-            }
-            set
-            {
-                Budget = budget;
-
-            }
-        }
+        [Column(TypeName = "decimal(18,2)")]
+        public override decimal? Budget { get; set; }
+       
     }
 }
