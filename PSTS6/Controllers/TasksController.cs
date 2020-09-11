@@ -208,9 +208,12 @@ namespace PSTS6.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var task = await _context.Task.FindAsync(id);
+
+            var projectid = task.ProjectID;
+
             _context.Task.Remove(task);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Edit", "Projects", new { id = projectid });
         }
 
         private bool TaskExists(int id)
