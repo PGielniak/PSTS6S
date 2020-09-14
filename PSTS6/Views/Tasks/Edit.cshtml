@@ -37,6 +37,11 @@
                 <input asp-for="ActualEndDate" class="form-control" />
                 <span asp-validation-for="ActualEndDate" class="text-danger"></span>
             </div>
+            <div class="form-group" hidden="hidden">
+                <label asp-for="ProjectID" class="control-label"></label>
+                <input asp-for="ProjectID" class="form-control" />
+                <span asp-validation-for="ProjectID" class="text-danger"></span>
+            </div>
 
             <input type="hidden" asp-for="ID" />
 
@@ -44,7 +49,7 @@
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
             <div>
-                <button class="btn btn-dark" name="btnAddActivity" value="@Model.ID"  formmethod="get" asp-area="" asp-controller="Activities" asp-action="Create">Add a new activity</button>
+                <button class="btn btn-dark" name="btnAddActivity" value="@Model.ID" formmethod="get" asp-area="" asp-controller="Activities" asp-action="Create">Add a new activity</button>
             </div>
         </form>
     </div>

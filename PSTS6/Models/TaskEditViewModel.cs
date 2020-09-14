@@ -11,6 +11,7 @@ namespace PSTS6.Models
     {
         public int ID { get; set; }
 
+        public int ProjectID { get; set; }
         public DateTime? ActualEndDate { get; set; }
 
         public IEnumerable<Activity> Activities { get; set; }

@@ -152,6 +152,7 @@ namespace PSTS6.Controllers
             viewModel.EstimatedEndDate = task.EstimatedEndDate;
             viewModel.StartDate = task.StartDate;
            viewModel.Activities = task.Activities.ToList();
+            viewModel.ProjectID = task.ProjectID;
 
 
             if (task == null)
@@ -166,7 +167,7 @@ namespace PSTS6.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description")] PSTS6.Models.Task task)
+        public async Task<IActionResult> Edit(int id, [Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,ProjectID")] PSTS6.Models.Task task)
         {
             if (id != task.ID)
             {
