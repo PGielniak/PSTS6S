@@ -22,6 +22,7 @@
             <th>
                 Estimated End Date
             </th>
+            <th></th>
             
 
             <th></th>
@@ -48,12 +49,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.EstimatedEndDate)
             </td>
-           
+            
+            
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                <input type="button" class="btn-sm btn-primary" title="Open" value="Open" onclick="location.href='@Url.Action("Edit","Activities", new {id=item.ID})'" />
+
+            
+            <td>
+                <input type="button" class="btn-sm btn-danger" title="Delete" value="Delete" onclick="location.href='@Url.Action("Delete","Activities", new {id=item.ID})'" />
             </td>
+            
         </tr>
 }
     </tbody>

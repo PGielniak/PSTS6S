@@ -52,7 +52,7 @@
                 @Html.DisplayFor(modelItem => item.PrcCompleted)
             </td>
             <td>
-                <input type="button" class="btn-sm btn-primary" title="Open" value="Open" onclick="location.href='@Url.Action("Details","Tasks", new {id=item.ID})'"/>
+                <input type="button" class="btn-sm btn-primary" title="Open" value="Open" onclick="location.href='@Url.Action("Edit","Tasks", new {id=item.ID})'"/>
               
             </td>
             <td>
