@@ -22,7 +22,7 @@ namespace PSTS6.StaticClasses
             var project = db.Project.Where(x => x.ID == task.ProjectID).Include(x => x.Tasks).FirstOrDefault();
 
             var projectBudgets = project.Tasks.Select(z => z.Budget).Sum();
-            var projectSpent = project.Tasks.Select(z => z.Budget).Sum();
+            var projectSpent = project.Tasks.Select(z => z.Spent).Sum();
             var projectPrcCompleted = project.Tasks.Select(z => z.PrcCompleted).Average();
 
             project.Budget = projectBudgets;

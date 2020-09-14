@@ -37,35 +37,7 @@ namespace PSTS6.Models
         [DisplayName("Percentage Completed")]
         public override int PrcCompleted
         {
-            get
-            {
-                //double avg = 0;
-
-               
-
-                //if (Tasks.Count()==0)
-                //{
-                //    avg = 0;
-                //}
-          
-                //else
-                //{
-                //    avg = Tasks.Select(x => x.PrcCompleted).Average();
-                //}
-                 
-
-                //prcCompleted = Convert.ToInt32(avg);
-
-              
-                    return prcCompleted;
-    
-            }
-
-            set
-            {
-                PrcCompleted = prcCompleted;
-            }
-
+            get;set;
         }
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace PSTS6.Models
 
         public int TaskID { get; set; }
 
-
+        [Range(0, 100, ErrorMessage = "Prc Completed cannot be more than 100%")]
         public int PrcCompleted { get; set; }
 
         public decimal Budget { get; set; }

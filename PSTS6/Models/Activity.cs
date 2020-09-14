@@ -16,7 +16,7 @@ namespace PSTS6.Models
         public int TaskID { get; set; }
 
 
-        [Range(0, 15, ErrorMessage = "Prc Completed cannot be more than 100%")]
+       
         public override int PrcCompleted { get; set; }
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]

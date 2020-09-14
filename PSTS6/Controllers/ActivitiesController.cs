@@ -122,7 +122,7 @@ namespace PSTS6.Controllers
                 try
                 {
                     _context.Update(activity);
-                   // BackgroundCalculations.UpdateBudget(_context, activity);
+                 BackgroundCalculations.UpdateBudget(_context, activity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
