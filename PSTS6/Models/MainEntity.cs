@@ -24,10 +24,10 @@ namespace PSTS6.Models
 
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]
-        public abstract decimal? Budget { get; set; }
+        public abstract decimal Budget { get; set; }
 
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]
-        public decimal? Spent { get; set; }
+        public decimal Spent { get; set; }
     }
 }

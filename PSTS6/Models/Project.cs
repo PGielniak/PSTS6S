@@ -11,7 +11,7 @@ namespace PSTS6.Models
     public class Project : MainEntity
     {
         private readonly int prcCompleted;
-        private decimal budget;
+   
 
         public IEnumerable<Task> Tasks { get; set; }
         public string ProjectManager { get; set; }
@@ -69,22 +69,9 @@ namespace PSTS6.Models
         }
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]
-        public override decimal? Budget
+        public override decimal Budget
         {
-            get
-            {
-
-                //if (Tasks.Select(x => x.Budget).Sum() == null)
-                //    return 0;
-
-                //else
-                //    return Tasks.Select(x => x.Budget).Sum();
-                return budget;
-            }
-            set
-            {
-                budget = (decimal)Budget;
-            }
+            get;set;
         }
 
     }

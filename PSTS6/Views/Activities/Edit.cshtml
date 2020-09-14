@@ -1,4 +1,4 @@
-﻿@model PSTS6.Models.Activity
+﻿@model ActivityEditViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -51,6 +51,11 @@
                 <label asp-for="Spent" class="control-label"></label>
                 <input asp-for="Spent" class="form-control" />
                 <span asp-validation-for="Spent" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden="hidden">
+                <label asp-for="TaskID" class="control-label"></label>
+                <input asp-for="TaskID" class="form-control" />
+                <span asp-validation-for="TaskID" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="ID" />
 

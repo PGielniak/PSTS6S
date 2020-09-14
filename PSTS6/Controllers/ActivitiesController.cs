@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PSTS6.Data;
 using PSTS6.Models;
+using PSTS6.StaticClasses;
 
 namespace PSTS6.Controllers
 {
@@ -81,11 +82,27 @@ namespace PSTS6.Controllers
             }
 
             var activity = await _context.Activity.FindAsync(id);
+
+            var viewModel = new ActivityEditViewModel();
+
+            viewModel.TaskID = activity.TaskID;
+            viewModel.ID = activity.ID;
+            viewModel.Name = activity.Name;
+            viewModel.PrcCompleted = activity.PrcCompleted;
+            viewModel.StartDate = activity.StartDate;
+            viewModel.EstimatedEndDate = activity.EstimatedEndDate;
+            viewModel.ActualEndDate = activity.ActualEndDate;
+            viewModel.Budget = activity.Budget;
+            viewModel.Spent = activity.Spent;
+            viewModel.Description = activity.Description;
+
+
+
             if (activity == null)
             {
                 return NotFound();
             }
-            return View(activity);
+            return View(viewModel);
         }
 
         // POST: Activities/Edit/5
@@ -93,7 +110,7 @@ namespace PSTS6.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description")] Activity activity)
+        public async Task<IActionResult> Edit(int id, [Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,TaskID")] Activity activity)
         {
             if (id != activity.ID)
             {
@@ -105,6 +122,7 @@ namespace PSTS6.Controllers
                 try
                 {
                     _context.Update(activity);
+                    BackgroundCalculations.UpdateBudget(_context, activity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
