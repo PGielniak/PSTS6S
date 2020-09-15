@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ using PSTS6.Models;
 
 namespace PSTS6.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private readonly PSTS6Context _context;

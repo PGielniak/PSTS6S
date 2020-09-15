@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using PSTS6.Models;
 
 namespace PSTS6.Controllers
 {
+    [Authorize]
     public class TasksController : Controller
     {
         private readonly PSTS6Context _context;
@@ -45,37 +47,7 @@ namespace PSTS6.Controllers
             return View(task);
         }
 
-        // GET: Tasks/Create
-        //[HttpGet]
-        //[Route("Tasks/Create")]
-        //public async Task<IActionResult> Create()
-        //{
-        //    var dbUsers = await _identityContext.Users.ToListAsync();
-
-        //    IEnumerable<SelectListItem> users = dbUsers.Select(x => new SelectListItem
-        //    {
-        //        Text = x.UserName,
-        //        Value = x.UserName
-        //    });
-
-        //    var projects = await _context.Project.ToListAsync();
-
-        //    IEnumerable<SelectListItem> projectsToSelect = projects.Select(x => new SelectListItem
-        //    {
-        //        Text = x.Name,
-        //        Value = x.ID.ToString()
-        //    });
-
-        //    var viewModel = new TaskCreateViewModel();
-
-        //    viewModel.availableOwners = users;
-        //    viewModel.StartDate = DateTime.Today;
-        //    viewModel.EstimatedEndDate = DateTime.Today;
-        //    viewModel.availableProjects = projectsToSelect;
-
-
-        //    return View(viewModel);
-        //}
+        
 
         
         public async Task<IActionResult> Create(string btnAddTask)
