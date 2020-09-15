@@ -16,12 +16,12 @@ namespace PSTS6.Controllers
     {
         private readonly PSTS6Context _context;
 
-        private readonly ApplicationDbContext _identityContext;
+        
 
-        public ProjectsController(PSTS6Context context, ApplicationDbContext identityContext)
+        public ProjectsController(PSTS6Context context)
         {
             _context = context;
-            _identityContext = identityContext;
+            
         }
 
         // GET: Projects
@@ -51,7 +51,7 @@ namespace PSTS6.Controllers
         // GET: Projects/Create
         public async Task<IActionResult> Create()
         {
-            var dbUsers = await _identityContext.Users.ToListAsync();
+            var dbUsers = await _context.Users.ToListAsync();
 
             IEnumerable<SelectListItem> users = dbUsers.Select(x => new SelectListItem
             {
@@ -98,7 +98,7 @@ namespace PSTS6.Controllers
 
             var project = await _context.Project.Where(x=>x.ID==id).Include(x=>x.Tasks).FirstOrDefaultAsync();
             
-            var dbUsers = await _identityContext.Users.ToListAsync();
+            var dbUsers = await _context.Users.ToListAsync();
 
             IEnumerable<SelectListItem> users = dbUsers.Select(x => new SelectListItem
             {
