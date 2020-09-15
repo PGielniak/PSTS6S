@@ -14,11 +14,11 @@ namespace PSTS6.Controllers
     public class TasksController : Controller
     {
         private readonly PSTS6Context _context;
-        private readonly ApplicationDbContext _identityContext;
-        public TasksController(PSTS6Context context, ApplicationDbContext identityContext)
+        
+        public TasksController(PSTS6Context context)
         {
             _context = context;
-            _identityContext = identityContext;
+          
         }
 
         // GET: Tasks
@@ -80,7 +80,7 @@ namespace PSTS6.Controllers
         
         public async Task<IActionResult> Create(string btnAddTask)
         {
-            var dbUsers = await _identityContext.Users.ToListAsync();
+            var dbUsers = await _context.Users.ToListAsync();
 
             IEnumerable<SelectListItem> users = dbUsers.Select(x => new SelectListItem
             {
@@ -192,7 +192,7 @@ namespace PSTS6.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit", "Projects", new { id = task.ProjectID });
             }
             return View(task);
         }

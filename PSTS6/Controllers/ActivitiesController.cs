@@ -136,7 +136,7 @@ namespace PSTS6.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit", "Tasks", new { id = activity.TaskID });
             }
             return View(activity);
         }
