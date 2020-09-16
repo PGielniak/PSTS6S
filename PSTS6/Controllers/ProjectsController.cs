@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -17,12 +18,13 @@ namespace PSTS6.Controllers
     public class ProjectsController : Controller
     {
         private readonly PSTS6Context _context;
-
+        private readonly IMapper _mapper;
         
 
-        public ProjectsController(PSTS6Context context)
+        public ProjectsController(PSTS6Context context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
             
         }
 
@@ -62,6 +64,8 @@ namespace PSTS6.Controllers
             });
 
             var viewModel = new ProjectCreateViewModel();
+
+            
 
             viewModel.availableProjectManagers = users;
             viewModel.StartDate = DateTime.Today;
@@ -108,20 +112,20 @@ namespace PSTS6.Controllers
                 Value=x.UserName
             });
 
-            var viewModel = new ProjectEditViewModel();
+            var viewModel = _mapper.Map<ProjectEditViewModel>(project);
 
+            //var viewModel = new ProjectEditViewModel();
 
-
-            viewModel.ID = project.ID;
-            viewModel.Name = project.Name;
-            viewModel.Description = project.Description;
-            viewModel.ActualEndDate = project.ActualEndDate;
-            viewModel.EstimatedEndDate = project.EstimatedEndDate;
-            viewModel.StartDate = project.StartDate;
-            viewModel.Tasks = project.Tasks.ToList();
+            //viewModel.ID = project.ID;
+            //viewModel.Name = project.Name;
+            //viewModel.Description = project.Description;
+            //viewModel.ActualEndDate = project.ActualEndDate;
+            //viewModel.EstimatedEndDate = project.EstimatedEndDate;
+            //viewModel.StartDate = project.StartDate;
+            //viewModel.Tasks = project.Tasks.ToList();
             viewModel.Users = dbUsers;
             viewModel.availableProjectManagers = users;
-  
+
             if (project == null)
             {
                 return NotFound();
