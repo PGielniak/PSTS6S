@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,11 +17,12 @@ namespace PSTS6.Controllers
     public class TasksController : Controller
     {
         private readonly PSTS6Context _context;
-        
-        public TasksController(PSTS6Context context)
+        private readonly IMapper _mapper;
+
+        public TasksController(PSTS6Context context, IMapper mapper)
         {
             _context = context;
-          
+            _mapper = mapper;
         }
 
         // GET: Tasks
@@ -77,8 +79,6 @@ namespace PSTS6.Controllers
             viewModel.EstimatedEndDate = DateTime.Today;
              
             viewModel.availableProjects = projectsToSelect.Where(x=>x.Value==btnAddTask);
-            
-            
 
             return View(viewModel);
         }
@@ -115,16 +115,8 @@ namespace PSTS6.Controllers
 
             var task = await _context.Task.Where(t => t.ID == id).Include(t => t.Activities).FirstOrDefaultAsync();
 
-            var viewModel = new TaskEditViewModel();
 
-            viewModel.ID = task.ID;
-            viewModel.Name = task.Name;
-            viewModel.Description = task.Description;
-            viewModel.ActualEndDate = task.ActualEndDate;
-            viewModel.EstimatedEndDate = task.EstimatedEndDate;
-            viewModel.StartDate = task.StartDate;
-           viewModel.Activities = task.Activities.ToList();
-            viewModel.ProjectID = task.ProjectID;
+            var viewModel = _mapper.Map<TaskEditViewModel>(task);
 
 
             if (task == null)

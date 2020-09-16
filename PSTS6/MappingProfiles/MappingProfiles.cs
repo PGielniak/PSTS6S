@@ -13,14 +13,11 @@ namespace PSTS6.MappingProfiles
 
         public MappingProfiles()
         {
-            CreateMap<PSTS6.Models.Project, ProjectCreateViewModel>();
-
             CreateMap<PSTS6.Models.Project, ProjectEditViewModel>().ForMember(x=>x.ProjectManager,
                 opt=>opt.Ignore());
 
-            CreateMap<PSTS6.Models.Task, TaskCreateViewModel>();
             CreateMap<PSTS6.Models.Task, TaskEditViewModel>();
-            CreateMap<PSTS6.Models.Activity, ActivityCreateViewModel>();
+
             CreateMap<PSTS6.Models.Activity, ActivityEditViewModel>();
         }
     }

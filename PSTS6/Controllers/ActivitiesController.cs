@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -16,10 +17,12 @@ namespace PSTS6.Controllers
     public class ActivitiesController : Controller
     {
         private readonly PSTS6Context _context;
+        private readonly IMapper _mapper;
 
-        public ActivitiesController(PSTS6Context context)
+        public ActivitiesController(PSTS6Context context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: Activities
@@ -85,19 +88,7 @@ namespace PSTS6.Controllers
 
             var activity = await _context.Activity.FindAsync(id);
 
-            var viewModel = new ActivityEditViewModel();
-
-            viewModel.TaskID = activity.TaskID;
-            viewModel.ID = activity.ID;
-            viewModel.Name = activity.Name;
-            viewModel.PrcCompleted = activity.PrcCompleted;
-            viewModel.StartDate = activity.StartDate;
-            viewModel.EstimatedEndDate = activity.EstimatedEndDate;
-            viewModel.ActualEndDate = activity.ActualEndDate;
-            viewModel.Budget = activity.Budget;
-            viewModel.Spent = activity.Spent;
-            viewModel.Description = activity.Description;
-
+            var viewModel = _mapper.Map<ActivityEditViewModel>(activity);
 
 
             if (activity == null)
