@@ -44,9 +44,14 @@ namespace PSTS6.Controllers
         }
 
         // GET: TaskTemplates/Create
-        public IActionResult Create()
+        public IActionResult Create(string btnAddTaskTemplate)
         {
-            return View();
+            var viewModel = new TaskTemplateCreateViewModel
+            {
+                ProjectTemplateID = Convert.ToInt32(btnAddTaskTemplate),
+             
+            };
+            return View(viewModel);
         }
 
         // POST: TaskTemplates/Create
@@ -54,13 +59,13 @@ namespace PSTS6.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Description")] TaskTemplate taskTemplate)
+        public async Task<IActionResult> Create([Bind("ID,Name,Description,ProjectTemplateID")] TaskTemplate taskTemplate)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(taskTemplate);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit", "ProjectTemplates", new { id = taskTemplate.ProjectTemplateID });
             }
             return View(taskTemplate);
         }

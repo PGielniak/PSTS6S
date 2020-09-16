@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PSTS6.Data;
 
 namespace PSTS6.Migrations
 {
     [DbContext(typeof(PSTS6Context))]
-    partial class PSTS6ContextModelSnapshot : ModelSnapshot
+    [Migration("20200916142432_Templates2")]
+    partial class Templates2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -429,7 +431,7 @@ namespace PSTS6.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
-                    b.Property<int>("ProjectTemplateID")
+                    b.Property<int?>("ProjectTemplateID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -535,9 +537,7 @@ namespace PSTS6.Migrations
                 {
                     b.HasOne("PSTS6.Models.ProjectTemplate", null)
                         .WithMany("TaskTemplates")
-                        .HasForeignKey("ProjectTemplateID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProjectTemplateID");
                 });
 
             modelBuilder.Entity("PSTS6.Models.User", b =>

@@ -1,4 +1,4 @@
-﻿@model PSTS6.Models.TaskTemplate
+﻿@model PSTS6.Models.TaskTemplateCreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -24,6 +24,11 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+            <div class="form-group" hidden="hidden">
+                <label asp-for="ProjectTemplateID" class="control-label"></label>
+                <input asp-for="ProjectTemplateID" class="form-control" />
+                <span asp-validation-for="ProjectTemplateID" class="text-danger"></span>
             </div>
         </form>
     </div>

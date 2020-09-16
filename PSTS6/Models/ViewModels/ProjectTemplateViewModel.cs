@@ -5,8 +5,14 @@ using System.Threading.Tasks;
 
 namespace PSTS6.Models
 {
-    public class ProjectTemplate : TemplateEntity
+    public class ProjectTemplateViewModel
     {
+
+        public int ID { get; set; }
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
         public IEnumerable<TaskTemplate> TaskTemplates { get; set; }
     }
 }

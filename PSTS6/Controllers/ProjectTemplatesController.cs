@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace PSTS6.Controllers
     public class ProjectTemplatesController : Controller
     {
         private readonly PSTS6Context _context;
+        private readonly IMapper _mapper;
 
-        public ProjectTemplatesController(PSTS6Context context)
+        public ProjectTemplatesController(PSTS6Context context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: ProjectTemplates
@@ -73,12 +76,15 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var projectTemplate = await _context.ProjectTemplate.FindAsync(id);
+            var projectTemplate = await _context.ProjectTemplate.Where(x => x.ID == id).Include(x => x.TaskTemplates).FirstOrDefaultAsync();
+
+            var viewModel = _mapper.Map<ProjectTemplateViewModel>(projectTemplate);
+
             if (projectTemplate == null)
             {
                 return NotFound();
             }
-            return View(projectTemplate);
+            return View(viewModel);
         }
 
         // POST: ProjectTemplates/Edit/5
