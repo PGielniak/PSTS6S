@@ -12,6 +12,9 @@ using PSTS6.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AutoMapper;
+
+
 
 namespace PSTS6
 {
@@ -31,12 +34,14 @@ namespace PSTS6
             
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddAutoMapper(typeof(Startup));
 
             services.AddDbContext<PSTS6Context>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("PSTS6Context")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<PSTS6Context>();
+          
 
         }
 
