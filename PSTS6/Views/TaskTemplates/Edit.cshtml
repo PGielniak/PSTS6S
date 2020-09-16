@@ -1,4 +1,4 @@
-﻿@model PSTS6.Models.TaskTemplate
+﻿@model PSTS6.Models.TaskTemplateViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -26,7 +26,18 @@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
+            <div>
+                <button class="btn btn-dark" name="btnAddActivityTemplate" value="@Model.ID"
+                        formmethod="get" asp-area="" asp-controller="ActivityTemplates" asp-action="Create">
+                Add a new activity
+                </button>
+            </div>
         </form>
+    </div>
+
+    <div class="col-md-8">
+
+        <partial name="/Views/Shared/_ActivityTemplatesList.cshtml" />
     </div>
 </div>
 

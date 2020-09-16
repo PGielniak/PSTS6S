@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,12 @@ namespace PSTS6.Controllers
     public class TaskTemplatesController : Controller
     {
         private readonly PSTS6Context _context;
+        private readonly IMapper _mapper;
 
-        public TaskTemplatesController(PSTS6Context context)
+        public TaskTemplatesController(PSTS6Context context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: TaskTemplates
@@ -78,12 +81,15 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var taskTemplate = await _context.TaskTemplate.FindAsync(id);
+            var taskTemplate = await _context.TaskTemplate.Where(x => x.ID == id).Include(x => x.ActivityTemplates).FirstOrDefaultAsync();
+
+            var viewModel = _mapper.Map<TaskTemplateViewModel>(taskTemplate);
+
             if (taskTemplate == null)
             {
                 return NotFound();
             }
-            return View(taskTemplate);
+            return View(viewModel);
         }
 
         // POST: TaskTemplates/Edit/5

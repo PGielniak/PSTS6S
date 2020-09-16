@@ -1,0 +1,45 @@
+﻿@model PSTS6.Models.TaskTemplateViewModel
+
+
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Budget)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.ActivityTemplates) {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Budget)
+            </td>
+            <td>
+                <input type="button" class="btn-sm btn-primary" title="Open" value="Open"
+                       onclick="location.href='@Url.Action("Edit","ActivityTemplates", new {id=item.ID})'" />
+
+            </td>
+            <td>
+                <input type="button" class="btn-sm btn-danger" title="Delete" value="Delete"
+                       onclick="location.href='@Url.Action("Delete","ActivityTemplates", new {id=item.ID})'" />
+            </td>>
+        </tr>
+}
+    </tbody>
+</table>

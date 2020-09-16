@@ -22,6 +22,8 @@ namespace PSTS6.MappingProfiles
 
             CreateMap<PSTS6.Models.ProjectTemplate, ProjectTemplateViewModel>();
 
+            CreateMap<PSTS6.Models.TaskTemplate, TaskTemplateViewModel>();
+
         }
     }
 }
