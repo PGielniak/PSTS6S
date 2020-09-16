@@ -2,36 +2,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PSTS6.Data;
 using PSTS6.Models;
-using PSTS6.StaticClasses;
 
 namespace PSTS6.Controllers
 {
-    [Authorize]
-    public class ActivitiesController : Controller
+    public class TaskTemplatesController : Controller
     {
         private readonly PSTS6Context _context;
-        private readonly IMapper _mapper;
 
-        public ActivitiesController(PSTS6Context context, IMapper mapper)
+        public TaskTemplatesController(PSTS6Context context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
-        // GET: Activities
+        // GET: TaskTemplates
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Activity.ToListAsync());
+            return View(await _context.TaskTemplate.ToListAsync());
         }
 
-        // GET: Activities/Details/5
+        // GET: TaskTemplates/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -39,48 +33,39 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activity
+            var taskTemplate = await _context.TaskTemplate
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (activity == null)
+            if (taskTemplate == null)
             {
                 return NotFound();
             }
 
-            return View(activity);
+            return View(taskTemplate);
         }
 
-        // GET: Activities/Create
-        public IActionResult Create(string btnAddActivity)
+        // GET: TaskTemplates/Create
+        public IActionResult Create()
         {
-
-            var viewModel = new ActivityCreateViewModel
-            {
-                TaskID = Convert.ToInt32(btnAddActivity),
-                StartDate = DateTime.Today,
-                EstimatedEndDate = DateTime.Today
-            };
-            return View(viewModel);
+            return View();
         }
 
-        // POST: Activities/Create
+        // POST: TaskTemplates/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,TaskID")] Activity activity)
+        public async Task<IActionResult> Create([Bind("ID,Name,Description")] TaskTemplate taskTemplate)
         {
             if (ModelState.IsValid)
             {
-                 
-
-                _context.Add(activity);
+                _context.Add(taskTemplate);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Edit", "Tasks", new { id = activity.TaskID });
+                return RedirectToAction(nameof(Index));
             }
-            return View(activity);
+            return View(taskTemplate);
         }
 
-        // GET: Activities/Edit/5
+        // GET: TaskTemplates/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -88,26 +73,22 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activity.FindAsync(id);
-
-            var viewModel = _mapper.Map<ActivityEditViewModel>(activity);
-
-
-            if (activity == null)
+            var taskTemplate = await _context.TaskTemplate.FindAsync(id);
+            if (taskTemplate == null)
             {
                 return NotFound();
             }
-            return View(viewModel);
+            return View(taskTemplate);
         }
 
-        // POST: Activities/Edit/5
+        // POST: TaskTemplates/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,TaskID")] Activity activity)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Name,Description")] TaskTemplate taskTemplate)
         {
-            if (id != activity.ID)
+            if (id != taskTemplate.ID)
             {
                 return NotFound();
             }
@@ -116,13 +97,12 @@ namespace PSTS6.Controllers
             {
                 try
                 {
-                    _context.Update(activity);
-                    BackgroundCalculations.UpdateBudget(_context, activity);
+                    _context.Update(taskTemplate);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ActivityExists(activity.ID))
+                    if (!TaskTemplateExists(taskTemplate.ID))
                     {
                         return NotFound();
                     }
@@ -131,12 +111,12 @@ namespace PSTS6.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Edit", "Tasks", new { id = activity.TaskID });
+                return RedirectToAction(nameof(Index));
             }
-            return View(activity);
+            return View(taskTemplate);
         }
 
-        // GET: Activities/Delete/5
+        // GET: TaskTemplates/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -144,30 +124,30 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activity
+            var taskTemplate = await _context.TaskTemplate
                 .FirstOrDefaultAsync(m => m.ID == id);
-            if (activity == null)
+            if (taskTemplate == null)
             {
                 return NotFound();
             }
 
-            return View(activity);
+            return View(taskTemplate);
         }
 
-        // POST: Activities/Delete/5
+        // POST: TaskTemplates/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var activity = await _context.Activity.FindAsync(id);
-            _context.Activity.Remove(activity);
+            var taskTemplate = await _context.TaskTemplate.FindAsync(id);
+            _context.TaskTemplate.Remove(taskTemplate);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ActivityExists(int id)
+        private bool TaskTemplateExists(int id)
         {
-            return _context.Activity.Any(e => e.ID == id);
+            return _context.TaskTemplate.Any(e => e.ID == id);
         }
     }
 }

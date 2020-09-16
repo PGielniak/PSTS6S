@@ -63,11 +63,12 @@ namespace PSTS6.Controllers
                 Value = x.UserName
             });
 
-            var viewModel = new ProjectCreateViewModel();
-
-            viewModel.availableProjectManagers = users;
-            viewModel.StartDate = DateTime.Today;
-            viewModel.EstimatedEndDate = DateTime.Today;
+            var viewModel = new ProjectCreateViewModel
+            {
+                availableProjectManagers = users,
+                StartDate = DateTime.Today,
+                EstimatedEndDate = DateTime.Today
+            };
             return View(viewModel);
         }
 
@@ -113,7 +114,7 @@ namespace PSTS6.Controllers
             var viewModel = _mapper.Map<ProjectEditViewModel>(project);
        
             viewModel.Users = dbUsers;
-            viewModel.availableProjectManagers = users;
+            viewModel.AvailableProjectManagers = users;
 
             if (project == null)
             {

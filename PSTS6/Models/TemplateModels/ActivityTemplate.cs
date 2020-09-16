@@ -8,5 +8,7 @@ namespace PSTS6.Models
 {
     public class ActivityTemplate: TemplateEntity
     {
+        public decimal Budget { get; set; }
+     
     }
 }

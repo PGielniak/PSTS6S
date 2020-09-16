@@ -72,13 +72,14 @@ namespace PSTS6.Controllers
                         
             });
 
-            var viewModel = new TaskCreateViewModel();
+            var viewModel = new TaskCreateViewModel
+            {
+                availableOwners = users,
+                StartDate = DateTime.Today,
+                EstimatedEndDate = DateTime.Today,
 
-            viewModel.availableOwners = users;
-            viewModel.StartDate = DateTime.Today;
-            viewModel.EstimatedEndDate = DateTime.Today;
-             
-            viewModel.availableProjects = projectsToSelect.Where(x=>x.Value==btnAddTask);
+                availableProjects = projectsToSelect.Where(x => x.Value == btnAddTask)
+            };
 
             return View(viewModel);
         }

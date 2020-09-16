@@ -22,6 +22,12 @@ namespace PSTS6.Data
 
         public DbSet<PSTS6.Models.Activity> Activity { get; set; }
 
+        public DbSet<PSTS6.Models.ProjectTemplate> ProjectTemplate { get; set; }
+
+        public DbSet<PSTS6.Models.TaskTemplate> TaskTemplate { get; set; }
+
+        public DbSet<PSTS6.Models.ActivityTemplate> ActivityTemplate { get; set; }
+
         
     }
 }

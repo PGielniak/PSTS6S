@@ -10,8 +10,7 @@ namespace PSTS6.Models
 {
     public class Project : MainEntity
     {
-        private readonly int prcCompleted;
-   
+
 
         public IEnumerable<Task> Tasks { get; set; }
         public string ProjectManager { get; set; }
@@ -20,7 +19,7 @@ namespace PSTS6.Models
         {
             get
             {
-                if (prcCompleted == 100)
+                if (PrcCompleted == 100)
                 {
                     return true;
                 }

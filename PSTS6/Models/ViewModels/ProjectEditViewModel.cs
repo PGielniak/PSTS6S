@@ -24,7 +24,7 @@ namespace PSTS6.Models
 
         public User ProjectManager { get; set; }
 
-        public IEnumerable<SelectListItem> availableProjectManagers { get; set; }
+        public IEnumerable<SelectListItem> AvailableProjectManagers { get; set; }
         public IEnumerable<IdentityUser> Users { get; set; }
 
     }
