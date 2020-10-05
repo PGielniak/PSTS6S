@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
+   
 }
 
 <h1>Create</h1>
@@ -9,46 +10,71 @@
 <h4>Project</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EstimatedEndDate" class="control-label"></label>
-                <input asp-for="EstimatedEndDate" class="form-control" />
-                <span asp-validation-for="EstimatedEndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                @Html.LabelFor(x => Model.ProjectManager, new { @class = "control-label" })
-                @Html.DropDownListFor(x => Model.ProjectManager, new SelectList(Model.availableProjectManagers, "Value", "Text")
-               , new { @class = "form-control" })
-                <span asp-validation-for="ProjectManager" class="text-danger"></span>
-            </div>
-
-
-
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="form-check">
+        <label>Create from Template</label>
+        <input type="checkbox" asp-for="IsManual" name="createFromTemplate"  />
     </div>
 </div>
+<div class="row">
+
+   
+        <div class="col-md-4">
+
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <h5>Create Manually</h5>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="StartDate" class="control-label"></label>
+                    <input asp-for="StartDate" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="EstimatedEndDate" class="control-label"></label>
+                    <input asp-for="EstimatedEndDate" class="form-control" />
+                    <span asp-validation-for="EstimatedEndDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => Model.ProjectManager, new { @class = "control-label" })
+                    @Html.DropDownListFor(x => Model.ProjectManager, new SelectList(Model.availableProjectManagers, "Value", "Text")
+                   , new { @class = "form-control" })
+                    <span asp-validation-for="ProjectManager" class="text-danger"></span>
+                </div>
+
+
+
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+   
+        <div class="col-md-4">
+            <h5>Create From Template</h5>
+            <div class="form-group">
+
+                <label>Select Template</label>
+                @Html.DropDownListFor(x => Model.Template, new SelectList(Model.Templates, "Value", "Text")
+               , new { @class = "form-control" })
+                <span asp-validation-for="Template" class="text-danger"></span>
+            </div>
+        </div>
+    
+
+
+</div>
+
 
 <div>
     <a asp-action="Index">Back to List</a>

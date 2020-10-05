@@ -12,5 +12,10 @@ namespace PSTS6.Models
 
         public string ProjectManager { get; set; }
         public IEnumerable<SelectListItem> availableProjectManagers { get; set; }
+
+        public ProjectTemplate Template { get; set; }
+        public IEnumerable<SelectListItem> Templates { get; set; }
+
+        public bool IsManual { get; set; }
     }
 }

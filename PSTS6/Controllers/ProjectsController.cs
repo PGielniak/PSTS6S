@@ -57,17 +57,26 @@ namespace PSTS6.Controllers
         {
             var dbUsers = await _context.Users.ToListAsync();
 
+            var templates = await _context.ProjectTemplate.ToListAsync();
+
             IEnumerable<SelectListItem> users = dbUsers.Select(x => new SelectListItem
             {
                 Text = x.UserName,
                 Value = x.UserName
             });
 
+            IEnumerable<SelectListItem> projectTemplates = templates.Select(x => new SelectListItem
+            {
+                Text = x.Name,
+                Value = x.ID.ToString()
+            }) ;
+
             var viewModel = new ProjectCreateViewModel
             {
                 availableProjectManagers = users,
                 StartDate = DateTime.Today,
-                EstimatedEndDate = DateTime.Today
+                EstimatedEndDate = DateTime.Today,
+                Templates = projectTemplates
             };
             return View(viewModel);
         }
