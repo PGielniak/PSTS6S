@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PSTS6.Data;
 using PSTS6.Models;
 
@@ -86,14 +87,19 @@ namespace PSTS6.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Completed,PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,ProjectManager")] Project project)
+        public async Task<IActionResult> Create([Bind("Completed,PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,ProjectManager,createFromTemplate")] Project project)
         {
             //var tasks = _context.Task.ToList();
 
 
             if (ModelState.IsValid)
             {
-                _context.Add(project);
+                var template = Request.Form["createFromTemplate"];
+
+                
+                    _context.Add(project);
+                
+                
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -202,5 +208,7 @@ namespace PSTS6.Controllers
         }
 
        
+        
+
     }
 }
