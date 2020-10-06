@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PSTS6.Models;
+using PSTS6.Models.IdentityModels;
 
 namespace PSTS6.Data
 {
@@ -27,6 +28,8 @@ namespace PSTS6.Data
         public DbSet<PSTS6.Models.TaskTemplate> TaskTemplate { get; set; }
 
         public DbSet<PSTS6.Models.ActivityTemplate> ActivityTemplate { get; set; }
+
+        public DbSet<PSTS6.Models.IdentityModels.User> Users { get; set; }
 
         
     }

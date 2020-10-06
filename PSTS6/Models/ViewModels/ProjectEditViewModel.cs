@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PSTS6.Data;
+using PSTS6.Models.IdentityModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

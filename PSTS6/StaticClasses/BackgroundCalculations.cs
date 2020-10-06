@@ -21,6 +21,8 @@ namespace PSTS6.StaticClasses
         public static void UpdateBudget(PSTS6Context db, IEnumerable<Activity> activities)
         {
 
+
+
             foreach (var item in activities)
             {
                 UpdateBudget(db, item);
