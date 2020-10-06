@@ -10,7 +10,7 @@ using PSTS6.Models.IdentityModels;
 
 namespace PSTS6.Data
 {
-    public class PSTS6Context : IdentityDbContext
+    public class PSTS6Context : IdentityDbContext<IdentityUser>
     {
         public PSTS6Context(DbContextOptions<PSTS6Context> options)
             : base(options)
@@ -29,7 +29,7 @@ namespace PSTS6.Data
 
         public DbSet<PSTS6.Models.ActivityTemplate> ActivityTemplate { get; set; }
 
-        public DbSet<PSTS6.Models.IdentityModels.User> Users { get; set; }
+       public override DbSet<IdentityUser> Users { get; set; }
 
         
     }
