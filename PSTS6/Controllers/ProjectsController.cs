@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PSTS6.Data;
 using PSTS6.Models;
+using PSTS6.StaticClasses;
 using Task = PSTS6.Models.Task;
 
 namespace PSTS6.Controllers
@@ -102,15 +103,17 @@ namespace PSTS6.Controllers
                 if (template!="on")
                 {
                     _context.Add(project);
+                    await _context.SaveChangesAsync();
                 }
                 else
                 {
                     CreateProjectFromTemplate(selectedTemplate);
+
                 }
                     
                 
                 
-                await _context.SaveChangesAsync();
+                
                 return RedirectToAction(nameof(Index));
             }
             return View(project);
@@ -122,19 +125,30 @@ namespace PSTS6.Controllers
 
 
             var project = _mapper.Map<Project>(template);
+            _context.Add(project);
+
+            _context.SaveChanges();
 
             foreach (var taskTemplate in template.TaskTemplates)
             {
                var task = _mapper.Map<Task>(taskTemplate);
-
+                task.ProjectID = project.ID;
                 _context.Add(task);
+                _context.SaveChanges();
 
                 foreach (var actTemplate in taskTemplate.ActivityTemplates)
                 {
-
+                    var activity = _mapper.Map<Activity>(actTemplate);
+                    activity.TaskID = task.ID;
+                    _context.Add(activity);
+                    
+                    _context.SaveChanges();
                 }
+
+                BackgroundCalculations.UpdateBudget(_context, task.Activities);
             }
-            //TODO map template to project, tasks and activities and create the records.
+
+           
         }
 
         // GET: Projects/Edit/5

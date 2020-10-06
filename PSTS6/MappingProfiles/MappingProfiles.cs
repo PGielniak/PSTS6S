@@ -25,11 +25,11 @@ namespace PSTS6.MappingProfiles
 
             CreateMap<PSTS6.Models.TaskTemplate, TaskTemplateViewModel>();
 
-            CreateMap<PSTS6.Models.ProjectTemplate, PSTS6.Models.Project>();
+            CreateMap<PSTS6.Models.ProjectTemplate, PSTS6.Models.Project>().ForMember(x=>x.ID, opt=>opt.Ignore());
 
-            CreateMap<PSTS6.Models.TaskTemplate, PSTS6.Models.Task>();
+            CreateMap<PSTS6.Models.TaskTemplate, PSTS6.Models.Task>().ForMember(x => x.ID, opt => opt.Ignore());
 
-            CreateMap<PSTS6.Models.ActivityTemplate, PSTS6.Models.Activity>();
+            CreateMap<PSTS6.Models.ActivityTemplate, PSTS6.Models.Activity>().ForMember(x => x.ID, opt => opt.Ignore());
 
         }
     }

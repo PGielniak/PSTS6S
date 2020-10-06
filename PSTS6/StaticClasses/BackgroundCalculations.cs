@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using PSTS6.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace PSTS6.StaticClasses
 {
@@ -15,6 +16,16 @@ namespace PSTS6.StaticClasses
             var task= UpdateTaskTotals(db, entity);
             UpdateProjectTotals(db, task);
 
+        }
+
+        public static void UpdateBudget(PSTS6Context db, IEnumerable<Activity> activities)
+        {
+
+            foreach (var item in activities)
+            {
+                UpdateBudget(db, item);
+            }
+        
         }
 
         private static void UpdateProjectTotals(PSTS6Context db, Task task)
