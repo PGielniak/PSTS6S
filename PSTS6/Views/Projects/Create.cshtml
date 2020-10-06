@@ -56,19 +56,20 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
+            <div class="col-md-4">
+                <h5>Create From Template</h5>
+                <div class="form-group">
+
+                    <label>Select Template</label>
+                    @Html.DropDownListFor(x => Model.Template, new SelectList(Model.Templates, "Value", "Text")
+                   , new { @class = "form-control" })
+                    <span asp-validation-for="Template" class="text-danger"></span>
+                </div>
+            </div>
         </form>
     </div>
    
-        <div class="col-md-4">
-            <h5>Create From Template</h5>
-            <div class="form-group">
-
-                <label>Select Template</label>
-                @Html.DropDownListFor(x => Model.Template, new SelectList(Model.Templates, "Value", "Text")
-               , new { @class = "form-control" })
-                <span asp-validation-for="Template" class="text-danger"></span>
-            </div>
-        </div>
+        
     
 
 

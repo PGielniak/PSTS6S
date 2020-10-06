@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PSTS6.Data;
 using PSTS6.Models;
+using Task = PSTS6.Models.Task;
 
 namespace PSTS6.Controllers
 {
@@ -87,23 +88,53 @@ namespace PSTS6.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Completed,PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,ProjectManager,createFromTemplate")] Project project)
+        public async Task<IActionResult> Create([Bind("Completed,PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,ProjectManager,Template")] Project project)
         {
-            //var tasks = _context.Task.ToList();
+            
 
 
             if (ModelState.IsValid)
             {
                 var template = Request.Form["createFromTemplate"];
 
-                
+                var selectedTemplate = Request.Form["Template"];
+
+                if (template!="on")
+                {
                     _context.Add(project);
+                }
+                else
+                {
+                    CreateProjectFromTemplate(selectedTemplate);
+                }
+                    
                 
                 
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(project);
+        }
+
+        private void CreateProjectFromTemplate(string projectTemplate)
+        {
+            var template = _context.ProjectTemplate.Where(x => x.ID == Convert.ToInt32(projectTemplate)).Include(x=>x.TaskTemplates).ThenInclude(y=>y.ActivityTemplates).FirstOrDefault();
+
+
+            var project = _mapper.Map<Project>(template);
+
+            foreach (var taskTemplate in template.TaskTemplates)
+            {
+               var task = _mapper.Map<Task>(taskTemplate);
+
+                _context.Add(task);
+
+                foreach (var actTemplate in taskTemplate.ActivityTemplates)
+                {
+
+                }
+            }
+            //TODO map template to project, tasks and activities and create the records.
         }
 
         // GET: Projects/Edit/5

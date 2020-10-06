@@ -16,6 +16,6 @@ namespace PSTS6.Models
         public ProjectTemplate Template { get; set; }
         public IEnumerable<SelectListItem> Templates { get; set; }
 
-        public bool IsManual { get; set; }
+        
     }
 }
