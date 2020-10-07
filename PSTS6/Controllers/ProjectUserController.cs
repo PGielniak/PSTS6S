@@ -4,7 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using PSTS6.Data;
+using PSTS6.Models;
 using PSTS6.Models.ViewModels;
 
 namespace PSTS6.Controllers
@@ -42,6 +44,7 @@ namespace PSTS6.Controllers
             var viewModel = new ProjectUserCreateViewModel
             { 
                 Project = project,
+                ProjectID=project.ID,
                 Users = users  
             };
 
@@ -54,10 +57,15 @@ namespace PSTS6.Controllers
         // POST: ProjectTeam/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(string btnAdd, IEnumerable<string> list)
         {
             try
             {
+                int projectid = Convert.ToInt32(btnAdd);
+
+               // var users = Request.Form[];
+
+                
                 return RedirectToAction(nameof(Index));
             }
             catch

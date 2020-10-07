@@ -8,7 +8,7 @@
             <ul id="usersList" class="list-group">
                 @foreach (var item in Model.Users)
                 {
-                    <li id="@item.Id" class="list-group-item" onclick="">@item.UserName</li>
+                    <li id="@item.Id" class="list-group-item" >@item.UserName</li>
                 }
 
             </ul>
@@ -29,9 +29,8 @@
     <hr>
     <div class="row">
 
-        <div class="col-md-1">
-            <button class="btn btn-success">SUBMIT</button>
-        </div>
+        
+     
     </div>
 </div>
 <script>

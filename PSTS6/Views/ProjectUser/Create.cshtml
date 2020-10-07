@@ -13,19 +13,82 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                @Html.LabelFor(x => Model.Project, new { @class = "control-label" })
+                <label class="control-label" for="Project">Project</label>
                 @Html.DisplayFor(x => Model.Project.Name)
             </div>
-
-
+            <div class="col-md-4">
+                <ul id="usersList2" name="usersList2" class="list-group">
+                </ul>
+            </div>
+            <button class="btn btn-dark" name="btnAdd" value="@Model.ProjectID" formmethod="post" asp-area="" asp-controller="ProjectUser" asp-action="Create">Select Project Team</button>
         </form>
-        <partial name="/Views/Shared/_ProjectTeamPartial.cshtml" />
-    </div>
-</div>
+        <div class="container-fluid">
+            <h3>Add Members to the Project Team</h3>
+            <div class="row">
+
+                <div class="col-md-4">
+                    <ul id="usersList" class="list-group">
+                        @foreach (var item in Model.Users)
+                        {
+                        <li class="list-group">
+                        <input id=@item.Id name="list" value="@item.UserName" class="list-group-item" /> 
+                        </li>
+                            
+                        }
+
+                    </ul>
+                </div>
+                <div class="col-md-1  align-self-center ">
+
+                    <button id="movebtn" class="btn btn-info"> < > </button>
+
+
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+<script>
+    // Add active class to the current button (highlight it)
+    var header = document.getElementById("usersList");
+    var listItems = header.getElementsByClassName("list-group-item");
+    for (var i = 0; i < listItems.length; i++) {
+        listItems[i].addEventListener("click", function () {
+            var current = document.getElementsByClassName("active");
+            if (current.length > 0) {
+                current[0].className = current[0].className.replace(" active", "");
+            }
+
+            this.className += " active";
+        });
+    }
+</script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var selected = document.getElementsByClassName("active");
+        var list1 = document.getElementById("usersList");
+        var list2 = document.getElementById("usersList2");
+        button = document.getElementById("movebtn");
+
+        function moveItem() {
+            var selected = document.getElementsByClassName("active");
+
+            if (selected[0].parentElement == list1) {
+                list2.appendChild(selected[0])
+            } else {
+                list1.appendChild(selected[0])
+            }
+
+        }
+        button.addEventListener("click", moveItem)
+
+    });
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
