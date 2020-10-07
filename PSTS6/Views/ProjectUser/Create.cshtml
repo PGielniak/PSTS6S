@@ -1,0 +1,32 @@
+﻿@model PSTS6.Models.ViewModels.ProjectUserCreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>ProjectUser</h4>
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                @Html.LabelFor(x => Model.Project, new { @class = "control-label" })
+                @Html.DisplayFor(x => Model.Project.Name)
+            </div>
+
+
+        </form>
+        <partial name="/Views/Shared/_ProjectTeamPartial.cshtml" />
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

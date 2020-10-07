@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PSTS6.Models;
 using PSTS6.Models.IdentityModels;
+using PSTS6.Models.MainModels;
 
 namespace PSTS6.Data
 {
@@ -31,6 +32,37 @@ namespace PSTS6.Data
 
        public override DbSet<IdentityUser> Users { get; set; }
 
-        
+        public DbSet<ProjectUser> ProjectUsers { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<ProjectUser>()
+                .HasKey(pu => new { pu.ProjectID, pu.UserID });
+
+            builder.Entity<ProjectUser>()
+                .HasOne(pu => pu.Project)
+                .WithMany(pu => pu.ProjectUsers)
+                .HasForeignKey(pu => pu.ProjectID);
+
+            builder.Entity<ProjectUser>()
+                .HasOne(pu => pu.User)
+                .WithMany(pu => pu.ProjectUsers)
+                .HasForeignKey(pu => pu.UserID);
+
+            builder.Entity<IdentityUserLogin<string>>()
+                .HasNoKey();
+            
+            builder.Entity<IdentityUserRole<string>>()
+                 .HasNoKey();
+
+           builder.Entity<IdentityUserClaim<string>>()
+                        .HasNoKey();
+
+            builder.Entity<IdentityUserToken<string>>()
+                .HasNoKey();
+
+        }
+
+
     }
 }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PSTS6.Data;
 
 namespace PSTS6.Migrations
 {
     [DbContext(typeof(PSTS6Context))]
-    partial class PSTS6ContextModelSnapshot : ModelSnapshot
+    [Migration("20201007081516_prjteam2")]
+    partial class prjteam2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -136,17 +138,6 @@ namespace PSTS6.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserClaims");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
-                {
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("PSTS6.Models.Activity", b =>

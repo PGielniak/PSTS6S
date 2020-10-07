@@ -1,4 +1,5 @@
 ﻿using PSTS6.Models.IdentityModels;
+using PSTS6.Models.MainModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +16,7 @@ namespace PSTS6.Models
 
         public IEnumerable<Task> Tasks { get; set; }
         public string ProjectManager { get; set; }
-        public IEnumerable<User> ProjectTeam { get; set; }
+        public ICollection<ProjectUser> ProjectUsers { get; set; }
         public bool Completed
         {
             get
