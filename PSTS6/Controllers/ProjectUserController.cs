@@ -84,15 +84,19 @@ namespace PSTS6.Controllers
         {
             try
             {
-                var projectUsers = _context.ProjectUsers.Where(x=>x.ProjectID==Convert.ToInt32(btnAdd)).ToList();
+                int projectid = Convert.ToInt32(btnAdd);
+
+                var projectUsers = _context.ProjectUsers.Where(x=>x.ProjectID==projectid).ToList();
 
                 _context.RemoveRange(projectUsers);
                 _context.SaveChanges();
 
+                projectUsers.Clear();
 
-              
 
-                int projectid = Convert.ToInt32(btnAdd);
+                List<ProjectUser> newList = new List<ProjectUser>();
+
+                
 
                 foreach (var item in list)
                 {
