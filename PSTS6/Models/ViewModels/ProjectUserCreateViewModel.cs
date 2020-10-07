@@ -16,6 +16,8 @@ namespace PSTS6.Models.ViewModels
 
         public User User { get; set; }
 
-        public IEnumerable<IdentityUser> Users { get; set; }
+        public IEnumerable<IdentityUser> SelectedUsers { get; set; }
+
+        public IEnumerable<IdentityUser> NotSelectedUsers { get; set; }
     }
 }

@@ -17,26 +17,36 @@
                 @Html.DisplayFor(x => Model.Project.Name)
             </div>
             <div class="col-md-4">
-                <ul id="usersList2" name="usersList2" class="list-group">
-                </ul>
+                <div id="usersList2" name="usersList2" class="list-group">
+                    @foreach (var item in Model.SelectedUsers)
+                    {
+                        <input id=@item.Id name="list" value="@item.UserName" class="list-group-item" />
+                    }
+                </div>
             </div>
-            <button class="btn btn-dark" name="btnAdd" value="@Model.ProjectID" formmethod="post" asp-area="" asp-controller="ProjectUser" asp-action="Create">Select Project Team</button>
+
+            <button class="btn btn-dark" name="btnAdd" value="@Model.ProjectID" formmethod="post" asp-area="" asp-controller="ProjectUser" asp-action="Create">
+            Select Project Team
+            </button>
+
         </form>
         <div class="container-fluid">
             <h3>Add Members to the Project Team</h3>
             <div class="row">
 
                 <div class="col-md-4">
-                    <ul id="usersList" class="list-group">
-                        @foreach (var item in Model.Users)
+                    <div id="usersList" class="list-group">
+                        @foreach (var item in Model.NotSelectedUsers)
                         {
-                        <li class="list-group">
+                        
+
+
                         <input id=@item.Id name="list" value="@item.UserName" class="list-group-item" /> 
-                        </li>
+                        
                             
                         }
 
-                    </ul>
+                    </div>
                 </div>
                 <div class="col-md-1  align-self-center ">
 

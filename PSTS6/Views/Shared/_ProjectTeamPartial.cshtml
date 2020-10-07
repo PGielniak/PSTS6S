@@ -6,7 +6,7 @@
 
         <div class="col-md-4">
             <ul id="usersList" class="list-group">
-                @foreach (var item in Model.Users)
+                @foreach (var item in Model.SelectedUsers)
                 {
                     <li id="@item.Id" class="list-group-item" >@item.UserName</li>
                 }

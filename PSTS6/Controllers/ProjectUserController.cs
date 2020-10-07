@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using PSTS6.Data;
 using PSTS6.Models;
+using PSTS6.Models.MainModels;
 using PSTS6.Models.ViewModels;
 
 namespace PSTS6.Controllers
@@ -41,11 +43,32 @@ namespace PSTS6.Controllers
 
             var users = _context.Users.ToList();
 
+            var existingProjectMembers = _context.ProjectUsers.Where(x=>x.ProjectID== Convert.ToInt32(btnAddTeam)).ToList();
+
+            List<IdentityUser> selectedUsers = new List<IdentityUser>();
+            List<IdentityUser> notSelectedUsers = new List<IdentityUser>();
+
+            foreach (var item in users)
+            {
+                if (existingProjectMembers.Any(x => x.UserID == item.Id))
+                {
+                    selectedUsers.Add(item);
+                }
+                else
+                {
+                    notSelectedUsers.Add(item);
+                }
+            }
+
+
+
+
             var viewModel = new ProjectUserCreateViewModel
-            { 
+            {
                 Project = project,
-                ProjectID=project.ID,
-                Users = users  
+                ProjectID = project.ID,
+                SelectedUsers = selectedUsers,
+                NotSelectedUsers = notSelectedUsers
             };
 
 
@@ -61,11 +84,33 @@ namespace PSTS6.Controllers
         {
             try
             {
+                var projectUsers = _context.ProjectUsers.Where(x=>x.ProjectID==Convert.ToInt32(btnAdd)).ToList();
+
+                _context.RemoveRange(projectUsers);
+                _context.SaveChanges();
+
+
+              
+
                 int projectid = Convert.ToInt32(btnAdd);
 
-               // var users = Request.Form[];
+                foreach (var item in list)
+                {
+                    var projectUser = new ProjectUser
+                    {
+                        ProjectID = projectid,
+                        UserID = _context.Users.Where(z => z.UserName == item).Select(x => x.Id).FirstOrDefault()
+                    };
 
-                
+                    projectUsers.Add(projectUser);
+
+                }
+
+                _context.AddRange(projectUsers);
+
+                _context.SaveChanges();
+
+
                 return RedirectToAction(nameof(Index));
             }
             catch
