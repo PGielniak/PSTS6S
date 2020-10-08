@@ -61,7 +61,7 @@
                     </div>
                     <div>
                         <button class="btn btn-dark" name="btnAddTask" value="@Model.ID" formmethod="get" asp-area="" asp-controller="Tasks" asp-action="Create">Add a new task</button>
-                        <button class="btn btn-dark" name="btnAddTeam" value="@Model.ID" formmethod="get" asp-area="" asp-controller="ProjectUser" asp-action="Create">Select Project Team</button>
+                        <button class="btn btn-dark" name="btnAddTeam" value="@Model.ID" formmethod="get" asp-area="" asp-controller="ProjectUser" asp-action="Create">Edit Project Team</button>
                     </div>
                 </form>
                 <div>
@@ -74,6 +74,38 @@
                 <partial name="/Views/Shared/_TasksList.cshtml" />
             </div>
 
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <h3>Project Team</h3>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">
+                                UserName
+                            </th>
+                            <th scope="col">
+                                Email
+                            </th>
+
+                        </tr>
+
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ProjectTeam)
+                        {
+                            <tr>
+
+                                <td>@Html.DisplayFor(modelItem => item.UserName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                
+
+                            </tr>
+                        }
+                        </tbody>
+
+                </table>
+            </div>
         </div>
         
 

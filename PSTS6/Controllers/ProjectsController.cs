@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PSTS6.Data;
 using PSTS6.Models;
+using PSTS6.Models.IdentityModels;
 using PSTS6.StaticClasses;
 using Task = PSTS6.Models.Task;
 
@@ -165,6 +166,22 @@ namespace PSTS6.Controllers
             
             var dbUsers = await _context.Users.ToListAsync();
 
+            var projectUsers = await _context.ProjectUsers.ToListAsync();
+
+            //var projectTeam = dbUsers.Join(projectUsers,
+            //                                user => user.Id,
+            //                                prjUser => prjUser.UserID,
+            //                                (user,prjUser)=>new { user.UserName, user.Email, prjUser.ProjectID})
+            //                            .Where(x=>x.ProjectID==project.ID).ToList();
+
+
+            var projectTeam= from user in dbUsers
+                            join prjUser in projectUsers on user.Id equals prjUser.UserID
+                            where prjUser.ProjectID == project.ID
+                            select user ;
+
+            
+
             IEnumerable<SelectListItem> users = dbUsers.Select(x => new SelectListItem
             {
                 Text=x.UserName,
@@ -175,6 +192,7 @@ namespace PSTS6.Controllers
        
             viewModel.Users = dbUsers;
             viewModel.AvailableProjectManagers = users;
+            viewModel.ProjectTeam = projectTeam;
 
             if (project == null)
             {

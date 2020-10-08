@@ -45,22 +45,14 @@ namespace PSTS6.Controllers
 
             var existingProjectMembers = _context.ProjectUsers.Where(x=>x.ProjectID== Convert.ToInt32(btnAddTeam)).ToList();
 
-            List<IdentityUser> selectedUsers = new List<IdentityUser>();
-            List<IdentityUser> notSelectedUsers = new List<IdentityUser>();
+            var selectedUsers = from user in users
+                                join prjUser in existingProjectMembers on user.Id equals prjUser.UserID
+                                where prjUser.ProjectID == project.ID
+                                select user;
 
-            foreach (var item in users)
-            {
-                if (existingProjectMembers.Any(x => x.UserID == item.Id))
-                {
-                    selectedUsers.Add(item);
-                }
-                else
-                {
-                    notSelectedUsers.Add(item);
-                }
-            }
-
-
+            var notSelectedUsers = from user in users                           
+                                   where !(selectedUsers.Contains(user))
+                                   select user;
 
 
             var viewModel = new ProjectUserCreateViewModel
