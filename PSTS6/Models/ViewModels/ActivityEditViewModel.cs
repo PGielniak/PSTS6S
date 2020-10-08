@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using PSTS6.Models.IdentityModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -21,6 +24,11 @@ namespace PSTS6.Models
         public DateTime? ActualEndDate { get; set; }
         public decimal Spent { get; set; }
 
+
+        public User Owner { get; set; }
+
+        public IEnumerable<SelectListItem> AvailableOwners { get; set; }
+        public IEnumerable<IdentityUser> Users { get; set; }
 
     }
 }

@@ -41,7 +41,7 @@ namespace PSTS6.Controllers
         {
             var project = _context.Project.Where(x => x.ID == Convert.ToInt32(btnAddTeam)).FirstOrDefault();
 
-            var users = _context.Users.ToList();
+            var users = _context.Users.AsEnumerable();
 
             var existingProjectMembers = _context.ProjectUsers.Where(x=>x.ProjectID== Convert.ToInt32(btnAddTeam)).ToList();
 

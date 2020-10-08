@@ -88,9 +88,29 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activity.FindAsync(id);
+            var activity = await _context.Activity.Include(x=>x.Task).ThenInclude(x=>x.Project).Where(q=>q.ID==id).FirstOrDefaultAsync();
+
+
+
+            var project = activity.Task.Project;
+
+            var users = _context.Users.AsEnumerable();
+            var projectUsers = await _context.ProjectUsers.ToListAsync();
+
+            var projectTeam= from user in users
+                             join prjUser in projectUsers on user.Id equals prjUser.UserID
+                             where prjUser.ProjectID == project.ID
+                             select user;
+
+
+            IEnumerable<SelectListItem> owners = projectTeam.Select(x => new SelectListItem
+            {
+                Text = x.UserName,
+                Value = x.UserName
+            });
 
             var viewModel = _mapper.Map<ActivityEditViewModel>(activity);
+            viewModel.AvailableOwners=owners;
 
 
             if (activity == null)
