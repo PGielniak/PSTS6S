@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20201008123200_actpm.cs" />
+    <Compile Remove="Migrations\20201008123200_actpm.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\dashboard\node_modules\bootstrap\dist\css\bootstrap-grid.css" />
     <Content Include="wwwroot\dashboard\node_modules\bootstrap\dist\css\bootstrap-grid.min.css" />
     <Content Include="wwwroot\dashboard\node_modules\bootstrap\dist\css\bootstrap-reboot.css" />

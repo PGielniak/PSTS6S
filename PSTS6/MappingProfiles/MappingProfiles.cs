@@ -19,7 +19,8 @@ namespace PSTS6.MappingProfiles
 
             CreateMap<PSTS6.Models.Task, TaskEditViewModel>();
 
-            CreateMap<PSTS6.Models.Activity, ActivityEditViewModel>();
+            CreateMap<PSTS6.Models.Activity, ActivityEditViewModel>().ForMember(x=>x.Owner,
+                opt=>opt.Ignore());
 
             CreateMap<PSTS6.Models.ProjectTemplate, ProjectTemplateViewModel>();
 

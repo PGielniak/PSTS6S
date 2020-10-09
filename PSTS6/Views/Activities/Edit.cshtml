@@ -55,7 +55,7 @@
             <div class="form-group">
 
                 @Html.LabelFor(x => Model.Owner, new { @class = "control-label" })
-                @Html.DropDownListFor(x => Model.Owner, new SelectList(Model.AvailableOwners, "Value", "Text")
+                @Html.DropDownListFor(x => Model.Owner, new SelectList(Model.AvailableOwners, "Value", "Text",Model.Owner)
                , new { @class = "form-control" })
 
 

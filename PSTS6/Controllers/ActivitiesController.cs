@@ -112,6 +112,8 @@ namespace PSTS6.Controllers
             var viewModel = _mapper.Map<ActivityEditViewModel>(activity);
             viewModel.AvailableOwners=owners;
 
+            viewModel.Owner = activity.Owner;
+
 
             if (activity == null)
             {
@@ -125,7 +127,7 @@ namespace PSTS6.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,TaskID")] Activity activity)
+        public async Task<IActionResult> Edit(int id, [Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,TaskID,Owner")] Activity activity)
         {
             if (id != activity.ID)
             {

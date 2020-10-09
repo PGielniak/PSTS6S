@@ -23,7 +23,7 @@ namespace PSTS6.Models
 
         public IEnumerable<Task> Tasks { get; set; }
 
-        public User ProjectManager { get; set; }
+        public string ProjectManager { get; set; }
 
         public IEnumerable<SelectListItem> AvailableProjectManagers { get; set; }
         public IEnumerable<IdentityUser> Users { get; set; }

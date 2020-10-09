@@ -21,6 +21,8 @@ namespace PSTS6.Models
         [DataType(DataType.Currency)]
         [Column(TypeName = "decimal(18,2)")]
         public override decimal Budget { get; set; }
-       
+
+        public string Owner { get; set; }
+
     }
 }

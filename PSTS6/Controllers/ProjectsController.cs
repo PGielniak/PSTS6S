@@ -163,6 +163,8 @@ namespace PSTS6.Controllers
            
 
             var project = await _context.Project.Where(x=>x.ID==id).Include(x=>x.Tasks).FirstOrDefaultAsync();
+
+            var projectManager = project.ProjectManager;
             
             var dbUsers = await _context.Users.ToListAsync();
 
@@ -180,19 +182,34 @@ namespace PSTS6.Controllers
                             where prjUser.ProjectID == project.ID
                             select user ;
 
-            
+
 
             IEnumerable<SelectListItem> users = dbUsers.Select(x => new SelectListItem
             {
-                Text=x.UserName,
-                Value=x.UserName
+                Text = x.UserName,
+                Value = x.UserName,
+               
+                
             });
+
+
+            foreach (var item in users)
+            {
+                if (item.Text.Equals(projectManager))
+                {
+                    item.Selected = true;
+                }
+            }
+            
+
+            
 
             var viewModel = _mapper.Map<ProjectEditViewModel>(project);
        
             viewModel.Users = dbUsers;
             viewModel.AvailableProjectManagers = users;
             viewModel.ProjectTeam = projectTeam;
+            viewModel.ProjectManager = projectManager;
 
             if (project == null)
             {

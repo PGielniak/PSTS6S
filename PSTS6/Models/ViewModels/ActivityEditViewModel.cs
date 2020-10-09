@@ -25,7 +25,7 @@ namespace PSTS6.Models
         public decimal Spent { get; set; }
 
 
-        public User Owner { get; set; }
+        public string Owner { get; set; }
 
         public IEnumerable<SelectListItem> AvailableOwners { get; set; }
         public IEnumerable<IdentityUser> Users { get; set; }
