@@ -13,8 +13,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
-
-
+using PSTS6.Areas.Security;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace PSTS6
 {
@@ -41,7 +42,19 @@ namespace PSTS6
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<PSTS6Context>();
-          
+
+            services.AddAuthorization(options =>
+            {
+                options.FallbackPolicy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
+
+                options.AddPolicy("OwnerRolePolicy",
+                    policy => policy.AddRequirements(new ManageOwnerRequirements()));
+            });
+
+            services.AddTransient<IAuthorizationHandler, CanOnlyEditOwnedActivitiesHandler>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
         }
 

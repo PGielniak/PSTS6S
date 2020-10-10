@@ -81,6 +81,7 @@ namespace PSTS6.Controllers
         }
 
         // GET: Activities/Edit/5
+        [Authorize(Policy = "OwnerRolePolicy")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -127,6 +128,7 @@ namespace PSTS6.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "OwnerRolePolicy")]
         public async Task<IActionResult> Edit(int id, [Bind("PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,TaskID,Owner")] Activity activity)
         {
             if (id != activity.ID)
