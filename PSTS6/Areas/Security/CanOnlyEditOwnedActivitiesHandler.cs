@@ -27,7 +27,7 @@ namespace PSTS6.Areas.Security
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ManageOwnerRequirements requirement)
         {
 
-           
+           //PSTS6Context context = new PSTS6Context();
 
             string loggedInOwnerId =
                    context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
@@ -38,7 +38,9 @@ namespace PSTS6.Areas.Security
 
             var ownerId = _context.Users.Where(x => x.UserName == editedActivity.Owner).Select(x=>x.Id).FirstOrDefault();
 
-            if ( loggedInOwnerId == ownerId)
+            if ( context.User.IsInRole("Admin") 
+                || (context.User.IsInRole("ProjectManager")) 
+                || (context.User.IsInRole("Owner") && loggedInOwnerId == ownerId))
             {
                 context.Succeed(requirement);
             }

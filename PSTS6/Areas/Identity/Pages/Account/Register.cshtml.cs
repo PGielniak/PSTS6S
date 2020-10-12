@@ -8,11 +8,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PSTS6.Data;
+using PSTS6.Models.IdentityModels;
 
 namespace PSTS6.Areas.Identity.Pages.Account
 {
@@ -23,17 +27,28 @@ namespace PSTS6.Areas.Identity.Pages.Account
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly PSTS6Context _context;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        
+
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
+            
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            PSTS6Context context,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context=context;
+            _roleManager = roleManager;
+
+
         }
 
         [BindProperty]
@@ -80,10 +95,24 @@ namespace PSTS6.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = Input.UserName, Email = Input.Email };
+
+                
+
+                var ownerRole = await _context.Roles.Where(x => x.Name == "Owner").FirstOrDefaultAsync();
+
+                
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
+               
+               
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    var roleResult=  await _userManager.AddToRoleAsync(user, ownerRole.Name);
+
+                    _logger.LogInformation("User has been assigned the 'Owner' role");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

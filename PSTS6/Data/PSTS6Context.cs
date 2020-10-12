@@ -51,15 +51,21 @@ namespace PSTS6.Data
 
             builder.Entity<IdentityUserLogin<string>>()
                 .HasNoKey();
-            
-            builder.Entity<IdentityUserRole<string>>()
-                 .HasNoKey();
 
-           builder.Entity<IdentityUserClaim<string>>()
+           
+
+            builder.Entity<IdentityUserClaim<string>>()
                         .HasNoKey();
 
             builder.Entity<IdentityUserToken<string>>()
                 .HasNoKey();
+
+            builder.Entity<IdentityUserRole<string>>()
+                .HasKey(ur => new { ur.RoleId, ur.UserId });
+
+            
+
+
 
         }
 
