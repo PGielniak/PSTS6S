@@ -99,8 +99,8 @@ namespace PSTS6.Areas.Identity.Pages.Account
                 
 
                 var ownerRole = await _context.Roles.Where(x => x.Name == "Owner").FirstOrDefaultAsync();
-
-                
+                var pmRole = await _context.Roles.Where(x => x.Name == "ProjectManager").FirstOrDefaultAsync();
+                var adminRole = await _context.Roles.Where(x => x.Name == "Admin").FirstOrDefaultAsync();
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
@@ -109,8 +109,19 @@ namespace PSTS6.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
-                    var roleResult=  await _userManager.AddToRoleAsync(user, ownerRole.Name);
+                    if (ownerRole == null)
+                    {
+                      await _roleManager.CreateAsync(new IdentityRole { Name = "Owner" });
+                    }
+                    if (pmRole == null)
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole { Name = "ProjectManager" });
+                    }
+                    if (adminRole == null)
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole { Name = "Admin" });
+                    }
+                    var roleResult=  await _userManager.AddToRoleAsync(user, "Owner");
 
                     _logger.LogInformation("User has been assigned the 'Owner' role");
 
