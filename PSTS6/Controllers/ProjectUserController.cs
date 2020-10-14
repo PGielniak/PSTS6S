@@ -88,7 +88,6 @@ namespace PSTS6.Controllers
 
                 List<ProjectUser> newList = new List<ProjectUser>();
 
-                
 
                 foreach (var item in list)
                 {

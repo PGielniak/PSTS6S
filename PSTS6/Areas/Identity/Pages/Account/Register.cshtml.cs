@@ -86,6 +86,13 @@ namespace PSTS6.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            if (_roleManager.Roles.Count() == 0)
+            {
+                await _roleManager.CreateAsync(new IdentityRole { Name = "Owner" });
+                await _roleManager.CreateAsync(new IdentityRole { Name = "ProjectManager" });
+                await _roleManager.CreateAsync(new IdentityRole { Name = "Admin" });              
+            }
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -96,32 +103,15 @@ namespace PSTS6.Areas.Identity.Pages.Account
             {
                 var user = new IdentityUser { UserName = Input.UserName, Email = Input.Email };
 
-                
-
-                var ownerRole = await _context.Roles.Where(x => x.Name == "Owner").FirstOrDefaultAsync();
-                var pmRole = await _context.Roles.Where(x => x.Name == "ProjectManager").FirstOrDefaultAsync();
-                var adminRole = await _context.Roles.Where(x => x.Name == "Admin").FirstOrDefaultAsync();
-
                 var result = await _userManager.CreateAsync(user, Input.Password);
-
-               
+     
                
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-                    if (ownerRole == null)
-                    {
-                      await _roleManager.CreateAsync(new IdentityRole { Name = "Owner" });
-                    }
-                    if (pmRole == null)
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole { Name = "ProjectManager" });
-                    }
-                    if (adminRole == null)
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole { Name = "Admin" });
-                    }
-                    var roleResult=  await _userManager.AddToRoleAsync(user, "Owner");
+                    
+                   
+                    await _userManager.AddToRoleAsync(user, "Owner");
 
                     _logger.LogInformation("User has been assigned the 'Owner' role");
 

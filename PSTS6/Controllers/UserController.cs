@@ -61,10 +61,11 @@ namespace PSTS6.Controllers
 
             foreach (var item in rolesSelectList)
             {
-                if (item.Text.Equals(role))
+                if (item.Text.Equals(role.Name))
                 {
                     item.Selected = true;
                 }
+               
             }
 
             var viewModel = new UserEditViewModel 
@@ -96,10 +97,6 @@ namespace PSTS6.Controllers
                 try
                 {
 
-                   
-                    
-
-
                     user = _context.Users.Where(x => x.Id == user.Id).FirstOrDefault();
 
                     string selectedRole = Request.Form["Role"].ToString();
@@ -107,30 +104,16 @@ namespace PSTS6.Controllers
                     user.UserName = Request.Form["UserName"].ToString();
 
                     user.Email = Request.Form["Email"].ToString();
-                    
-                   // var userRoles = await _userManager.GetRolesAsync(user);
 
                     List<IdentityUserRole<string>> userRoles = _context.UserRoles.Where(x => x.UserId == user.Id).ToList();
-
-                    List<IdentityUserRole<string>> allRoles = _context.UserRoles.ToList();
 
                     foreach (var item in userRoles)
                     {
                         _context.Remove(item);
                     }
-                     
-                   // await _userManager.RemoveFromRolesAsync(user, _userManager.GetRolesAsync(user).Result);
 
-                    if (await _userManager.IsInRoleAsync(user, selectedRole))
-                    {
-
-                    }
-                    else
-                    {
-                        await _userManager.AddToRoleAsync(user, selectedRole);
-                    }
+                   await _userManager.AddToRoleAsync(user, selectedRole);
                    
-
                     _context.Update(user);
 
                    await _context.SaveChangesAsync();
