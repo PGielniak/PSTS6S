@@ -54,10 +54,14 @@ namespace PSTS6
                 ;
                 options.AddPolicy("PmRolePolicy",
                     policy => policy.AddRequirements(new ManageEditDetailsProjectRequirements()));
+
+                options.AddPolicy("CreateDeleteActivitiesPolicy",
+                    policy => policy.AddRequirements(new ManageCreateDeleteActivityRequirements()));
             });
 
             services.AddTransient<IAuthorizationHandler, CanOnlyEditOwnedActivitiesHandler>();
             services.AddTransient<IAuthorizationHandler, CanOnlyEditViewDeleteProjectsWhereIsPMOrAdmin>();
+            services.AddTransient<IAuthorizationHandler, CanOnlyCreateDeleteActivitiesFromOwnProject>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
         }
