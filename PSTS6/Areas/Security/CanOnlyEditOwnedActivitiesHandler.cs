@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 namespace PSTS6.Areas.Security
 {
     public class CanOnlyEditOwnedActivitiesHandler :
-        AuthorizationHandler<ManageOwnerRequirements>
+        AuthorizationHandler<ManageEditDetailsActivityRequirements>
     {
         private readonly PSTS6Context _context;
 
@@ -25,7 +25,7 @@ namespace PSTS6.Areas.Security
             _httpContextAccessor = httpContextAccessor;
         }
         
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ManageOwnerRequirements requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ManageEditDetailsActivityRequirements requirement)
         {
 
            //PSTS6Context context = new PSTS6Context();
@@ -35,12 +35,14 @@ namespace PSTS6.Areas.Security
 
             string editedRecordId = _httpContextAccessor.HttpContext.GetRouteValue("id").ToString();
 
-            var editedActivity = _context.Activity.AsNoTracking().Where(x => x.ID == Convert.ToInt32(editedRecordId)).FirstOrDefault();
+            var editedActivity = _context.Activity.AsNoTracking().Where(x => x.ID == Convert.ToInt32(editedRecordId)).Include(x => x.Task).ThenInclude(x => x.Project).FirstOrDefault();
 
             var ownerId = _context.Users.Where(x => x.UserName == editedActivity.Owner).Select(x=>x.Id).FirstOrDefault();
 
+            var pmId = _context.Users.Where(x => x.UserName == editedActivity.Task.Project.ProjectManager).Select(x => x.Id).FirstOrDefault();
+
             if ( context.User.IsInRole("Admin") 
-                || (context.User.IsInRole("ProjectManager")) 
+                || (context.User.IsInRole("ProjectManager") && loggedInOwnerId==pmId) 
                 || (context.User.IsInRole("Owner") && loggedInOwnerId == ownerId))
             {
                 context.Succeed(requirement);

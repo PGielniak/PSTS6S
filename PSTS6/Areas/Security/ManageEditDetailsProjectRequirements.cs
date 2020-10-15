@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PSTS6.Areas.Security
 {
-    public class ManagePMRequirements : IAuthorizationRequirement
+    public class ManageEditDetailsProjectRequirements : IAuthorizationRequirement
     {
     }
 }

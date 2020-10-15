@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PSTS6.Areas.Security
 {
-    public class CanOnlyEditViewDeleteProjectsWhereIsPMOrAdmin : AuthorizationHandler<ManagePMRequirements>
+    public class CanOnlyEditViewDeleteProjectsWhereIsPMOrAdmin : AuthorizationHandler<ManageEditDetailsProjectRequirements>
     {
         private readonly PSTS6Context _context;
 
@@ -24,7 +24,7 @@ namespace PSTS6.Areas.Security
         }
 
 
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ManagePMRequirements requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ManageEditDetailsProjectRequirements requirement)
         {
             string loggedInOwnerId =
                    context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
