@@ -50,10 +50,14 @@ namespace PSTS6
             .Build();
 
                 options.AddPolicy("OwnerRolePolicy",
-                    policy => policy.AddRequirements(new ManageOwnerRequirements()));
+                    policy => policy.AddRequirements(new ManageOwnerRequirements()))
+                ;
+                options.AddPolicy("PmRolePolicy",
+                    policy => policy.AddRequirements(new ManagePMRequirements()));
             });
 
             services.AddTransient<IAuthorizationHandler, CanOnlyEditOwnedActivitiesHandler>();
+            services.AddTransient<IAuthorizationHandler, CanOnlyEditViewDeleteProjectsWhereIsPMOrAdmin>();
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
         }

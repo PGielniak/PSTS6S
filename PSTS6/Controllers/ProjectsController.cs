@@ -103,8 +103,12 @@ namespace PSTS6.Controllers
 
                 if (template!="on")
                 {
+
+
                     _context.Add(project);
                     await _context.SaveChangesAsync();
+
+
                 }
                 else
                 {
@@ -153,6 +157,8 @@ namespace PSTS6.Controllers
         }
 
         // GET: Projects/Edit/5
+
+      
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -223,6 +229,7 @@ namespace PSTS6.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "PMRolePolicy")]
         public async Task<IActionResult> Edit(int id, [Bind("Completed,PrcCompleted,Budget,StartDate,EstimatedEndDate,ActualEndDate,Spent,ID,Name,Description,ProjectManager")] Project project)
         {
             if (id != project.ID)
@@ -234,6 +241,7 @@ namespace PSTS6.Controllers
             {
                 try
                 {
+                    _context.Attach(project);
                     _context.Update(project);
                     await _context.SaveChangesAsync();
                 }
@@ -254,6 +262,7 @@ namespace PSTS6.Controllers
         }
 
         // GET: Projects/Delete/5
+        [Authorize(Policy = "PMRolePolicy")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -273,6 +282,7 @@ namespace PSTS6.Controllers
 
         // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Policy = "PMRolePolicy")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

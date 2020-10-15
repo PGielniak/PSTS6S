@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 
 namespace PSTS6.Areas.Security
 {
@@ -34,7 +35,7 @@ namespace PSTS6.Areas.Security
 
             string editedRecordId = _httpContextAccessor.HttpContext.GetRouteValue("id").ToString();
 
-            var editedActivity = _context.Activity.Find(Convert.ToInt32(editedRecordId));
+            var editedActivity = _context.Activity.AsNoTracking().Where(x => x.ID == Convert.ToInt32(editedRecordId)).FirstOrDefault();
 
             var ownerId = _context.Users.Where(x => x.UserName == editedActivity.Owner).Select(x=>x.Id).FirstOrDefault();
 

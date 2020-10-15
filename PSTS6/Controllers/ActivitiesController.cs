@@ -32,6 +32,7 @@ namespace PSTS6.Controllers
         }
 
         // GET: Activities/Details/5
+        [Authorize(Policy = "OwnerRolePolicy")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
