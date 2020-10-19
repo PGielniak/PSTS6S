@@ -15,6 +15,8 @@ using PSTS6.Models;
 using PSTS6.Models.IdentityModels;
 using PSTS6.HelperClasses;
 using Task = PSTS6.Models.Task;
+using PSTS6.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace PSTS6.Controllers
 {
@@ -23,13 +25,14 @@ namespace PSTS6.Controllers
     {
         private readonly PSTS6Context _context;
         private readonly IMapper _mapper;
-        
+        private readonly ProjectCreationModeSettings _settings;
 
-        public ProjectsController(PSTS6Context context, IMapper mapper)
+
+        public ProjectsController(PSTS6Context context, IMapper mapper, IOptionsMonitor<ProjectCreationModeSettings> settings)
         {
             _context = context;
             _mapper = mapper;
-            
+            _settings = settings.CurrentValue;
         }
 
         // GET: Projects
@@ -103,16 +106,32 @@ namespace PSTS6.Controllers
 
                 if (template!="on")
                 {
-
-
-                    _context.Add(project);
-                    await _context.SaveChangesAsync();
+                    if (_settings.Mode.Equals("OnlyTemplate"))
+                    {
+                        //put error code here
+                        return Content("Error");
+                    }
+                    else
+                    {
+                        _context.Add(project);
+                        await _context.SaveChangesAsync();
+                    }
+                    
 
 
                 }
                 else
                 {
-                    CreateProjectFromTemplate(selectedTemplate);
+                    if (_settings.Mode.Equals("OnlyManual"))
+                    {
+                        //put error code here
+                    }
+                    else
+                    {
+                        CreateProjectFromTemplate(selectedTemplate);
+                    }
+
+                   
 
                 }
                     

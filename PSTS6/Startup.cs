@@ -16,6 +16,7 @@ using AutoMapper;
 using PSTS6.Areas.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using PSTS6.Configuration;
 
 namespace PSTS6
 {
@@ -39,10 +40,14 @@ namespace PSTS6
 
             services.AddDbContext<PSTS6Context>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("PSTS6Context")));
+
+            #region IdentityConfiguration
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<PSTS6Context>();
+            #endregion
 
+            #region AuthorizationConfiguration
             services.AddAuthorization(options =>
             {
                 options.FallbackPolicy = new AuthorizationPolicyBuilder()
@@ -72,8 +77,23 @@ namespace PSTS6
             services.AddTransient<IAuthorizationHandler, CanOnlyEditViewTasksFromOwnProjects>();
             services.AddTransient<IAuthorizationHandler, CanOnlyCreateDeleteOwnProjects>();
             services.AddTransient<IAuthorizationHandler, CanOnlyCreateDeleteTasksFromOwnProjects>();
+            #endregion
+
 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+
+            #region SettingsConfiguration
+
+            //ProjectCreationModeSettings projectConfig = new ProjectCreationModeSettings();
+            //Configuration.GetSection("ProjectCreationMode").Bind(projectConfig);
+
+            //services.AddSingleton<ProjectCreationModeSettings>(projectConfig);
+
+            services.Configure<ProjectCreationModeSettings>(Configuration.GetSection("ProjectCreationMode"));
+
+            #endregion
+
+
 
         }
 
