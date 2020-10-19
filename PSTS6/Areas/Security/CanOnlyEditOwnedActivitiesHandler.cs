@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using PSTS6.HelperClasses;
 
 namespace PSTS6.Areas.Security
 {
@@ -28,18 +29,21 @@ namespace PSTS6.Areas.Security
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ManageEditDetailsActivityRequirements requirement)
         {
 
-           //PSTS6Context context = new PSTS6Context();
+            //PSTS6Context context = new PSTS6Context();
+
+
+            ProjectSecurity projectSecurity = new ProjectSecurity(_context, _httpContextAccessor, context, "Activity");
 
             string loggedInOwnerId =
-                   context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                   projectSecurity.LoggedInUser;
 
-            string editedRecordId = _httpContextAccessor.HttpContext.GetRouteValue("id").ToString();
+            PSTS6.Models.Activity editedRecord = (Models.Activity)projectSecurity.EditedRecord;
 
-            var editedActivity = _context.Activity.AsNoTracking().Where(x => x.ID == Convert.ToInt32(editedRecordId)).Include(x => x.Task).ThenInclude(x => x.Project).FirstOrDefault();
+           
 
-            var ownerId = _context.Users.Where(x => x.UserName == editedActivity.Owner).Select(x=>x.Id).FirstOrDefault();
+            var ownerId = _context.Users.Where(x => x.UserName == editedRecord.Owner).Select(x=>x.Id).FirstOrDefault();
 
-            var pmId = _context.Users.Where(x => x.UserName == editedActivity.Task.Project.ProjectManager).Select(x => x.Id).FirstOrDefault();
+            var pmId = _context.Users.Where(x => x.UserName == editedRecord.Task.Project.ProjectManager).Select(x => x.Id).FirstOrDefault();
 
             if ( context.User.IsInRole("Admin") 
                 || (context.User.IsInRole("ProjectManager") && loggedInOwnerId==pmId) 

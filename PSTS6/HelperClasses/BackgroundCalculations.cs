@@ -5,7 +5,7 @@ using PSTS6.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 
-namespace PSTS6.StaticClasses
+namespace PSTS6.HelperClasses
 {
     public static class BackgroundCalculations
     {

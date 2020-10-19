@@ -49,19 +49,30 @@ namespace PSTS6
             .RequireAuthenticatedUser()
             .Build();
 
-                options.AddPolicy("OwnerRolePolicy",
+                options.AddPolicy("EditDetailsActivityPolicy",
                     policy => policy.AddRequirements(new ManageEditDetailsActivityRequirements()))
                 ;
-                options.AddPolicy("PmRolePolicy",
+                options.AddPolicy("EditDetailsProjectPolicy",
                     policy => policy.AddRequirements(new ManageEditDetailsProjectRequirements()));
 
                 options.AddPolicy("CreateDeleteActivitiesPolicy",
                     policy => policy.AddRequirements(new ManageCreateDeleteActivityRequirements()));
+
+                options.AddPolicy("CreateDeleteProjectPolicy",
+                    policy => policy.AddRequirements(new ManageCreateDeleteProjectRequirements()));
+                options.AddPolicy("CreateDeleteTaskPolicy",
+                    policy => policy.AddRequirements(new ManageCreateDeleteTaskRequirements()));
+                options.AddPolicy("EditDetailsTaskPolicy",
+                    policy => policy.AddRequirements(new ManageEditDetailsTaskRequirements()));
             });
 
             services.AddTransient<IAuthorizationHandler, CanOnlyEditOwnedActivitiesHandler>();
             services.AddTransient<IAuthorizationHandler, CanOnlyEditViewDeleteProjectsWhereIsPMOrAdmin>();
             services.AddTransient<IAuthorizationHandler, CanOnlyCreateDeleteActivitiesFromOwnProject>();
+            services.AddTransient<IAuthorizationHandler, CanOnlyEditViewTasksFromOwnProjects>();
+            services.AddTransient<IAuthorizationHandler, CanOnlyCreateDeleteOwnProjects>();
+            services.AddTransient<IAuthorizationHandler, CanOnlyCreateDeleteTasksFromOwnProjects>();
+
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
         }

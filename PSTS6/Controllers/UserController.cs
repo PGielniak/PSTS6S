@@ -51,7 +51,9 @@ namespace PSTS6.Controllers
 
             var role = roles.Where(x => x.Id == userRole.RoleId).FirstOrDefault();
 
-            var rolesSelectList = roles.Select(x => new SelectListItem
+            var selectedRole = role.Name;
+
+            IEnumerable<SelectListItem> rolesSelectList = roles.Select(x => new SelectListItem
             {
                 Text = x.Name,
                 Value = x.Name,
@@ -68,13 +70,12 @@ namespace PSTS6.Controllers
                
             }
 
-            var viewModel = new UserEditViewModel 
-            { 
-                UserName=user.UserName,
-                Email=user.Email,
-
-               
-                AvailableRoles=rolesSelectList
+            var viewModel = new UserEditViewModel
+            {
+                UserName = user.UserName,
+                Email = user.Email,
+                AvailableRoles = rolesSelectList,
+                SelectedRole = selectedRole
             };
 
             

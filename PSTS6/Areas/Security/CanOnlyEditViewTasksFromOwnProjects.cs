@@ -12,30 +12,27 @@ using System.Threading.Tasks;
 
 namespace PSTS6.Areas.Security
 {
-    public class CanOnlyCreateDeleteActivitiesFromOwnProject : AuthorizationHandler<ManageEditDetailsActivityRequirements>
+    public class CanOnlyEditViewTasksFromOwnProjects : AuthorizationHandler<ManageEditDetailsProjectRequirements>
     {
+
         private readonly PSTS6Context _context;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CanOnlyCreateDeleteActivitiesFromOwnProject(PSTS6Context context, IHttpContextAccessor httpContextAccessor)
+        public CanOnlyEditViewTasksFromOwnProjects(IHttpContextAccessor httpContextAccessor, PSTS6Context context)
         {
-            _context = context;
             _httpContextAccessor = httpContextAccessor;
+            _context = context;
         }
 
-
-
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ManageEditDetailsActivityRequirements requirement)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ManageEditDetailsProjectRequirements requirement)
         {
-            ProjectSecurity projectSecurity = new ProjectSecurity(_context, _httpContextAccessor, context, "Activity");
+            ProjectSecurity projectSecurity = new ProjectSecurity(_context, _httpContextAccessor, context, "Task");
 
             string loggedInOwnerId = projectSecurity.LoggedInUser;
 
-            Models.Activity editedRecord = (Models.Activity)projectSecurity.EditedRecord;
+            Models.Task editedRecord = (Models.Task)projectSecurity.EditedRecord;
 
-            var ownerId = _context.Users.Where(x => x.UserName == editedRecord.Owner).Select(x => x.Id).FirstOrDefault();
-
-            var pmId = _context.Users.Where(x => x.UserName == editedRecord.Task.Project.ProjectManager).Select(x => x.Id).FirstOrDefault();
+            string pmId = _context.Users.Where(x => x.UserName == editedRecord.Project.ProjectManager).Select(x => x.Id).FirstOrDefault();
 
             if (context.User.IsInRole("Admin")
                 || (context.User.IsInRole("ProjectManager") && loggedInOwnerId == pmId)

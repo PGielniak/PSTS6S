@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PSTS6.Data;
 using PSTS6.Models;
-using PSTS6.StaticClasses;
+using PSTS6.HelperClasses;
 
 namespace PSTS6.Controllers
 {

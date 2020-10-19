@@ -22,6 +22,8 @@ namespace PSTS6.Models
 
         public IEnumerable<Roles> Role { get; set; }
 
+        public string SelectedRole { get; set; }
+
 
     }
 }
