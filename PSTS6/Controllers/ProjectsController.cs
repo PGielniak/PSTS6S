@@ -25,10 +25,10 @@ namespace PSTS6.Controllers
     {
         private readonly PSTS6Context _context;
         private readonly IMapper _mapper;
-        private readonly ProjectCreationModeSettings _settings;
+        private readonly ProjectSettings _settings;
 
 
-        public ProjectsController(PSTS6Context context, IMapper mapper, IOptionsMonitor<ProjectCreationModeSettings> settings)
+        public ProjectsController(PSTS6Context context, IMapper mapper, IOptionsMonitor<ProjectSettings> settings)
         {
             _context = context;
             _mapper = mapper;
@@ -66,6 +66,8 @@ namespace PSTS6.Controllers
 
             var templates = await _context.ProjectTemplate.ToListAsync();
 
+            
+
             IEnumerable<SelectListItem> users = dbUsers.Select(x => new SelectListItem
             {
                 Text = x.UserName,
@@ -81,7 +83,7 @@ namespace PSTS6.Controllers
             var viewModel = new ProjectCreateViewModel
             {
                 availableProjectManagers = users,
-                StartDate = DateTime.Today,
+                StartDate = DateTime.Today.AddDays(Convert.ToInt32(_settings.DefaultDateMode)),
                 EstimatedEndDate = DateTime.Today,
                 Templates = projectTemplates
             };
@@ -106,7 +108,7 @@ namespace PSTS6.Controllers
 
                 if (template!="on")
                 {
-                    if (_settings.Mode.Equals("OnlyTemplate"))
+                    if (_settings.CreationMode.Equals("OnlyTemplate"))
                     {
                         //put error code here
                         return Content("Error");
@@ -122,7 +124,7 @@ namespace PSTS6.Controllers
                 }
                 else
                 {
-                    if (_settings.Mode.Equals("OnlyManual"))
+                    if (_settings.CreationMode.Equals("OnlyManual"))
                     {
                         //put error code here
                     }
@@ -235,6 +237,7 @@ namespace PSTS6.Controllers
             viewModel.AvailableProjectManagers = users;
             viewModel.ProjectTeam = projectTeam;
             viewModel.ProjectManager = projectManager;
+            viewModel.ActualEndDateSetting = _settings.ActualEndDateMode;
 
             if (project == null)
             {

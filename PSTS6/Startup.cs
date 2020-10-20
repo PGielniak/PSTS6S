@@ -84,12 +84,10 @@ namespace PSTS6
 
             #region SettingsConfiguration
 
-            //ProjectCreationModeSettings projectConfig = new ProjectCreationModeSettings();
-            //Configuration.GetSection("ProjectCreationMode").Bind(projectConfig);
 
-            //services.AddSingleton<ProjectCreationModeSettings>(projectConfig);
-
-            services.Configure<ProjectCreationModeSettings>(Configuration.GetSection("ProjectCreationMode"));
+            services.Configure<ProjectSettings>(Configuration.GetSection("ProjectCreationMode"));
+            services.Configure<DefaultDateModeSettings>(Configuration.GetSection("DefaultDateMode"));
+            services.Configure<ActualEndDateModeSettings>(Configuration.GetSection("ActualEndDateMode"));
 
             #endregion
 

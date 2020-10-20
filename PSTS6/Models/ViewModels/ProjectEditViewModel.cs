@@ -30,5 +30,7 @@ namespace PSTS6.Models
 
         public IEnumerable<IdentityUser> ProjectTeam { get; set; }
 
+        public string ActualEndDateSetting { get; set; }
+
     }
 }

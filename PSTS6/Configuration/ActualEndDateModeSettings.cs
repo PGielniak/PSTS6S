@@ -7,5 +7,6 @@ namespace PSTS6.Configuration
 {
     public class ActualEndDateModeSettings
     {
+        public string Mode { get; set; }
     }
 }

@@ -7,5 +7,6 @@ namespace PSTS6.Configuration
 {
     public class DefaultDateModeSettings
     {
+        public int Mode { get; set; }
     }
 }

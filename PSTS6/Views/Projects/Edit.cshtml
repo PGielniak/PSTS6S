@@ -47,12 +47,21 @@
                         <span asp-validation-for="ActualEndDate" class="text-danger"></span>
                     </div>
                     <div class="form-group">
+                        @if (Model.ActualEndDateSetting == "1")
+                        {
+                            @Html.LabelFor(x => Model.ProjectManager, new { @class = "control-label" })
+                            @Html.DropDownListFor(x => Model.ProjectManager, new SelectList(Model.AvailableProjectManagers, "Value", "Text", Model.ProjectManager)
+                           , new { @class = "form-control" })
+                        }
+                        else
+                        {
+                            @Html.LabelFor(x => Model.ProjectManager, new { @class = "control-label" })
+                            @Html.DropDownListFor(x => Model.ProjectManager, new SelectList(Model.AvailableProjectManagers, "Value", "Text", Model.ProjectManager)
+                           , new { @class = "form-control", @readonly="readonly" })
+                        }
 
-                        @Html.LabelFor(x=>Model.ProjectManager, new { @class="control-label"})
-                        @Html.DropDownListFor(x=>Model.ProjectManager, new SelectList(Model.AvailableProjectManagers, "Value", "Text", Model.ProjectManager)
-                       ,new {@class="form-control" })
-                        
-                        
+
+
                         <span asp-validation-for="ProjectManager" class="text-danger"></span>
                     </div>
 
