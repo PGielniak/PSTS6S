@@ -26,13 +26,15 @@ namespace PSTS6.Controllers
         private readonly PSTS6Context _context;
         private readonly IMapper _mapper;
         private readonly ProjectSettings _settings;
+        private readonly BackgroundCalculations _backgroundCalculations;
 
 
-        public ProjectsController(PSTS6Context context, IMapper mapper, IOptionsMonitor<ProjectSettings> settings)
+        public ProjectsController(PSTS6Context context, IMapper mapper, IOptionsMonitor<ProjectSettings> settings, BackgroundCalculations backgroundCalculations)
         {
             _context = context;
             _mapper = mapper;
             _settings = settings.CurrentValue;
+            _backgroundCalculations = backgroundCalculations;
         }
 
         // GET: Projects
@@ -84,7 +86,7 @@ namespace PSTS6.Controllers
             {
                 availableProjectManagers = users,
                 StartDate = DateTime.Today.AddDays(Convert.ToInt32(_settings.DefaultDateMode)),
-                EstimatedEndDate = DateTime.Today,
+                EstimatedEndDate = DateTime.Today.AddDays(Convert.ToInt32(_settings.DefaultDateMode + _settings.EndDateMode)),
                 Templates = projectTemplates
             };
             return View(viewModel);
@@ -171,7 +173,7 @@ namespace PSTS6.Controllers
                     _context.SaveChanges();
                 }
 
-                BackgroundCalculations.UpdateBudget(_context, task.Activities);
+                _backgroundCalculations.UpdateBudget(_context, task.Activities);
             }
 
            

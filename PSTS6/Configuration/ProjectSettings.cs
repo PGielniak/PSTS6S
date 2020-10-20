@@ -11,6 +11,7 @@ namespace PSTS6.Configuration
         public string DefaultDateMode { get; set; }
         public string ActualEndDateMode { get; set; }
 
-        
+        public string EndDateMode { get; set; }
+
     }
 }
