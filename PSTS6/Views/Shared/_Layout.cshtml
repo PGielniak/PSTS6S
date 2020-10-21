@@ -37,11 +37,24 @@
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <input class="form-control form-control-dark w-50" type="text" placeholder="Search" aria-label="Search">
+        @*<input class="form-control form-control-dark w-50" id="SearchText" name="SearchText" type="text" placeholder="Search" aria-label="Search">*@
+
+        @*<form style="width:75%;">
+
+            <input class="form-control form-control-dark w-50" id="SearchText" name="SearchText" type="text" placeholder="Search" aria-label="Search">
+
+            <input type="submit" value="Search" class="search-button" />
+
+        </form>*@
+        <form style="width:60%;" formmethod="get" >
+            <input class="form-control form-control-dark w-100"  id="SearchText" name="SearchText" formaction="@Url.Action("Search", "GetData")" type="text" placeholder="Search" aria-label="Search" >
+            <input hidden type="submit" value="Search"  formaction="@Url.Action("GetData", "Search")"/>
+        </form>
+
         <ul class="navbar-nav px-5">
             <partial name="_LoginPartial" />
         </ul>
-        
+
     </nav>
     <div class="row">
         <div class="container-fluid">
