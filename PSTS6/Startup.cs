@@ -81,6 +81,7 @@ namespace PSTS6
 
 
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<PSTS6.HelperClasses.BackgroundCalculations>();
 
             #region SettingsConfiguration
 
