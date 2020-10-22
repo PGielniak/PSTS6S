@@ -17,6 +17,7 @@ using PSTS6.HelperClasses;
 using Task = PSTS6.Models.Task;
 using PSTS6.Configuration;
 using Microsoft.Extensions.Options;
+using PSTS6.Repository;
 
 namespace PSTS6.Controllers
 {
@@ -27,20 +28,22 @@ namespace PSTS6.Controllers
         private readonly IMapper _mapper;
         private readonly ProjectSettings _settings;
         private readonly BackgroundCalculations _backgroundCalculations;
+        private readonly DbRepository _repo;
 
 
-        public ProjectsController(PSTS6Context context, IMapper mapper, IOptionsMonitor<ProjectSettings> settings, BackgroundCalculations backgroundCalculations)
+        public ProjectsController(PSTS6Context context, IMapper mapper, IOptionsMonitor<ProjectSettings> settings, BackgroundCalculations backgroundCalculations, DbRepository repo)
         {
             _context = context;
             _mapper = mapper;
             _settings = settings.CurrentValue;
             _backgroundCalculations = backgroundCalculations;
+            _repo = repo;
         }
 
         // GET: Projects
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Project.ToListAsync());
+            return View(await _repo.GetProjects());
         }
 
         // GET: Projects/Details/5
@@ -51,8 +54,8 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Project
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var project = await _repo.GetProject(id);
+            
             if (project == null)
             {
                 return NotFound();
@@ -64,9 +67,9 @@ namespace PSTS6.Controllers
         // GET: Projects/Create
         public async Task<IActionResult> Create()
         {
-            var dbUsers = await _context.Users.ToListAsync();
+            var dbUsers = await _repo.GetUsers();
 
-            var templates = await _context.ProjectTemplate.ToListAsync();
+            var templates = await _repo.GetProjectTemplates();
 
             
 
@@ -117,8 +120,7 @@ namespace PSTS6.Controllers
                     }
                     else
                     {
-                        _context.Add(project);
-                        await _context.SaveChangesAsync();
+                       await _repo.AddProject(project);
                     }
                     
 
@@ -189,15 +191,13 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-           
-
-            var project = await _context.Project.Where(x=>x.ID==id).Include(x=>x.Tasks).FirstOrDefaultAsync();
+            var project = await _repo.GetProject(id);
 
             var projectManager = project.ProjectManager;
-            
-            var dbUsers = await _context.Users.ToListAsync();
 
-            var projectUsers = await _context.ProjectUsers.ToListAsync();
+            var dbUsers = await _repo.GetUsers();
+
+            var projectUsers = await _repo.GetProjectUsers();
 
             //var projectTeam = dbUsers.Join(projectUsers,
             //                                user => user.Id,
@@ -211,8 +211,6 @@ namespace PSTS6.Controllers
                             where prjUser.ProjectID == project.ID
                             select user ;
 
-
-
             IEnumerable<SelectListItem> users = dbUsers.Select(x => new SelectListItem
             {
                 Text = x.UserName,
@@ -221,7 +219,6 @@ namespace PSTS6.Controllers
                 
             });
 
-
             foreach (var item in users)
             {
                 if (item.Text.Equals(projectManager))
@@ -229,10 +226,7 @@ namespace PSTS6.Controllers
                     item.Selected = true;
                 }
             }
-            
-
-            
-
+                  
             var viewModel = _mapper.Map<ProjectEditViewModel>(project);
        
             viewModel.Users = dbUsers;
@@ -264,10 +258,8 @@ namespace PSTS6.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
-                    _context.Attach(project);
-                    _context.Update(project);
-                    await _context.SaveChangesAsync();
+                {                 
+                    await _repo.UpdateProject(project);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -294,8 +286,8 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Project
-                .FirstOrDefaultAsync(m => m.ID == id);
+          
+            var project = await _repo.GetProject(id);
             if (project == null)
             {
                 return NotFound();
@@ -310,15 +302,14 @@ namespace PSTS6.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var project = await _context.Project.FindAsync(id);
-            _context.Project.Remove(project);
-            await _context.SaveChangesAsync();
+            var project = _repo.GetProject(id).Result;       
+            await _repo.DeleteProject(project);
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProjectExists(int id)
         {
-            return _context.Project.Any(e => e.ID == id);
+            return _repo.ProjectExists(id);
         }
 
        
