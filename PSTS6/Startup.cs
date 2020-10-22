@@ -17,6 +17,7 @@ using PSTS6.Areas.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using PSTS6.Configuration;
+using PSTS6.Repository;
 
 namespace PSTS6
 {
@@ -40,6 +41,8 @@ namespace PSTS6
 
             services.AddDbContext<PSTS6Context>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("PSTS6Context")));
+            services.AddScoped<IRepository, DbRepository>();
+
 
             #region IdentityConfiguration
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
