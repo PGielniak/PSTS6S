@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using PSTS6.Configuration;
 using PSTS6.Repository;
+using ReflectionIT.Mvc.Paging;
 
 namespace PSTS6
 {
@@ -42,6 +43,10 @@ namespace PSTS6
             services.AddDbContext<PSTS6Context>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("PSTS6Context")));
             services.AddScoped<IRepository, DbRepository>();
+            services.AddPaging(options=> {
+                options.ViewName = "ViewName";
+                options.PageParameterName = "pageindex";
+            });
 
 
             #region IdentityConfiguration
