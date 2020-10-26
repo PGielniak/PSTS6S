@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PSTS6.Repository
 {
-    interface IRepository
+    public interface IRepository
     {
 
         #region ProjectMethods

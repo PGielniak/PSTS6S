@@ -1,5 +1,43 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model SearchViewModel
+@model DashboardViewModel
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
 
+
+<div class="col-5">
+
+    
+    <h2>Planned Activities</h2>
+    <nav aria-label="Planned Activities Paging">
+        @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.PlannedActivities })
+    </nav>
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>EED</th>
+                <th>% Completed</th>
+                <th>Budget</th>
+                <th>Spent</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PlannedActivities)
+            {
+
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.EstimatedEndDate</td>
+                    <td>@item.PrcCompleted</td>
+                    <td>@item.Budget</td>
+                    <td>@item.Spent</td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

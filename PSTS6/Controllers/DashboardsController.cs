@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using PSTS6.Data;
 using PSTS6.HelperClasses;
 using PSTS6.Models;
-
+using ReflectionIT.Mvc.Paging;
 
 namespace PSTS6.Controllers
 {
@@ -21,17 +21,47 @@ namespace PSTS6.Controllers
             _context = context;
             _mapper = mapper;
         }
-        public async Task <IActionResult> Index(int page = 1)
+        public async Task <IActionResult> Index(int pageindex = 1)
         {
 
-            var query = _context.Project.AsNoTracking().OrderBy(s => s.Name);
+            return View(await GetUserDashboardData(pageindex));
+        }
 
-           
+        private async Task< DashboardViewModel> GetUserDashboardData(int pageindex)
+        {
+            var query = _context.Activity.AsNoTracking().OrderBy(s => s.Name);
 
-            var viewModel = new DashboardViewModel();
+            var pendingQuery = query
+                .Where(x => x.PrcCompleted != 100 && x.ActualEndDate == null)
+                .OrderBy(x => x.ActualEndDate);
 
-           
-            return View(viewModel);
+            var pending = await PagingList.CreateAsync(pendingQuery, 2, pageindex);
+
+            var overbudgetQuery = query
+                .Where(x => x.Budget < x.Spent)
+                .OrderBy(x => x.Spent);
+
+            var overbudget = await PagingList.CreateAsync(overbudgetQuery, 2, pageindex);
+
+            var plannedQuery = query
+                .Where(x => x.StartDate < DateTime.Today)
+                .OrderBy(x => x.StartDate);
+
+            var planned = await PagingList.CreateAsync(query, 2, pageindex);
+
+            var finishedQuery = query
+                .Where(x => x.PrcCompleted == 100)
+                .OrderBy(x => x.ActualEndDate);
+
+            var finished = await PagingList.CreateAsync(finishedQuery, 2, pageindex);
+
+            return new DashboardViewModel
+            {
+                PendingActivities=pending,
+                PlannedActivities=planned,
+                OverBudgetActivities=overbudget,
+                FinishedActivities=finished
+            };
         }
     }
 }

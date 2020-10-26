@@ -31,7 +31,11 @@ namespace PSTS6.Controllers
         private readonly IRepository _repo;
 
 
-        public ProjectsController(PSTS6Context context, IMapper mapper, IOptionsMonitor<ProjectSettings> settings, BackgroundCalculations backgroundCalculations, DbRepository repo)
+        public ProjectsController(PSTS6Context context,
+                                  IMapper mapper,
+                                  IOptionsMonitor<ProjectSettings> settings,
+                                  BackgroundCalculations backgroundCalculations,
+                                  IRepository repo)
         {
             _context = context;
             _mapper = mapper;

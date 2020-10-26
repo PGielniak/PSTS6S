@@ -44,7 +44,7 @@ namespace PSTS6
                     options.UseSqlServer(Configuration.GetConnectionString("PSTS6Context")));
             services.AddScoped<IRepository, DbRepository>();
             services.AddPaging(options=> {
-                options.ViewName = "ViewName";
+                options.ViewName = "Pager";
                 options.PageParameterName = "pageindex";
             });
 
