@@ -4,16 +4,17 @@
 @{
     var start = this.Model.StartPageIndex;
     var stop = this.Model.StopPageIndex;
+  
 }
 
 @if (this.Model.PageCount > 1)
 {
     <ul class="pagination pagination-sm justify-content-end">
 
-        @if (start > 1)
+        @*@if (start > 1)
         {
             <li class="page-item">
-                <a href="@Url.Action(Model.Action, Model.GetRouteValueForPage(1))" aria-label="First" class="page-link">
+                <a href="@Url.Action(Model.Action, Model.GetRouteValueForPage(1))", aria-label="First" class="page-link">
                     <span aria-hidden="true">1</span>
                 </a>
             </li>
@@ -26,7 +27,7 @@
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-        }
+        }*@
 
         @for (int i = start; i <= stop; i++)
         {
@@ -35,23 +36,23 @@
             </li>
         }
 
-        @if (this.Model.PageIndex < this.Model.PageCount)
+        @*@if (this.Model.PageIndex < this.Model.PageCount)
         {
             <li class="page-item">
-                <a href="@Url.Action(Model.Action, Model.GetRouteValueForPage(this.Model.PageIndex + 1))" aria-label="Next" class="page-link">
+                <a href="@Url.Action(Model.Action, Model.GetRouteValueForPage(this.Model.PageIndex + 1))," aria-label="Next" class="page-link">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
-        }
+        }*@
 
-        @if (stop < this.Model.PageCount)
+        @*@if (stop < this.Model.PageCount)
         {
             <li class="page-item">
                 <a href="@Url.Action(Model.Action, Model.GetRouteValueForPage(this.Model.PageCount))" aria-label="Last" class="page-link">
                     <span aria-hidden="true">@this.Model.PageCount</span>
                 </a>
             </li>
-        }
+        }*@
 
     </ul>
 }

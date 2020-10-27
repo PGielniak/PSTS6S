@@ -45,17 +45,23 @@ namespace PSTS6.Controllers
 
             var overbudget = await PagingList.CreateAsync(overbudgetQuery, 2, 1);
 
+            overbudget.PageParameterName = "overbudgetIndex";
+
             var plannedQuery = query
                 .Where(x => x.StartDate < DateTime.Today)
                 .OrderBy(x => x.StartDate);
 
             var planned = await PagingList.CreateAsync(query, 2, plannedIndex);
 
+            overbudget.PageParameterName = "plannedIndex";
+
             var finishedQuery = query
                 .Where(x => x.PrcCompleted == 100)
                 .OrderBy(x => x.ActualEndDate);
 
             var finished = await PagingList.CreateAsync(finishedQuery, 2, 1);
+
+            overbudget.PageParameterName = "finishedIndex";
 
             return new DashboardViewModel
             {
