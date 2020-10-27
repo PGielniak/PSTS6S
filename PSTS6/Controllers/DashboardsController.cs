@@ -21,13 +21,13 @@ namespace PSTS6.Controllers
             _context = context;
             _mapper = mapper;
         }
-        public async Task <IActionResult> Index(int pageindex = 1)
+        public async Task <IActionResult> Index(int plannedIndex = 1, int pendingIndex=1 )
         {
 
-            return View(await GetUserDashboardData(pageindex));
+            return View(await GetUserDashboardData(plannedIndex,pendingIndex));
         }
 
-        private async Task< DashboardViewModel> GetUserDashboardData(int pageindex)
+        private async Task< DashboardViewModel> GetUserDashboardData(int plannedIndex, int pendingIndex)
         {
             var query = _context.Activity.AsNoTracking().OrderBy(s => s.Name);
 
@@ -35,25 +35,27 @@ namespace PSTS6.Controllers
                 .Where(x => x.PrcCompleted != 100 && x.ActualEndDate == null)
                 .OrderBy(x => x.ActualEndDate);
 
-            var pending = await PagingList.CreateAsync(pendingQuery, 2, pageindex);
+            var pending = await PagingList.CreateAsync(pendingQuery, 2, pendingIndex);
+
+            pending.PageParameterName = "pendingIndex";
 
             var overbudgetQuery = query
                 .Where(x => x.Budget < x.Spent)
                 .OrderBy(x => x.Spent);
 
-            var overbudget = await PagingList.CreateAsync(overbudgetQuery, 2, pageindex);
+            var overbudget = await PagingList.CreateAsync(overbudgetQuery, 2, 1);
 
             var plannedQuery = query
                 .Where(x => x.StartDate < DateTime.Today)
                 .OrderBy(x => x.StartDate);
 
-            var planned = await PagingList.CreateAsync(query, 2, pageindex);
+            var planned = await PagingList.CreateAsync(query, 2, plannedIndex);
 
             var finishedQuery = query
                 .Where(x => x.PrcCompleted == 100)
                 .OrderBy(x => x.ActualEndDate);
 
-            var finished = await PagingList.CreateAsync(finishedQuery, 2, pageindex);
+            var finished = await PagingList.CreateAsync(finishedQuery, 2, 1);
 
             return new DashboardViewModel
             {

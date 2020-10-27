@@ -45,7 +45,8 @@ namespace PSTS6
             services.AddScoped<IRepository, DbRepository>();
             services.AddPaging(options=> {
                 options.ViewName = "Pager";
-                options.PageParameterName = "pageindex";
+                options.PageParameterName = "pendingIndex";
+                options.PageParameterName = "plannedIndex";
             });
 
 
