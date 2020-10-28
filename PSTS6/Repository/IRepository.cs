@@ -30,7 +30,10 @@ namespace PSTS6.Repository
 
         #endregion
 
+        #region ActivityMethods
 
+        Task<IEnumerable<Activity>> GetDashboardActivities(bool track, bool filteredByCurrentUser);
+        #endregion
 
     }
 }
