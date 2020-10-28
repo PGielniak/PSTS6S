@@ -1,10 +1,14 @@
 ﻿@model ReflectionIT.Mvc.Paging.IPagingList
+@using Microsoft.AspNetCore.Http
 @* Fake Boostrap 5 based pager *@
 
 @{
     var start = this.Model.StartPageIndex;
     var stop = this.Model.StopPageIndex;
-  
+
+    var queryString = this.Url.RouteUrl(start);
+
+
 }
 
 @if (this.Model.PageCount > 1)

@@ -1,5 +1,151 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model SearchViewModel
+@model DashboardViewModel
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
 
+
+<div class="row">
+    <div class="col-5">
+
+
+        <h2>Pending Projects</h2>
+        <nav aria-label="Planned Activities Paging">
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.PendingProjects })
+        </nav>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>EED</th>
+                    <th>% Completed</th>
+                    <th>Budget</th>
+                    <th>Spent</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PendingProjects)
+                {
+
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.EstimatedEndDate</td>
+                        <td>@item.PrcCompleted</td>
+                        <td>@item.Budget</td>
+                        <td>@item.Spent</td>
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-5">
+        <h2>Over Budget Projects</h2>
+        <nav aria-label="Pending Activities Paging">
+
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.OverBudgetProjects})
+        </nav>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>EED</th>
+                    <th>% Completed</th>
+                    <th>Budget</th>
+                    <th>Spent</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.OverBudgetProjects)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.EstimatedEndDate</td>
+                        <td>@item.PrcCompleted</td>
+                        <td>@item.Budget</td>
+                        <td>@item.Spent</td>
+                        <td></td>
+                    </tr>
+                }
+                <tr>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-5">
+
+
+        <h2>Finished Projects</h2>
+        <nav aria-label="Planned Activities Paging">
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.FinishedProjects})
+        </nav>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>EED</th>
+                    <th>% Completed</th>
+                    <th>Budget</th>
+                    <th>Spent</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.FinishedProjects)
+                {
+
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.EstimatedEndDate</td>
+                        <td>@item.PrcCompleted</td>
+                        <td>@item.Budget</td>
+                        <td>@item.Spent</td>
+                        <td></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-5">
+        <h2>Best Performers</h2>
+        <nav aria-label="Pending Activities Paging">
+
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.BestScorers })
+        </nav>
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                   
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.BestScorers)
+                {
+                    <tr>
+                        <td>@item.UserName</td>
+                        <td>test value</td>
+                      
+                    </tr>
+                }
+                <tr>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</div>

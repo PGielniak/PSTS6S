@@ -1,4 +1,5 @@
-﻿using ReflectionIT.Mvc.Paging;
+﻿using Microsoft.AspNetCore.Identity;
+using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,19 @@ namespace PSTS6.Models
 
         public PagingList<Activity> FinishedActivities { get; set; }
 
-         
+        public PagingList<Project> PendingProjects { get; set; }
+
+        public PagingList<Project> OverBudgetProjects { get; set; }
+
+        public PagingList<Project> FinishedProjects { get; set; }
+
+        public PagingList<IdentityUser> BestScorers { get; set; }
+
+
+
+
+
+
 
     }
 }
