@@ -100,7 +100,7 @@ namespace PSTS6.Controllers
 
                     user = _context.Users.Where(x => x.Id == user.Id).FirstOrDefault();
 
-                    string selectedRole = Request.Form["Role"].ToString();
+                    string selectedRole = Request.Form["SelectedRole"].ToString();
 
                     user.UserName = Request.Form["UserName"].ToString();
 

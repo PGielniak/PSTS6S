@@ -16,9 +16,9 @@ namespace PSTS6.Repository
     public class DbRepository : IRepository
     {
         private readonly PSTS6Context _context;
-        private readonly HttpContextAccessor _http;
+        private readonly IHttpContextAccessor _http;
 
-        public DbRepository(PSTS6Context context, HttpContextAccessor http)
+        public DbRepository(PSTS6Context context, IHttpContextAccessor http)
         {
             _context = context;
             _http = http;
@@ -91,22 +91,22 @@ namespace PSTS6.Repository
 
         #region DashboardMethods
 
-        public async  Task<IEnumerable<Activity>> GetDashboardActivities(bool track, bool filteredByCurrentUser)
+        public  IEnumerable<Activity> GetDashboardActivities(bool track, bool filteredByCurrentUser)
         {
           
             switch (track,filteredByCurrentUser)
             {
                 case (true, true):
-                    return await _context.Activity.Where(x=>x.Owner==_http.HttpContext.User.Identity.Name).ToListAsync();
+                    return  _context.Activity.Where(x=>x.Owner==_http.HttpContext.User.Identity.Name);
                    
                 case (true, false):
-                    return await _context.Activity.ToListAsync();
+                    return  _context.Activity;
                     
                 case (false, true):
-                    return await _context.Activity.AsNoTracking().Where(x => x.Owner == _http.HttpContext.User.Identity.Name).ToListAsync();
+                    return  _context.Activity.AsNoTracking().Where(x => x.Owner == _http.HttpContext.User.Identity.Name);
                     
                 case (false, false):
-                    return await _context.Activity.AsNoTracking().ToListAsync();
+                    return  _context.Activity.AsNoTracking();
                     
                 
             }

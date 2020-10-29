@@ -22,6 +22,7 @@ namespace PSTS6.Controllers
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRepository _repo;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly PSTS6Context _context;
         public DashboardsController(PSTS6Context context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IRepository repo, UserManager<IdentityUser> userManager)
         {
             
@@ -29,6 +30,7 @@ namespace PSTS6.Controllers
             _httpContextAccessor = httpContextAccessor;
             _repo = repo;
             _userManager = userManager;
+            _context = context;
         }
         public async Task <IActionResult> Index(int plannedIndex = 1, int pendingIndex=1, int overbudgetIndex=1, int finishedIndex=1 )
         {
@@ -51,19 +53,19 @@ namespace PSTS6.Controllers
         #region GetUserDashboardData
         private async Task<DashboardViewModel> GetUserDashboardData(int plannedIndex, int pendingIndex, int overbudgetIndex, int finishedIndex)
         {
-            var query = await _repo.GetDashboardActivities(track:false, filteredByCurrentUser: true);
+            var query = _repo.GetDashboardActivities(track:false, filteredByCurrentUser: false);
 
+            var query2 = _context.Activity.AsNoTracking();
 
-            var pendingQuery = (IOrderedQueryable<Activity>)query
-                .Where(x => x.PrcCompleted != 100 && x.ActualEndDate == null)
-               
+            var pendingQuery = query.AsQueryable()
+                .Where(x => x.PrcCompleted != 100 && x.ActualEndDate == null)    
                 .OrderBy(x => x.ActualEndDate);
 
             var pending = await PagingList.CreateAsync(qry: pendingQuery,pageSize: 2,pageIndex: pendingIndex);
 
             pending.PageParameterName = "pendingIndex";
 
-            var overbudgetQuery = (IOrderedQueryable<Activity>)query
+            var overbudgetQuery = query.AsQueryable()
                 .Where(x => x.Budget < x.Spent)
                 .OrderBy(x => x.Spent);
 
@@ -71,7 +73,7 @@ namespace PSTS6.Controllers
 
             overbudget.PageParameterName = "overbudgetIndex";
 
-            var plannedQuery = (IOrderedQueryable<Activity>)query
+            var plannedQuery = query.AsQueryable()
                 .Where(x => x.StartDate < DateTime.Today)
                 .OrderBy(x => x.StartDate);
 
@@ -79,7 +81,7 @@ namespace PSTS6.Controllers
 
             overbudget.PageParameterName = "plannedIndex";
 
-            var finishedQuery = (IOrderedQueryable<Activity>)query
+            var finishedQuery = query.AsQueryable()
                 .Where(x => x.PrcCompleted == 100)
                 .OrderBy(x => x.ActualEndDate);
 
@@ -99,7 +101,55 @@ namespace PSTS6.Controllers
         #endregion
 
 
-       
+        #region GetPMDashboardData
+        private async Task<DashboardViewModel> GetProjectManagerDashboardData(int plannedIndex, int pendingIndex, int overbudgetIndex, int finishedIndex)
+        {
+            var query = _repo.GetDashboardActivities(track: false, filteredByCurrentUser: false);
+
+            var query2 = _context.Activity.AsNoTracking();
+
+            var pendingQuery = query.AsQueryable()
+                .Where(x => x.PrcCompleted != 100 && x.ActualEndDate == null)
+                .OrderBy(x => x.ActualEndDate);
+
+            var pending = await PagingList.CreateAsync(qry: pendingQuery, pageSize: 2, pageIndex: pendingIndex);
+
+            pending.PageParameterName = "pendingIndex";
+
+            var overbudgetQuery = query.AsQueryable()
+                .Where(x => x.Budget < x.Spent)
+                .OrderBy(x => x.Spent);
+
+            var overbudget = await PagingList.CreateAsync(overbudgetQuery, 2, overbudgetIndex);
+
+            overbudget.PageParameterName = "overbudgetIndex";
+
+            var plannedQuery = query.AsQueryable()
+                .Where(x => x.StartDate < DateTime.Today)
+                .OrderBy(x => x.StartDate);
+
+            var planned = await PagingList.CreateAsync(plannedQuery, 2, plannedIndex);
+
+            overbudget.PageParameterName = "plannedIndex";
+
+            var finishedQuery = query.AsQueryable()
+                .Where(x => x.PrcCompleted == 100)
+                .OrderBy(x => x.ActualEndDate);
+
+            var finished = await PagingList.CreateAsync(finishedQuery, 2, finishedIndex);
+
+            overbudget.PageParameterName = "finishedIndex";
+
+
+            return new DashboardViewModel
+            {
+                PendingActivities = pending,
+                PlannedActivities = planned,
+                OverBudgetActivities = overbudget,
+                FinishedActivities = finished
+            };
+        }
+        #endregion
 
     }
 }

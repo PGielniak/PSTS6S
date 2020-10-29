@@ -14,7 +14,7 @@ namespace PSTS6.Repository
     {
 
         #region ProjectMethods
-        Task <List<Project>> GetProjects();
+        Task <List<Project>> GetProjects(bool track, bool filter);
         Task <Project> GetProject(int? id);
         Task< List<ProjectTemplate>> GetProjectTemplates();
         Task <List<IdentityUser>> GetUsers();
@@ -32,7 +32,7 @@ namespace PSTS6.Repository
 
         #region ActivityMethods
 
-        Task<IEnumerable<Activity>> GetDashboardActivities(bool track, bool filteredByCurrentUser);
+        IEnumerable<Activity> GetDashboardActivities(bool track, bool filteredByCurrentUser);
         #endregion
 
     }
