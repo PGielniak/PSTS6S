@@ -47,7 +47,7 @@ namespace PSTS6.Repository
             return await _context.Project.Where(x => x.ID == id).Include(x => x.Tasks).FirstOrDefaultAsync();
         }
 
-        public async Task<List<Project>> GetProjects()
+        public async Task<List<Project>> GetProjects(bool track, bool filter)
         {
             return await _context.Project.ToListAsync();
         }
