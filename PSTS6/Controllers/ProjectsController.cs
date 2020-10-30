@@ -45,9 +45,9 @@ namespace PSTS6.Controllers
         }
 
         // GET: Projects
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _repo.GetProjects(track: false, filter: false));
+            return View( _repo.GetProjects(track: false, filter: false));
         }
 
         // GET: Projects/Details/5

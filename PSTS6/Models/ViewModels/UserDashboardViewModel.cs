@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PSTS6.Models
 {
-    public class DashboardViewModel
+    public class UserDashboardViewModel
     {
 
         public PagingList<Activity> PendingActivities { get; set; }
@@ -18,13 +18,7 @@ namespace PSTS6.Models
 
         public PagingList<Activity> FinishedActivities { get; set; }
 
-        public PagingList<Project> PendingProjects { get; set; }
-
-        public PagingList<Project> OverBudgetProjects { get; set; }
-
-        public PagingList<Project> FinishedProjects { get; set; }
-
-        public PagingList<IdentityUser> BestScorers { get; set; }
+       
 
 
 

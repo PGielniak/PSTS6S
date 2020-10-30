@@ -47,9 +47,26 @@ namespace PSTS6.Repository
             return await _context.Project.Where(x => x.ID == id).Include(x => x.Tasks).FirstOrDefaultAsync();
         }
 
-        public async Task<List<Project>> GetProjects(bool track, bool filter)
+        public  IEnumerable<Project> GetProjects(bool track, bool filter)
         {
-            return await _context.Project.ToListAsync();
+           // return await _context.Project.ToListAsync();
+
+            switch (track, filter)
+            {
+                case (true, true):
+                    return  _context.Project.Where(x => x.ProjectManager == _http.HttpContext.User.Identity.Name);
+
+                case (true, false):
+                    return _context.Project;
+
+                case (false, true):
+                    return _context.Project.AsNoTracking().Where(x => x.ProjectManager == _http.HttpContext.User.Identity.Name);
+
+                case (false, false):
+                    return _context.Project.AsNoTracking();
+
+
+            }
         }
 
         public bool ProjectExists(int id)

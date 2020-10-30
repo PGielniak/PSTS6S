@@ -1,12 +1,13 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model DashboardViewModel
+@model ManagerDashboardViewModel
 @using ReflectionIT.Mvc.Paging
 @addTagHelper *, ReflectionIT.Mvc.Paging
 
-
+<h2>This is Manager Dashboard</h2>
 <div class="row">
+
     <div class="col-5">
 
 
@@ -47,7 +48,7 @@
         <h2>Over Budget Projects</h2>
         <nav aria-label="Pending Activities Paging">
 
-            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.OverBudgetProjects})
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.OverBudgetProjects })
         </nav>
         <table class="table table-sm">
             <thead>
@@ -88,7 +89,7 @@
 
         <h2>Finished Projects</h2>
         <nav aria-label="Planned Activities Paging">
-            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.FinishedProjects})
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.FinishedProjects })
         </nav>
         <table class="table table-sm">
             <thead>
@@ -119,7 +120,7 @@
         </table>
     </div>
     <div class="col-1"></div>
-    <div class="col-5">
+    @*<div class="col-5">
         <h2>Best Performers</h2>
         <nav aria-label="Pending Activities Paging">
 
@@ -129,7 +130,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                   
+
                     <th></th>
                 </tr>
             </thead>
@@ -139,7 +140,7 @@
                     <tr>
                         <td>@item.UserName</td>
                         <td>test value</td>
-                      
+
                     </tr>
                 }
                 <tr>
@@ -147,5 +148,5 @@
             </tbody>
         </table>
 
-    </div>
+    </div>*@
 </div>
