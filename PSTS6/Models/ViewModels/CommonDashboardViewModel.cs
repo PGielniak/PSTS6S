@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PSTS6.Models.ViewModels
+namespace PSTS6.Models
 {
     public class CommonDashboardViewModel
     {

@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PSTS6.Data;
-using PSTS6.HelperClasses;
 using PSTS6.Models;
 using PSTS6.Models.ViewModels;
 using PSTS6.Repository;
@@ -18,22 +15,22 @@ namespace PSTS6.Controllers
 {
     public class DashboardsController : Controller
     {
-       
-        private readonly IMapper _mapper;
+
+        #region Private Fields
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IRepository _repo;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly PSTS6Context _context;
-        public DashboardsController(PSTS6Context context, IMapper mapper, IHttpContextAccessor httpContextAccessor, IRepository repo, UserManager<IdentityUser> userManager)
+        #endregion
+
+        #region Constructor
+        public DashboardsController(IHttpContextAccessor httpContextAccessor, IRepository repo)
         {
-            
-            _mapper = mapper;
             _httpContextAccessor = httpContextAccessor;
             _repo = repo;
-            _userManager = userManager;
-            _context = context;
         }
-        public async Task <IActionResult> Index(int plannedIndex = 1, int pendingIndex=1, int overbudgetIndex=1, int finishedIndex=1 )
+        #endregion
+
+        #region Controller Action
+        public async Task<IActionResult> Index(int plannedIndex = 1, int pendingIndex = 1, int overbudgetIndex = 1, int finishedIndex = 1)
         {
             if (_httpContextAccessor.HttpContext.User.IsInRole("Admin"))
             {
@@ -43,13 +40,14 @@ namespace PSTS6.Controllers
             {
                 return View(await GetProjectManagerDashboardData(plannedIndex, pendingIndex, overbudgetIndex, finishedIndex));
             }
-            else 
+            else
             {
                 return View(await GetUserDashboardData(plannedIndex, pendingIndex, overbudgetIndex, finishedIndex));
             }
 
-            
+
         }
+        #endregion
 
         #region GetUserDashboardData
         private async Task<CommonDashboardViewModel> GetUserDashboardData(int plannedIndex, int pendingIndex, int overbudgetIndex, int finishedIndex)
@@ -103,7 +101,6 @@ namespace PSTS6.Controllers
            
         }
         #endregion
-
 
         #region GetPMDashboardData
         private async Task<CommonDashboardViewModel> GetProjectManagerDashboardData(int plannedIndex, int pendingIndex, int overbudgetIndex, int finishedIndex)

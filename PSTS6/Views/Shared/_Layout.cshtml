@@ -47,7 +47,7 @@
 
         </form>*@
         <form style="width:60%;" formmethod="get" >
-            <input class="form-control form-control-dark w-100"  id="SearchText" name="SearchText" formaction="@Url.Action("Search", "GetData")" type="text" placeholder="Search" aria-label="Search" >
+            <input class="form-control form-control-dark w-100"  id="SearchText" name="SearchText" formaction="@Url.Action("GetData", "Search")" type="text" placeholder="Search" aria-label="Search" >
             <input hidden type="submit" value="Search"  formaction="@Url.Action("GetData", "Search")"/>
         </form>
 
