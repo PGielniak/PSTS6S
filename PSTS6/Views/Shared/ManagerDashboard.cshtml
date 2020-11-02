@@ -1,7 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model ManagerDashboardViewModel
+@model PSTS6.Models.ViewModels.CommonDashboardViewModel
 @using ReflectionIT.Mvc.Paging
 @addTagHelper *, ReflectionIT.Mvc.Paging
 
@@ -13,7 +13,7 @@
 
         <h2>Pending Projects</h2>
         <nav aria-label="Planned Activities Paging">
-            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.PendingProjects })
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.ManagerDashboardViewModel.PendingProjects })
         </nav>
         <table class="table table-sm">
             <thead>
@@ -28,7 +28,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.PendingProjects)
+                @foreach (var item in Model.ManagerDashboardViewModel.PendingProjects)
                 {
 
                     <tr>
@@ -48,7 +48,7 @@
         <h2>Over Budget Projects</h2>
         <nav aria-label="Pending Activities Paging">
 
-            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.OverBudgetProjects })
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.ManagerDashboardViewModel.OverBudgetProjects })
         </nav>
         <table class="table table-sm">
             <thead>
@@ -63,7 +63,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.OverBudgetProjects)
+                @foreach (var item in Model.ManagerDashboardViewModel.OverBudgetProjects)
                 {
                     <tr>
                         <td>@item.Name</td>
@@ -89,7 +89,7 @@
 
         <h2>Finished Projects</h2>
         <nav aria-label="Planned Activities Paging">
-            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.FinishedProjects })
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.ManagerDashboardViewModel.FinishedProjects })
         </nav>
         <table class="table table-sm">
             <thead>
@@ -104,7 +104,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.FinishedProjects)
+                @foreach (var item in Model.ManagerDashboardViewModel.FinishedProjects)
                 {
 
                     <tr>

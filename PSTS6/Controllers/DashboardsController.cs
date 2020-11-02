@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using PSTS6.Data;
 using PSTS6.HelperClasses;
 using PSTS6.Models;
+using PSTS6.Models.ViewModels;
 using PSTS6.Repository;
 using ReflectionIT.Mvc.Paging;
 
@@ -51,16 +52,16 @@ namespace PSTS6.Controllers
         }
 
         #region GetUserDashboardData
-        private async Task<UserDashboardViewModel> GetUserDashboardData(int plannedIndex, int pendingIndex, int overbudgetIndex, int finishedIndex)
+        private async Task<CommonDashboardViewModel> GetUserDashboardData(int plannedIndex, int pendingIndex, int overbudgetIndex, int finishedIndex)
         {
-            var query = _repo.GetDashboardActivities(track:false, filteredByCurrentUser: false);
+            var query = _repo.GetDashboardActivities(track: false, filteredByCurrentUser: false);
 
 
             var pendingQuery = query.AsQueryable()
-                .Where(x => x.PrcCompleted != 100 && x.ActualEndDate == null)    
+                .Where(x => x.PrcCompleted != 100 && x.ActualEndDate == null)
                 .OrderBy(x => x.ActualEndDate);
 
-            var pending = await PagingList.CreateAsync(qry: pendingQuery,pageSize: 2,pageIndex: pendingIndex);
+            var pending = await PagingList.CreateAsync(qry: pendingQuery, pageSize: 2, pageIndex: pendingIndex);
 
             pending.PageParameterName = "pendingIndex";
 
@@ -89,21 +90,25 @@ namespace PSTS6.Controllers
             overbudget.PageParameterName = "finishedIndex";
 
 
-            return new UserDashboardViewModel
+            return new CommonDashboardViewModel
             {
-                PendingActivities = pending,
-                PlannedActivities = planned,
-                OverBudgetActivities = overbudget,
-                FinishedActivities = finished
-            };
+                UserDashboardViewModel = new UserDashboardViewModel
+                {
+                    PendingActivities = pending,
+                    PlannedActivities = planned,
+                    OverBudgetActivities = overbudget,
+                    FinishedActivities = finished
+                }
+        };
+           
         }
         #endregion
 
 
         #region GetPMDashboardData
-        private async Task<ManagerDashboardViewModel> GetProjectManagerDashboardData(int plannedIndex, int pendingIndex, int overbudgetIndex, int finishedIndex)
+        private async Task<CommonDashboardViewModel> GetProjectManagerDashboardData(int plannedIndex, int pendingIndex, int overbudgetIndex, int finishedIndex)
         {
-            //  var query = _repo.GetDashboardActivities(track: false, filteredByCurrentUser: false);
+           
             var query = _repo.GetProjects(track: false, filter: false);
 
             var pendingQuery = query.AsQueryable()
@@ -130,23 +135,32 @@ namespace PSTS6.Controllers
 
             overbudget.PageParameterName = "finishedIndex";
 
-
-            return new ManagerDashboardViewModel
+            return new CommonDashboardViewModel
             {
-                PendingProjects = pending,             
-                OverBudgetProjects = overbudget,
-                FinishedProjects = finished
+                ManagerDashboardViewModel= new ManagerDashboardViewModel
+              {
+                 PendingProjects = pending,             
+                 OverBudgetProjects = overbudget,
+                 FinishedProjects = finished
+              }
             };
+            
         }
         #endregion
 
         #region GetAdminDashboardData
-        private async Task<(UserDashboardViewModel, ManagerDashboardViewModel)> GetAdminDashboardData(int i=1, int j=1, int k=1, int l=1)
+        private async Task<CommonDashboardViewModel> GetAdminDashboardData(int i=1, int j=1, int k=1, int l=1)
         {
             var userViewModel = await GetUserDashboardData(i,j,k,l);
             var pmViewModel = await GetProjectManagerDashboardData(i, j, k, l);
 
-            return (userViewModel, pmViewModel);
+            var adminViewModel = new CommonDashboardViewModel
+            {
+                ManagerDashboardViewModel = pmViewModel.ManagerDashboardViewModel,
+                UserDashboardViewModel = userViewModel.UserDashboardViewModel
+            };
+
+            return adminViewModel;
 
         }
         #endregion

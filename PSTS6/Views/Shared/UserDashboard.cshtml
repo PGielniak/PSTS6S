@@ -1,7 +1,7 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model UserDashboardViewModel
+@model PSTS6.Models.ViewModels.CommonDashboardViewModel
 @using ReflectionIT.Mvc.Paging
 @addTagHelper *, ReflectionIT.Mvc.Paging
 
@@ -13,7 +13,7 @@
 
         <h2>Planned Activities</h2>
         <nav aria-label="Planned Activities Paging">
-            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.PlannedActivities })
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.UserDashboardViewModel.PlannedActivities })
         </nav>
         <table class="table table-sm">
             <thead>
@@ -28,7 +28,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.PlannedActivities)
+                @foreach (var item in Model.UserDashboardViewModel.PlannedActivities)
                 {
 
                     <tr>
@@ -48,7 +48,7 @@
         <h2>Pending Activities</h2>
         <nav aria-label="Pending Activities Paging">
 
-            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.PendingActivities })
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.UserDashboardViewModel.PendingActivities })
         </nav>
         <table class="table table-sm">
             <thead>
@@ -63,7 +63,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.PendingActivities)
+                @foreach (var item in Model.UserDashboardViewModel.PendingActivities)
                 {
                     <tr>
                         <td>@item.Name</td>
@@ -89,7 +89,7 @@
 
         <h2>Overbudget Activities</h2>
         <nav aria-label="Planned Activities Paging">
-            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.OverBudgetActivities })
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.UserDashboardViewModel.OverBudgetActivities })
         </nav>
         <table class="table table-sm">
             <thead>
@@ -104,7 +104,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.OverBudgetActivities)
+                @foreach (var item in Model.UserDashboardViewModel.OverBudgetActivities)
                 {
 
                     <tr>
@@ -124,7 +124,7 @@
         <h2>Finished Activities</h2>
         <nav aria-label="Pending Activities Paging">
 
-            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.FinishedActivities })
+            @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.UserDashboardViewModel.FinishedActivities })
         </nav>
         <table class="table table-sm">
             <thead>
@@ -139,7 +139,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.FinishedActivities)
+                @foreach (var item in Model.UserDashboardViewModel.FinishedActivities)
                 {
                     <tr>
                         <td>@item.Name</td>
