@@ -69,11 +69,11 @@ namespace PSTS6.Controllers
         }
 
         // GET: Projects/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-            var dbUsers = await _repo.GetUsers();
+            var dbUsers =  _repo.GetUsers();
 
-            var templates = await _repo.GetProjectTemplates();
+            var templates =  _repo.GetProjectTemplates();
 
             
 
@@ -199,7 +199,7 @@ namespace PSTS6.Controllers
 
             var projectManager = project.ProjectManager;
 
-            var dbUsers = await _repo.GetUsers();
+            var dbUsers = _repo.GetUsers();
 
             var projectUsers = await _repo.GetProjectUsers();
 

@@ -7,21 +7,113 @@
 
 
 <div class="row">
-    <div class="col-md-2">
-        <h3>Projects</h3>
-    </div>
-    <div class="col-md-2">
-        <h3>Tasks</h3>
-    </div>
-    <div class="col-md-2">
-        <h3>Activities</h3>
-    </div>
-    <div class="col-md-2">
-        <h3>Users</h3>
-    </div>
-    <div class="col-md-2">
-        <h3>Templates</h3>
-    </div>
+    @if (Model.Projects.Count() > 0)
+    {
+        <div class="col-md-2">
+            <h3>Projects</h3>
+            <nav aria-label="Planned Activities Paging">
+                @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.Projects })
+            </nav>
+            <ul class="list-group">
+                @foreach (var item in Model.Projects)
+                {
+                    <li class="list-group-item">
+                        <a href="@Url.Action("Edit", "Projects", new{id = item.ID})">
+                            @item.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    @if (Model.Tasks.Count() > 0)
+    {
+        <div class="col-md-2">
+            <h3>Tasks</h3>
+            <nav aria-label="Planned Activities Paging">
+                @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.Tasks })
+            </nav>
+            <ul class="list-group">
+                @foreach (var item in Model.Tasks)
+                {
+                    <li class="list-group-item">
+                        <a href="@Url.Action("Edit", "Tasks", new{id = item.ID})">
+                            @item.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+
+    @if (Model.Activities.Count() > 0)
+    {
+        <div class="col-md-2">
+            <h3>Activities</h3>
+            <nav aria-label="Planned Activities Paging">
+                @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.Activities })
+            </nav>
+            <ul class="list-group">
+                @foreach (var item in Model.Activities)
+                {
+                    <li class="list-group-item">
+                        <a href="@Url.Action("Edit", "Activities", new{id = item.ID})">
+                            @item.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+
+
+    @if (Model.ProjectTemplates.Count() > 0)
+    {
+        <div class="col-md-2">
+            <h3>Templates</h3>
+            <nav aria-label="Planned Activities Paging">
+                @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.ProjectTemplates })
+            </nav>
+            <ul class="list-group">
+                @foreach (var item in Model.ProjectTemplates)
+                {
+                    <li class="list-group-item">
+                        <a href="@Url.Action("Edit", "ProjectTemplates", new{id = item.ID})">
+                            @item.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+
+    @if (Model.Users.Count() > 0)
+    {
+        <div class="col-md-2">
+            <h3>Users</h3>
+            <nav aria-label="Planned Activities Paging">
+                @await this.Component.InvokeAsync("Pager", new { pagingList = this.Model.Users })
+            </nav>
+            <ul class="list-group">
+                @foreach (var item in Model.Users)
+                {
+                    <li class="list-group-item">
+                        <a href="@Url.Action("Edit", "User", new{id = item.Id})">
+                            @item.UserName
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+    }
+
+
+   
 
 </div>
 
