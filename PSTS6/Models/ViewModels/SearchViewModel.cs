@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using ReflectionIT.Mvc.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,8 @@ namespace PSTS6.Models
 {
     public class SearchViewModel
     {
-        public IEnumerable<Project>  Projects { get; set; }
-        public IEnumerable<Task> Tasks { get; set; }
+        public PagingList<Project>  Projects { get; set; }
+        public PagingList<Task> Tasks { get; set; }
 
         public IEnumerable<Activity> Activities { get; set; }
 

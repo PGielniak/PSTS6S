@@ -52,7 +52,7 @@ namespace PSTS6.Controllers
         #region GetUserDashboardData
         private async Task<CommonDashboardViewModel> GetUserDashboardData(int plannedIndex, int pendingIndex, int overbudgetIndex, int finishedIndex)
         {
-            var query = _repo.GetDashboardActivities(track: false, filteredByCurrentUser: false);
+            var query = _repo.GetActivities(track: false, filteredByCurrentUser: false);
 
 
             var pendingQuery = query.AsQueryable()

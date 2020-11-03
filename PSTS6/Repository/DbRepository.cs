@@ -15,14 +15,19 @@ namespace PSTS6.Repository
 {
     public class DbRepository : IRepository
     {
+
+        #region Private Fields
         private readonly PSTS6Context _context;
         private readonly IHttpContextAccessor _http;
+        #endregion
 
+        #region Constructor
         public DbRepository(PSTS6Context context, IHttpContextAccessor http)
         {
             _context = context;
             _http = http;
         }
+        #endregion
 
         #region ProjectMethods
         public async Task<Project> AddProject(Project project)
@@ -85,30 +90,29 @@ namespace PSTS6.Repository
 
         #endregion
 
-
         #region UserMethods
         public async Task<List<ProjectUser>> GetProjectUsers()
         {
             return await _context.ProjectUsers.ToListAsync();
         }
 
-        public async Task<List<IdentityUser>> GetUsers()
+        public IEnumerable<IdentityUser> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return  _context.Users.AsNoTracking();
         }
 
         #endregion
 
         #region ProjectTemplateMethods
-        public async Task<List<ProjectTemplate>> GetProjectTemplates()
+        public IEnumerable<ProjectTemplate> GetProjectTemplates()
         {
-            return await _context.ProjectTemplate.ToListAsync();
+            return  _context.ProjectTemplate.AsNoTracking();
         }
         #endregion
 
-        #region DashboardMethods
+        #region ActivityMethods
 
-        public  IEnumerable<Activity> GetDashboardActivities(bool track, bool filteredByCurrentUser)
+        public  IEnumerable<Activity> GetActivities(bool track, bool filteredByCurrentUser)
         {
           
             switch (track,filteredByCurrentUser)
@@ -130,9 +134,14 @@ namespace PSTS6.Repository
 
         }
 
+
+
+        #endregion
+
+        #region SearchMethods
         public IEnumerable<int> GetProjectSearchResults(string SearchString)
         {
-            return _context.ProjectSearch.Where(x => EF.Functions.Like(x.SearchString, $"%{SearchString}%")).Select(x => x.ID).ToList();
+            return _context.ProjectSearch.AsNoTracking().Where(x => EF.Functions.Like(x.SearchString, $"%{SearchString}%")).Select(x => x.ID);
         }
 
         public IEnumerable<int> GetTaskSearchResults(string SearchString)
@@ -151,6 +160,33 @@ namespace PSTS6.Repository
         }
 
         public IEnumerable<string> GetUserSearchResults(string SearchString)
+        {
+            return _context.UserSearch.Where(x => EF.Functions.Like(x.SearchString, $"%{SearchString}%")).Select(x => x.Id).ToList();
+        }
+        #endregion
+
+        #region TaskMethods
+        public IEnumerable<Models.Task> GetTasks()
+        {
+            return _context.Task.AsNoTracking();
+        }
+
+        public Task<Models.Task> GetTask(int? id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Models.Task> AddTask(Models.Task task)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Models.Task> UpdateTask(Models.Task task)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Models.Task> DeleteTask(Models.Task task)
         {
             throw new NotImplementedException();
         }
