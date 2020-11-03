@@ -21,13 +21,10 @@ namespace PSTS6.Controllers
         }
         public IActionResult GetData(string SearchText)
         {
-            
 
-           
-
-            var projectSearches = _context.ProjectSearch.Where(x => EF.Functions.Like(x.SearchString, $"%{SearchText}%")).Select(x=>x.ID).ToList();
-
-            var projects = _repo.GetProjects(track: false, filter: false).Where(p=> projectSearches.Contains(p.ID));
+            var projects = _repo.GetProjects(track: false, filter: false)
+                .Where(p=> _repo.GetProjectSearchResults(SearchText)
+                .Contains(p.ID));
 
             var viewModel = new SearchViewModel 
             {

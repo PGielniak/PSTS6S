@@ -130,6 +130,31 @@ namespace PSTS6.Repository
 
         }
 
+        public IEnumerable<int> GetProjectSearchResults(string SearchString)
+        {
+            return _context.ProjectSearch.Where(x => EF.Functions.Like(x.SearchString, $"%{SearchString}%")).Select(x => x.ID).ToList();
+        }
+
+        public IEnumerable<int> GetTaskSearchResults(string SearchString)
+        {
+            return _context.TaskSearch.Where(x => EF.Functions.Like(x.SearchString, $"%{SearchString}%")).Select(x => x.ID).ToList();
+        }
+
+        public IEnumerable<int> GetActivitySearchResults(string SearchString)
+        {
+            return _context.ActivitySearch.Where(x => EF.Functions.Like(x.SearchString, $"%{SearchString}%")).Select(x => x.ID).ToList();
+        }
+
+        public IEnumerable<int> GetProjectTemplateSearchResults(string SearchString)
+        {
+            return _context.ProjectTemplateSearch.Where(x => EF.Functions.Like(x.SearchString, $"%{SearchString}%")).Select(x => x.ID).ToList();
+        }
+
+        public IEnumerable<string> GetUserSearchResults(string SearchString)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
 

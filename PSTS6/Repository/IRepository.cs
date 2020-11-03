@@ -25,6 +25,7 @@ namespace PSTS6.Repository
         bool ProjectExists(int id);
 
 
+       
 
 
 
@@ -34,6 +35,15 @@ namespace PSTS6.Repository
 
         IEnumerable<Activity> GetDashboardActivities(bool track, bool filteredByCurrentUser);
         #endregion
+
+        #region SearchMethods
+        IEnumerable<int> GetProjectSearchResults(string SearchString);
+        IEnumerable<int> GetTaskSearchResults(string SearchString);
+        IEnumerable<int> GetActivitySearchResults(string SearchString);
+        IEnumerable<int> GetProjectTemplateSearchResults(string SearchString);
+        IEnumerable<string> GetUserSearchResults(string SearchString);
+        #endregion
+
 
     }
 }
