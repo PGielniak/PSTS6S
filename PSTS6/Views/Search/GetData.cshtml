@@ -18,7 +18,9 @@
                 @foreach (var item in Model.Projects)
                 {
                     <li class="list-group-item">
-                        @item.Name
+                        <a href="@Url.Action("Edit", "Projects", new{id = item.ID})">
+                            @item.Name
+                        </a>
                     </li>
                 }
             </ul>
@@ -36,7 +38,9 @@
                 @foreach (var item in Model.Tasks)
                 {
                     <li class="list-group-item">
-                        @item.Name
+                        <a href="@Url.Action("Edit", "Tasks", new{id = item.ID})">
+                            @item.Name
+                        </a>
                     </li>
                 }
             </ul>
@@ -55,7 +59,9 @@
                 @foreach (var item in Model.Activities)
                 {
                     <li class="list-group-item">
-                        @item.Name
+                        <a href="@Url.Action("Edit", "Activities", new{id = item.ID})">
+                            @item.Name
+                        </a>
                     </li>
                 }
             </ul>
@@ -75,7 +81,9 @@
                 @foreach (var item in Model.ProjectTemplates)
                 {
                     <li class="list-group-item">
-                        @item.Name
+                        <a href="@Url.Action("Edit", "ProjectTemplates", new{id = item.ID})">
+                            @item.Name
+                        </a>
                     </li>
                 }
             </ul>
@@ -94,7 +102,9 @@
                 @foreach (var item in Model.Users)
                 {
                     <li class="list-group-item">
-                        @item.UserName
+                        <a href="@Url.Action("Edit", "User", new{id = item.Id})">
+                            @item.UserName
+                        </a>
                     </li>
                 }
             </ul>
