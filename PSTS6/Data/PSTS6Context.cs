@@ -34,6 +34,8 @@ namespace PSTS6.Data
 
         public DbSet<ProjectUser> ProjectUsers { get; set; }
 
+        public DbSet<ProjectSearch> ProjectSearch { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<ProjectUser>()
