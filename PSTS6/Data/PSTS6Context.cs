@@ -35,6 +35,10 @@ namespace PSTS6.Data
         public DbSet<ProjectUser> ProjectUsers { get; set; }
 
         public DbSet<ProjectSearch> ProjectSearch { get; set; }
+        public DbSet<TaskSearch> TaskSearch { get; set; }
+        public DbSet<ActivitySearch> ActivitySearch { get; set; }
+        public DbSet<ProjectTemplateSearch> ProjectTemplateSearch { get; set; }
+        public DbSet<UserSearch> UserSearch { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

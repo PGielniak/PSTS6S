@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace PSTS6.Models
 {
-  
-    public class ProjectSearch : BaseSearchModel
+    public class UserSearch 
     {
-     
+
+        public string Id { get; set; }
+
+        public string SearchString { get; set; }
     }
 }

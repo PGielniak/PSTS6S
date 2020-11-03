@@ -25,7 +25,7 @@ namespace PSTS6.Controllers
 
             var projects = _repo.GetProjects(track: false, filter: false);
 
-            var test = _context.ProjectSearch.Where(x => EF.Functions.Like(x.SearchString, $"%{SearchText}%")).ToList();
+            var projectSearches = _context.ProjectSearch.Where(x => EF.Functions.Like(x.SearchString, $"%{SearchText}%")).ToList();
 
             var activities = _repo.GetDashboardActivities(false, false);
 
