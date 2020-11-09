@@ -12,9 +12,14 @@
         function drawChart() {
 
 
+            var value = window.location.href;
+
+            var secondValue = value.substring(value.lastIndexOf('/') + 1)
+
+            var url = "https://localhost:44335/api/" + secondValue;
 
             var jsonData = $.ajax({
-                url: "https://localhost:44335/api/",
+                url: url,
                 dataType: "text",
                 async: false
             }).responseText;

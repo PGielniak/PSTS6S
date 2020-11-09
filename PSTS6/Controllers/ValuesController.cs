@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using PSTS6.HelperClasses;
 using PSTS6.Repository;
 
+
 namespace PSTS6.Controllers
 {
     [Route("api")]
@@ -16,17 +17,24 @@ namespace PSTS6.Controllers
     {
 
         private readonly IRepository _repo;
-
-        public ValuesController(IRepository repo)
+        private readonly IHttpContextAccessor _http;
+        public ValuesController(IRepository repo, IHttpContextAccessor http)
         {
             _repo = repo;
+            _http = http;
         }
 
-        public string Get([FromQuery(Name = "id")] string id)
+        [HttpGet("{id}")]
+        public string Get(string id)
+
+
         {
+
+           
+
             IGoogleVisualizable listMapper = new ListMapper(_repo);
 
-            List<IGoogleVisualizable> mappedList = listMapper.ConvertLists(1);
+            List<IGoogleVisualizable> mappedList = listMapper.ConvertLists(Convert.ToInt32(id));
 
             string value = JSONHelper.BuildArray(mappedList);
 
