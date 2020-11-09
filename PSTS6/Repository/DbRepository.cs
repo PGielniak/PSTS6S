@@ -112,7 +112,7 @@ namespace PSTS6.Repository
 
         #region ActivityMethods
 
-        public  IEnumerable<Activity> GetActivities(bool track, bool filteredByCurrentUser)
+        public  IEnumerable<Activity> GetActivities(bool track = false, bool filteredByCurrentUser = false)
         {
           
             switch (track,filteredByCurrentUser)
@@ -127,7 +127,7 @@ namespace PSTS6.Repository
                     return  _context.Activity.AsNoTracking().Where(x => x.Owner == _http.HttpContext.User.Identity.Name);
                     
                 case (false, false):
-                    return  _context.Activity.AsNoTracking();
+                    return  _context.Activity.AsNoTracking().Include(x=>x.Task);
                     
                 
             }
@@ -168,7 +168,7 @@ namespace PSTS6.Repository
         #region TaskMethods
         public IEnumerable<Models.Task> GetTasks()
         {
-            return _context.Task.AsNoTracking();
+            return _context.Task.AsNoTracking().Include(x=>x.Project);
         }
 
         public Task<Models.Task> GetTask(int? id)

@@ -184,4 +184,8 @@
     <PackageReference Include="ReflectionIT.Mvc.Paging" Version="4.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\googleganttforcsharp\JsonHelper.csproj" />
+  </ItemGroup>
+
 </Project>

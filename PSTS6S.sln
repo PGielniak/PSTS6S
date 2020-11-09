@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSTS6", "PSTS6\PSTS6.csproj", "{1CABD297-2419-4B5D-91D1-A8C41839962A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSTS6", "PSTS6\PSTS6.csproj", "{1CABD297-2419-4B5D-91D1-A8C41839962A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSTS6_UnitTests", "PSTS6_UnitTests\PSTS6_UnitTests.csproj", "{D7BB29A5-A2B0-4F95-AB4B-AD5CCC6FF7CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PSTS6_UnitTests", "PSTS6_UnitTests\PSTS6_UnitTests.csproj", "{D7BB29A5-A2B0-4F95-AB4B-AD5CCC6FF7CB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonHelper", "..\googleganttforcsharp\JsonHelper.csproj", "{904E27B6-FAF8-455E-86B9-4C0E67D20486}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{D7BB29A5-A2B0-4F95-AB4B-AD5CCC6FF7CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7BB29A5-A2B0-4F95-AB4B-AD5CCC6FF7CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7BB29A5-A2B0-4F95-AB4B-AD5CCC6FF7CB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{904E27B6-FAF8-455E-86B9-4C0E67D20486}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{904E27B6-FAF8-455E-86B9-4C0E67D20486}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{904E27B6-FAF8-455E-86B9-4C0E67D20486}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{904E27B6-FAF8-455E-86B9-4C0E67D20486}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

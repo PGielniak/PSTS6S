@@ -18,6 +18,7 @@ using Task = PSTS6.Models.Task;
 using PSTS6.Configuration;
 using Microsoft.Extensions.Options;
 using PSTS6.Repository;
+using JsonHelper;
 
 namespace PSTS6.Controllers
 {
@@ -51,22 +52,22 @@ namespace PSTS6.Controllers
         }
 
         // GET: Projects/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+           
+            //IGoogleVisualizable listMapper = new ListMapper(_repo);
 
-            var project = await _repo.GetProject(id);
-            
-            if (project == null)
-            {
-                return NotFound();
-            }
+            //List<IGoogleVisualizable> mappedList = listMapper.ConvertLists(id.GetValueOrDefault());
 
-            return View(project);
+            //string value = JSONHelper.BuildArray(mappedList);
+
+           
+     
+            return View(); 
         }
+
+      
+        
 
         // GET: Projects/Create
         public IActionResult Create()

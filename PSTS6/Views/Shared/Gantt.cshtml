@@ -1,0 +1,60 @@
+﻿<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['gantt'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function daysToMilliseconds(days) {
+            return days * 24 * 60 * 60 * 1000;
+        }
+
+        function drawChart() {
+
+
+
+            var jsonData = $.ajax({
+                url: "https://localhost:44335/api/",
+                dataType: "text",
+                async: false
+            }).responseText;
+
+
+
+
+            //The returned string must be parsed as JSON
+            var array = JSON.parse(jsonData);
+
+            //
+            //transform the JSON to JavaScript DataTable
+            var datatabledata = new google.visualization.arrayToDataTable(array);
+
+
+
+            //Optional options for the Chart. See  https://developers.google.com/chart/interactive/docs/gallery/ganttchart for more options
+            var options = {
+                height: 1000,
+                gantt: {
+                    arrow: {
+                        angle: 60,
+                        width: 1,
+                        color: '#ffe0b200',
+                    },
+                    criticalPathEnabled: false
+                }
+            };
+
+            //Create a new Chart object
+            var chart = new google.visualization.Gantt(document.getElementById('chart_div'));
+
+            //Draw the chart
+            chart.draw(datatabledata, options);
+        }
+    </script>
+
+
+</head>
+
+<body>
+    <div id="chart_div"></div>
+</body>

@@ -41,14 +41,14 @@
 
         @*<form style="width:75%;">
 
-            <input class="form-control form-control-dark w-50" id="SearchText" name="SearchText" type="text" placeholder="Search" aria-label="Search">
+                <input class="form-control form-control-dark w-50" id="SearchText" name="SearchText" type="text" placeholder="Search" aria-label="Search">
 
-            <input type="submit" value="Search" class="search-button" />
+                <input type="submit" value="Search" class="search-button" />
 
-        </form>*@
-        <form style="width:60%;" formmethod="get" >
-            <input class="form-control form-control-dark w-100"  id="SearchText" name="SearchText" formaction="@Url.Action("GetData", "Search")" type="text" placeholder="Search" aria-label="Search" >
-            <input hidden type="submit" value="Search"  formaction="@Url.Action("GetData", "Search")"/>
+            </form>*@
+        <form style="width:60%;" formmethod="get">
+            <input class="form-control form-control-dark w-100" id="SearchText" name="SearchText" formaction="@Url.Action("GetData", "Search")" type="text" placeholder="Search" aria-label="Search">
+            <input hidden type="submit" value="Search" formaction="@Url.Action("GetData", "Search")" />
         </form>
 
         <ul class="navbar-nav px-5">
@@ -86,18 +86,18 @@
                                     Dashboards
                                 </a>
                             </li>
-                            <li class="nav-item" >
+                            <li class="nav-item">
                                 <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">
                                     <span data-feather="users"></span>
                                     Users
                                 </a>
                             </li>
                             @*<li class="nav-item">
-                                <a class="nav-link">
-                                    <span data-feather="bar-chart-2"></span>
-                                    Reports
-                                </a>
-                            </li>*@
+                                    <a class="nav-link">
+                                        <span data-feather="bar-chart-2"></span>
+                                        Reports
+                                    </a>
+                                </li>*@
 
                         </ul>
 
@@ -137,24 +137,26 @@
             </div>
         </div>
 
-        
 
-</div>
 
-        <footer class="border-top footer text-muted">
-            <div class="container">
-                &copy; 2020 - PSTS6 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-            </div>
-        </footer>
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-        <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
-       
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
-        @*<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>*@
-        <script src="\dashboard\dashboard.js"></script>
-        @RenderSection("Scripts", required: false)
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - PSTS6 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @*<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script>*@
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.9.0/feather.min.js"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>*@
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="\dashboard\dashboard.js"></script>
+    @RenderSection("Scripts", required: false)
 </body>
 </html>
