@@ -145,10 +145,7 @@ namespace PSTS6.Controllers
                    
 
                 }
-                    
-                
-                
-                
+                              
                 return RedirectToAction(nameof(Index));
             }
             return View(project);
@@ -156,31 +153,28 @@ namespace PSTS6.Controllers
 
         private void CreateProjectFromTemplate(string projectTemplate)
         {
-            var template = _context.ProjectTemplate.Where(x => x.ID == Convert.ToInt32(projectTemplate)).Include(x=>x.TaskTemplates).ThenInclude(y=>y.ActivityTemplates).FirstOrDefault();
+            var template = _repo.GetProjectTemplateAndIncludeAll(projectTemplate).Result;
 
 
             var project = _mapper.Map<Project>(template);
-            _context.Add(project);
 
-            _context.SaveChanges();
+            _repo.AddProject(project);
 
             foreach (var taskTemplate in template.TaskTemplates)
             {
                var task = _mapper.Map<Task>(taskTemplate);
                 task.ProjectID = project.ID;
-                _context.Add(task);
-                _context.SaveChanges();
+                _repo.AddTask(task);
 
                 foreach (var actTemplate in taskTemplate.ActivityTemplates)
                 {
                     var activity = _mapper.Map<Activity>(actTemplate);
                     activity.TaskID = task.ID;
-                    _context.Add(activity);
-                    
-                    _context.SaveChanges();
+
+                    _repo.AddActivity(activity);
                 }
 
-                _backgroundCalculations.UpdateBudget(_context, task.Activities);
+                _backgroundCalculations.UpdateBudget(task.Activities);
             }
 
            

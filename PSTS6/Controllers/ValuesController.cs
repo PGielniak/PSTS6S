@@ -17,11 +17,11 @@ namespace PSTS6.Controllers
     {
 
         private readonly IRepository _repo;
-        private readonly IHttpContextAccessor _http;
-        public ValuesController(IRepository repo, IHttpContextAccessor http)
+        
+        public ValuesController(IRepository repo)
         {
             _repo = repo;
-            _http = http;
+            
         }
 
         [HttpGet("{id}")]

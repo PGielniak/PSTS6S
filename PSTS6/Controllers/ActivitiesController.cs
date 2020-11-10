@@ -19,6 +19,7 @@ namespace PSTS6.Controllers
         private readonly PSTS6Context _context;
         private readonly IMapper _mapper;
         private readonly BackgroundCalculations _backgroundCalculations;
+        
 
         public ActivitiesController(PSTS6Context context, IMapper mapper, BackgroundCalculations backgroundCalculations)
         {
@@ -144,7 +145,7 @@ namespace PSTS6.Controllers
                 try
                 {
                     _context.Update(activity);
-                    _backgroundCalculations.UpdateBudget(_context, activity);
+                    _backgroundCalculations.UpdateBudget(activity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

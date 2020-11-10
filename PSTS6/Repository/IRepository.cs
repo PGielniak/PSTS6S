@@ -43,6 +43,12 @@ namespace PSTS6.Repository
         #region ActivityMethods
 
         IEnumerable<Activity> GetActivities(bool track, bool filteredByCurrentUser);
+        Task<Activity> AddActivity(Activity activity);
+        #endregion
+
+        #region ProjectTemplateMethods
+        Task<ProjectTemplate> GetProjectTemplateAndIncludeAll(string id);
+
         #endregion
 
         #region SearchMethods

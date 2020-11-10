@@ -108,6 +108,13 @@ namespace PSTS6.Repository
         {
             return  _context.ProjectTemplate.AsNoTracking();
         }
+
+        public async Task<ProjectTemplate> GetProjectTemplateAndIncludeAll(string id)
+        {
+            return await _context.ProjectTemplate.Where(x => x.ID == Convert.ToInt32(id)).Include(x => x.TaskTemplates).ThenInclude(y => y.ActivityTemplates).FirstOrDefaultAsync();
+        }
+
+
         #endregion
 
         #region ActivityMethods
@@ -132,6 +139,15 @@ namespace PSTS6.Repository
                 
             }
 
+        }
+
+
+        public async Task<Activity> AddActivity(Activity activity)
+        {
+            _context.Add(activity);
+            await _context.SaveChangesAsync();
+
+            return activity;
         }
 
 
@@ -171,14 +187,17 @@ namespace PSTS6.Repository
             return _context.Task.AsNoTracking().Include(x=>x.Project);
         }
 
-        public Task<Models.Task> GetTask(int? id)
+        public async Task<Models.Task> GetTask(int? id)
         {
-            throw new NotImplementedException();
+            return await _context.Task.Where(x => x.ID == id).Include(x => x.Activities).FirstOrDefaultAsync();
         }
 
-        public Task<Models.Task> AddTask(Models.Task task)
+        public async Task<Models.Task> AddTask(Models.Task task)
         {
-            throw new NotImplementedException();
+            _context.Add(task);
+            await _context.SaveChangesAsync();
+
+            return task;
         }
 
         public Task<Models.Task> UpdateTask(Models.Task task)
@@ -190,6 +209,10 @@ namespace PSTS6.Repository
         {
             throw new NotImplementedException();
         }
+
+       
+
+
 
         #endregion
 

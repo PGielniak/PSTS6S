@@ -6,38 +6,44 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using PSTS6.Configuration;
 using Microsoft.Extensions.Options;
+using PSTS6.Repository;
 
 namespace PSTS6.HelperClasses
 {
     public class BackgroundCalculations
     {
         private readonly ProjectSettings _settings;
-        public BackgroundCalculations(IOptionsMonitor<ProjectSettings> settings)
+        private readonly IRepository _repo;
+
+        public BackgroundCalculations(IOptionsMonitor<ProjectSettings> settings, IRepository repo)
         {
             _settings = settings.CurrentValue;
+            _repo = repo;
         }
 
-        public void UpdateBudget(PSTS6Context db, Activity entity)
+        public void UpdateBudget( Activity entity)
         {
 
-            var task= UpdateTaskTotals(db, entity);
-            UpdateProjectTotals(db, task);
+            var task= UpdateTaskTotals(entity);
+            UpdateProjectTotals(task);
 
         }
 
-        public void UpdateBudget(PSTS6Context db, IEnumerable<Activity> activities)
+        public void UpdateBudget( IEnumerable<Activity> activities)
         {
 
             foreach (var item in activities)
             {
-                UpdateBudget(db, item);
+                UpdateBudget(item);
             }
         
         }
 
-        private void UpdateProjectTotals(PSTS6Context db, Task task)
+        private void UpdateProjectTotals(Task task)
         {
-            var project = db.Project.Where(x => x.ID == task.ProjectID).Include(x => x.Tasks).FirstOrDefault();
+            //var projec2t = db.Project.Where(x => x.ID == task.ProjectID).Include(x => x.Tasks).FirstOrDefault();
+
+            var project = _repo.GetProject(task.ProjectID).Result;
 
             var projectBudgets = project.Tasks.Select(z => z.Budget).Sum();
             var projectSpent = project.Tasks.Select(z => z.Spent).Sum();
@@ -57,9 +63,9 @@ namespace PSTS6.HelperClasses
             }
         }
 
-        private Task UpdateTaskTotals(PSTS6Context db, Activity activity)
+        private Task UpdateTaskTotals(Activity activity)
         {
-            var task = db.Task.Where(x => x.ID == activity.TaskID).Include(x => x.Activities).FirstOrDefault();
+            var task = _repo.GetTask(activity.TaskID).Result;
 
             var budgets = task.Activities.Select(z => z.Budget).Sum();
             var spent = task.Activities.Select(z => z.Spent).Sum();
