@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using PSTS6.Data;
 using PSTS6.Models;
+using PSTS6.Repository;
 
 namespace PSTS6.Controllers
 {
@@ -18,17 +19,19 @@ namespace PSTS6.Controllers
     {
         private readonly PSTS6Context _context;
         private readonly IMapper _mapper;
+        private readonly IRepository _repo;
 
-        public TasksController(PSTS6Context context, IMapper mapper)
+        public TasksController(PSTS6Context context, IMapper mapper, IRepository repo)
         {
             _context = context;
             _mapper = mapper;
+            _repo = repo;
         }
 
         // GET: Tasks
         public async Task<IActionResult> Index()
-        {
-            return View(await _context.Task.ToListAsync());
+        {        
+            return View(await _repo.GetTasksAsync());
         }
 
         // GET: Tasks/Details/5
@@ -39,8 +42,8 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var task = await _context.Task
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var task = await _repo.GetTask(id);
+
             if (task == null)
             {
                 return NotFound();
@@ -54,7 +57,7 @@ namespace PSTS6.Controllers
         
         public async Task<IActionResult> Create(string btnAddTask)
         {
-            var dbUsers = await _context.Users.ToListAsync();
+            var dbUsers = await _repo.GetUsersAsync();
 
             IEnumerable<SelectListItem> users = dbUsers.Select(x => new SelectListItem
             {
@@ -63,7 +66,7 @@ namespace PSTS6.Controllers
                 
             });
 
-            var projects = await _context.Project.ToListAsync();
+            var projects = await _repo.GetProjectsAsync();
 
             IEnumerable<SelectListItem> projectsToSelect = projects.Select(x => new SelectListItem
             {
@@ -98,8 +101,7 @@ namespace PSTS6.Controllers
 
                 task.ProjectID = Convert.ToInt32(selectedProject);
 
-                _context.Add(task);
-                await _context.SaveChangesAsync();
+                await _repo.AddTask(task);
                 
                 return RedirectToAction("Edit","Projects", new { id= task.ProjectID});
             }
@@ -114,11 +116,9 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var task = await _context.Task.Where(t => t.ID == id).Include(t => t.Activities).FirstOrDefaultAsync();
-
+            var task = await _repo.GetTask(id);
 
             var viewModel = _mapper.Map<TaskEditViewModel>(task);
-
 
             if (task == null)
             {
@@ -143,8 +143,7 @@ namespace PSTS6.Controllers
             {
                 try
                 {
-                    _context.Update(task);
-                    await _context.SaveChangesAsync();
+                    await _repo.UpdateTask(task);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -170,8 +169,7 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var task = await _context.Task
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var task = await _repo.GetTask(id);
             if (task == null)
             {
                 return NotFound();
@@ -185,18 +183,18 @@ namespace PSTS6.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var task = await _context.Task.FindAsync(id);
+            var task = await _repo.GetTask(id);
 
             var projectid = task.ProjectID;
 
-            _context.Task.Remove(task);
-            await _context.SaveChangesAsync();
+            await _repo.DeleteTask(task);
+
             return RedirectToAction("Edit", "Projects", new { id = projectid });
         }
 
         private bool TaskExists(int id)
         {
-            return _context.Task.Any(e => e.ID == id);
+            return _repo.TaskExists(id);
         }
     }
 }

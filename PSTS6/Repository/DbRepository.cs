@@ -73,6 +73,10 @@ namespace PSTS6.Repository
 
             }
         }
+        public async Task<List<Project>> GetProjectsAsync()
+        {
+            return await _context.Project.AsNoTracking().ToListAsync();
+        }
 
         public bool ProjectExists(int id)
         {
@@ -99,6 +103,11 @@ namespace PSTS6.Repository
         public IEnumerable<IdentityUser> GetUsers()
         {
             return  _context.Users.AsNoTracking();
+        }
+
+        public async Task<List<IdentityUser>> GetUsersAsync()
+        {
+            return await _context.Users.AsNoTracking().ToListAsync();
         }
 
         #endregion
@@ -187,6 +196,11 @@ namespace PSTS6.Repository
             return _context.Task.AsNoTracking().Include(x=>x.Project);
         }
 
+        public async Task<List<Models.Task>> GetTasksAsync()
+        {
+            return await _context.Task.ToListAsync();
+        }
+
         public async Task<Models.Task> GetTask(int? id)
         {
             return await _context.Task.Where(x => x.ID == id).Include(x => x.Activities).FirstOrDefaultAsync();
@@ -200,14 +214,25 @@ namespace PSTS6.Repository
             return task;
         }
 
-        public Task<Models.Task> UpdateTask(Models.Task task)
+        public async Task<Models.Task> UpdateTask(Models.Task task)
         {
-            throw new NotImplementedException();
+            _context.Update(task);
+            await _context.SaveChangesAsync();
+
+            return task;
         }
 
-        public Task<Models.Task> DeleteTask(Models.Task task)
+        public async Task<Models.Task> DeleteTask(Models.Task task)
         {
-            throw new NotImplementedException();
+            _context.Task.Remove(task);
+            await _context.SaveChangesAsync();
+
+            return task;
+        }
+
+        public bool TaskExists(int id)
+        {
+            return _context.Task.Any(e => e.ID == id);
         }
 
        

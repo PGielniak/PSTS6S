@@ -15,11 +15,13 @@ namespace PSTS6.Repository
 
         #region ProjectMethods
         IEnumerable<Project> GetProjects(bool track, bool filter);
+        Task<List<Project>> GetProjectsAsync();
+
         Task <Project> GetProject(int? id);
         IEnumerable<ProjectTemplate> GetProjectTemplates();
-        IEnumerable<IdentityUser> GetUsers();
+        
         Task<Project> AddProject(Project project);
-        Task<List<ProjectUser>> GetProjectUsers();
+        
         Task<Project> UpdateProject(Project project);
         Task<Project> DeleteProject(Project project);
         bool ProjectExists(int id);
@@ -33,10 +35,12 @@ namespace PSTS6.Repository
 
         #region TaskMethods
         IEnumerable<PSTS6.Models.Task> GetTasks();
+        Task<List<Models.Task>> GetTasksAsync();
         Task<PSTS6.Models.Task> GetTask(int? id);
         Task<PSTS6.Models.Task> AddTask(PSTS6.Models.Task task);
         Task<PSTS6.Models.Task> UpdateTask(PSTS6.Models.Task task);
         Task<PSTS6.Models.Task> DeleteTask(PSTS6.Models.Task task);
+        bool TaskExists(int id);
 
         #endregion
 
@@ -59,6 +63,11 @@ namespace PSTS6.Repository
         IEnumerable<string> GetUserSearchResults(string SearchString);
         #endregion
 
+        #region UserMethods
+        IEnumerable<IdentityUser> GetUsers();
+        Task<List<IdentityUser>> GetUsersAsync();
+        Task<List<ProjectUser>> GetProjectUsers();
+        #endregion
 
     }
 }
