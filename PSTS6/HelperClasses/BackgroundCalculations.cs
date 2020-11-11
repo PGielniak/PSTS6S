@@ -41,8 +41,7 @@ namespace PSTS6.HelperClasses
 
         private void UpdateProjectTotals(Task task)
         {
-            //var projec2t = db.Project.Where(x => x.ID == task.ProjectID).Include(x => x.Tasks).FirstOrDefault();
-
+            
             var project = _repo.GetProject(task.ProjectID).Result;
 
             var projectBudgets = project.Tasks.Select(z => z.Budget).Sum();

@@ -54,7 +54,7 @@ namespace PSTS6.Controllers
         private async Task<CommonDashboardViewModel> GetUserDashboardData(int plannedIndex, int pendingIndex, int overbudgetIndex, int finishedIndex)
         {
             
-            var query = await _repo.GetActivitiesAsync();
+            var query = await _repo.GetActivitiesAsync(filterByUser: true);
 
             var pendingQuery = query.AsQueryable()
                 .Where(x => x.PrcCompleted != 100 && x.ActualEndDate == null)
@@ -107,13 +107,13 @@ namespace PSTS6.Controllers
         private async Task<CommonDashboardViewModel> GetProjectManagerDashboardData(int plannedIndex, int pendingIndex, int overbudgetIndex, int finishedIndex)
         {
            
-            var query = _repo.GetProjects(track: false, filter: false);
+            var query = await _repo.GetProjectsAsync( filter: false);
 
             var pendingQuery = query.AsQueryable()
                 .Where(x => x.PrcCompleted != 100 && x.ActualEndDate == null)
                 .OrderBy(x => x.ActualEndDate);
 
-            var pending = await PagingList.CreateAsync(qry: pendingQuery, pageSize: 2, pageIndex: pendingIndex);
+            var pending = PagingList.Create(qry: pendingQuery, pageSize: 2, pageIndex: pendingIndex);
 
             pending.PageParameterName = "pendingIndex";
 
@@ -121,7 +121,7 @@ namespace PSTS6.Controllers
                 .Where(x => x.Budget < x.Spent)
                 .OrderBy(x => x.Spent);
 
-            var overbudget = await PagingList.CreateAsync(overbudgetQuery, 2, overbudgetIndex);
+            var overbudget = PagingList.Create(overbudgetQuery, 2, overbudgetIndex);
 
             overbudget.PageParameterName = "overbudgetIndex";        
 
@@ -129,7 +129,7 @@ namespace PSTS6.Controllers
                 .Where(x => x.PrcCompleted == 100)
                 .OrderBy(x => x.ActualEndDate);
 
-            var finished = await PagingList.CreateAsync(finishedQuery, 2, finishedIndex);
+            var finished = PagingList.Create(finishedQuery, 2, finishedIndex);
 
             overbudget.PageParameterName = "finishedIndex";
 

@@ -62,7 +62,7 @@ namespace PSTS6.Controllers
                 
             });
 
-            var projects = await _repo.GetProjectsAsync();
+            var projects = await _repo.GetProjectsAsync(filter:false);
 
             IEnumerable<SelectListItem> projectsToSelect = projects.Select(x => new SelectListItem
             {

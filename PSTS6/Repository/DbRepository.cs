@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using PSTS6.Data;
+using PSTS6.HelperClasses;
 using PSTS6.Models;
 using PSTS6.Models.IdentityModels;
 using PSTS6.Models.MainModels;
@@ -19,13 +20,15 @@ namespace PSTS6.Repository
         #region Private Fields
         private readonly PSTS6Context _context;
         private readonly IHttpContextAccessor _http;
+        private readonly BackgroundCalculations _backgroundCalculations;
         #endregion
 
         #region Constructor
-        public DbRepository(PSTS6Context context, IHttpContextAccessor http)
+        public DbRepository(PSTS6Context context, IHttpContextAccessor http, BackgroundCalculations backgroundCalculations)
         {
             _context = context;
             _http = http;
+            _backgroundCalculations = backgroundCalculations;
         }
         #endregion
 
@@ -73,9 +76,16 @@ namespace PSTS6.Repository
 
             }
         }
-        public async Task<List<Project>> GetProjectsAsync()
+        public async Task<List<Project>> GetProjectsAsync(bool filterByUser)
         {
-            return await _context.Project.AsNoTracking().ToListAsync();
+            switch (filterByUser)
+            {
+                case (true):
+                    return await _context.Project.AsNoTracking().Where(x => x.ProjectManager == _http.HttpContext.User.Identity.Name).ToListAsync();
+                default:
+                    return await _context.Project.AsNoTracking().ToListAsync();
+            }
+            
         }
 
         public bool ProjectExists(int id)
@@ -150,13 +160,28 @@ namespace PSTS6.Repository
 
         }
 
-        public async Task<IEnumerable<Activity>> GetActivitiesAsync()
+        public async Task<IEnumerable<Activity>> GetActivitiesAsync(bool filterByUser)
         {
-            return await _context.Activity.AsNoTracking().Where(x => x.Owner == _http.HttpContext.User.Identity.Name).ToListAsync();
+            switch (filterByUser)
+            {
+                case (true):
+                    return await _context.Activity.AsNoTracking().Where(x => x.Owner == _http.HttpContext.User.Identity.Name).ToListAsync();
+                default:
+                    return await _context.Activity.AsNoTracking().ToListAsync();
+            }
+            
+        }
+        public async Task<Activity> GetActivityAsync(int? id)
+        {
+            return await _context.Activity.Where(x => x.ID == id).FirstOrDefaultAsync();
         }
 
+        public async Task<Activity> GetActivityAndLoadRelatedDataAsync(int id)
+        {
+            return await _context.Activity.Include(x => x.Task).ThenInclude(x => x.Project).Where(q => q.ID == id).FirstOrDefaultAsync();
+        }
 
-        public async Task<Activity> AddActivity(Activity activity)
+        public async Task<Activity> AddActivityAsync(Activity activity)
         {
             _context.Add(activity);
             await _context.SaveChangesAsync();
@@ -164,6 +189,26 @@ namespace PSTS6.Repository
             return activity;
         }
 
+        public async Task<Activity> UpdateActivityAsync(Activity activity)
+        {
+            _context.Update(activity);
+            _backgroundCalculations.UpdateBudget(activity);
+            await _context.SaveChangesAsync();
+
+            return activity;
+        }
+
+        public async Task<Activity> DeleteActivityAsync(Activity activity)
+        {
+            _context.Activity.Remove(activity);
+            await _context.SaveChangesAsync();
+
+            return activity;
+        }
+        public bool ActivityExists(int id)
+        {
+            return _context.Activity.Any(e => e.ID == id);
+        }
 
 
         #endregion
@@ -240,7 +285,9 @@ namespace PSTS6.Repository
             return _context.Task.Any(e => e.ID == id);
         }
 
-       
+     
+
+
 
 
 

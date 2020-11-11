@@ -171,7 +171,7 @@ namespace PSTS6.Controllers
                     var activity = _mapper.Map<Activity>(actTemplate);
                     activity.TaskID = task.ID;
 
-                    _repo.AddActivity(activity);
+                    _repo.AddActivityAsync(activity);
                 }
 
                 _backgroundCalculations.UpdateBudget(task.Activities);

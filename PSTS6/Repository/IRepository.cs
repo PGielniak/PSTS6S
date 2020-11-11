@@ -15,7 +15,7 @@ namespace PSTS6.Repository
 
         #region ProjectMethods
         IEnumerable<Project> GetProjects(bool track, bool filter);
-        Task<List<Project>> GetProjectsAsync();
+        Task<List<Project>> GetProjectsAsync(bool filter);
 
         Task <Project> GetProject(int? id);
         IEnumerable<ProjectTemplate> GetProjectTemplates();
@@ -47,8 +47,13 @@ namespace PSTS6.Repository
         #region ActivityMethods
 
         IEnumerable<Activity> GetActivities(bool track, bool filteredByCurrentUser);
-        Task<IEnumerable<Activity>> GetActivitiesAsync();
-        Task<Activity> AddActivity(Activity activity);
+        Task<IEnumerable<Activity>> GetActivitiesAsync(bool filterByUser);
+        Task<Activity> GetActivityAsync(int? id);
+        Task<Activity> AddActivityAsync(Activity activity);
+        Task<Activity> GetActivityAndLoadRelatedDataAsync(int id);
+        Task<Activity> UpdateActivityAsync(Activity activity);
+        Task<Activity> DeleteActivityAsync(Activity activity);
+        bool ActivityExists(int id);
         #endregion
 
         #region ProjectTemplateMethods

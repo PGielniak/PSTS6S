@@ -20,21 +20,19 @@ namespace PSTS6.Controllers
         private readonly PSTS6Context _context;
         private readonly IRepository _repo;
         private readonly IMapper _mapper;
-        private readonly BackgroundCalculations _backgroundCalculations;
-
-
-        public ActivitiesController(PSTS6Context context, IMapper mapper, BackgroundCalculations backgroundCalculations, IRepository repo)
+       
+        public ActivitiesController(PSTS6Context context, IMapper mapper, IRepository repo)
         {
             _context = context;
             _mapper = mapper;
-            _backgroundCalculations = backgroundCalculations;
+            
             _repo = repo;
         }
 
         // GET: Activities
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Activity.ToListAsync());
+            return View(await _repo.GetActivitiesAsync(filterByUser:false));
         }
 
         // GET: Activities/Details/5
@@ -46,8 +44,7 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activity
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var activity = await _repo.GetActivityAsync(id);
             if (activity == null)
             {
                 return NotFound();
@@ -78,10 +75,7 @@ namespace PSTS6.Controllers
         {
             if (ModelState.IsValid)
             {
-                 
-
-                _context.Add(activity);
-                await _context.SaveChangesAsync();
+                await _repo.AddActivityAsync(activity);
                 return RedirectToAction("Edit", "Tasks", new { id = activity.TaskID });
             }
             return View(activity);
@@ -96,14 +90,13 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activity.Include(x=>x.Task).ThenInclude(x=>x.Project).Where(q=>q.ID==id).FirstOrDefaultAsync();
-
-
-
+            var activity = await _repo.GetActivityAndLoadRelatedDataAsync(id.GetValueOrDefault());
+          
             var project = activity.Task.Project;
+        
+            var users = await _repo.GetUsersAsync();
 
-            var users = _context.Users.AsEnumerable();
-            var projectUsers = await _context.ProjectUsers.ToListAsync();
+            var projectUsers = await _repo.GetProjectUsers();
 
             var projectTeam= from user in users
                              join prjUser in projectUsers on user.Id equals prjUser.UserID
@@ -147,9 +140,7 @@ namespace PSTS6.Controllers
             {
                 try
                 {
-                    _context.Update(activity);
-                    _backgroundCalculations.UpdateBudget(activity);
-                    await _context.SaveChangesAsync();
+                    await _repo.UpdateActivityAsync(activity);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -175,8 +166,7 @@ namespace PSTS6.Controllers
                 return NotFound();
             }
 
-            var activity = await _context.Activity
-                .FirstOrDefaultAsync(m => m.ID == id);
+            var activity = await _repo.GetActivityAsync(id);
             if (activity == null)
             {
                 return NotFound();
@@ -190,15 +180,14 @@ namespace PSTS6.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var activity = await _context.Activity.FindAsync(id);
-            _context.Activity.Remove(activity);
-            await _context.SaveChangesAsync();
+            var activity = await _repo.GetActivityAsync(id);
+            await _repo.DeleteActivityAsync(activity);
             return RedirectToAction(nameof(Index));
         }
 
         private bool ActivityExists(int id)
         {
-            return _context.Activity.Any(e => e.ID == id);
+            return _repo.ActivityExists(id);
         }
     }
 }
