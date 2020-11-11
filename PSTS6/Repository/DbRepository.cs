@@ -150,6 +150,11 @@ namespace PSTS6.Repository
 
         }
 
+        public async Task<IEnumerable<Activity>> GetActivitiesAsync()
+        {
+            return await _context.Activity.AsNoTracking().Where(x => x.Owner == _http.HttpContext.User.Identity.Name).ToListAsync();
+        }
+
 
         public async Task<Activity> AddActivity(Activity activity)
         {

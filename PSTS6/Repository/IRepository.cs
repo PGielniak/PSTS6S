@@ -47,6 +47,7 @@ namespace PSTS6.Repository
         #region ActivityMethods
 
         IEnumerable<Activity> GetActivities(bool track, bool filteredByCurrentUser);
+        Task<IEnumerable<Activity>> GetActivitiesAsync();
         Task<Activity> AddActivity(Activity activity);
         #endregion
 

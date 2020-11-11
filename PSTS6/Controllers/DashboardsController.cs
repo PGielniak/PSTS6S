@@ -5,6 +5,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PSTS6.Data;
 using PSTS6.Models;
 using PSTS6.Models.ViewModels;
@@ -52,14 +53,14 @@ namespace PSTS6.Controllers
         #region GetUserDashboardData
         private async Task<CommonDashboardViewModel> GetUserDashboardData(int plannedIndex, int pendingIndex, int overbudgetIndex, int finishedIndex)
         {
-            var query = _repo.GetActivities(track: false, filteredByCurrentUser: false);
-
+            
+            var query = await _repo.GetActivitiesAsync();
 
             var pendingQuery = query.AsQueryable()
                 .Where(x => x.PrcCompleted != 100 && x.ActualEndDate == null)
                 .OrderBy(x => x.ActualEndDate);
 
-            var pending = await PagingList.CreateAsync(qry: pendingQuery, pageSize: 2, pageIndex: pendingIndex);
+            var pending =  PagingList.Create(qry: pendingQuery, pageSize: 2, pageIndex: pendingIndex);
 
             pending.PageParameterName = "pendingIndex";
 
@@ -67,7 +68,7 @@ namespace PSTS6.Controllers
                 .Where(x => x.Budget < x.Spent)
                 .OrderBy(x => x.Spent);
 
-            var overbudget = await PagingList.CreateAsync(overbudgetQuery, 2, overbudgetIndex);
+            var overbudget = PagingList.Create(overbudgetQuery, 2, overbudgetIndex);
 
             overbudget.PageParameterName = "overbudgetIndex";
 
@@ -75,7 +76,7 @@ namespace PSTS6.Controllers
                 .Where(x => x.StartDate < DateTime.Today)
                 .OrderBy(x => x.StartDate);
 
-            var planned = await PagingList.CreateAsync(plannedQuery, 2, plannedIndex);
+            var planned = PagingList.Create(plannedQuery, 2, plannedIndex);
 
             overbudget.PageParameterName = "plannedIndex";
 
@@ -83,7 +84,7 @@ namespace PSTS6.Controllers
                 .Where(x => x.PrcCompleted == 100)
                 .OrderBy(x => x.ActualEndDate);
 
-            var finished = await PagingList.CreateAsync(finishedQuery, 2, finishedIndex);
+            var finished = PagingList.Create(finishedQuery, 2, finishedIndex);
 
             overbudget.PageParameterName = "finishedIndex";
 

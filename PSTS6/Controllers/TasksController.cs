@@ -16,14 +16,12 @@ namespace PSTS6.Controllers
 {
     [Authorize]
     public class TasksController : Controller
-    {
-        private readonly PSTS6Context _context;
+    {       
         private readonly IMapper _mapper;
         private readonly IRepository _repo;
 
-        public TasksController(PSTS6Context context, IMapper mapper, IRepository repo)
-        {
-            _context = context;
+        public TasksController(IMapper mapper, IRepository repo)
+        {          
             _mapper = mapper;
             _repo = repo;
         }
@@ -52,9 +50,7 @@ namespace PSTS6.Controllers
             return View(task);
         }
 
-        
-
-        
+    
         public async Task<IActionResult> Create(string btnAddTask)
         {
             var dbUsers = await _repo.GetUsersAsync();

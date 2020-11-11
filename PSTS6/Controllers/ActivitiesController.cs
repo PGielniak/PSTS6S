@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using PSTS6.Data;
 using PSTS6.Models;
 using PSTS6.HelperClasses;
+using PSTS6.Repository;
 
 namespace PSTS6.Controllers
 {
@@ -17,15 +18,17 @@ namespace PSTS6.Controllers
     public class ActivitiesController : Controller
     {
         private readonly PSTS6Context _context;
+        private readonly IRepository _repo;
         private readonly IMapper _mapper;
         private readonly BackgroundCalculations _backgroundCalculations;
-        
 
-        public ActivitiesController(PSTS6Context context, IMapper mapper, BackgroundCalculations backgroundCalculations)
+
+        public ActivitiesController(PSTS6Context context, IMapper mapper, BackgroundCalculations backgroundCalculations, IRepository repo)
         {
             _context = context;
             _mapper = mapper;
             _backgroundCalculations = backgroundCalculations;
+            _repo = repo;
         }
 
         // GET: Activities
