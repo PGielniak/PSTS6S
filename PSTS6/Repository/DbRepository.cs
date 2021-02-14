@@ -21,14 +21,16 @@ namespace PSTS6.Repository
         private readonly PSTS6Context _context;
         private readonly IHttpContextAccessor _http;
         private readonly BackgroundCalculations _backgroundCalculations;
+        
         #endregion
 
         #region Constructor
-        public DbRepository(PSTS6Context context, IHttpContextAccessor http, BackgroundCalculations backgroundCalculations)
+        public DbRepository(PSTS6Context context, IHttpContextAccessor http, BackgroundCalculations backgroundCalculations, DbSet<ProjectTemplate> projectTemplate)
         {
             _context = context;
             _http = http;
             _backgroundCalculations = backgroundCalculations;
+         
         }
         #endregion
 
@@ -123,14 +125,24 @@ namespace PSTS6.Repository
         #endregion
 
         #region ProjectTemplateMethods
-        public IEnumerable<ProjectTemplate> GetProjectTemplates()
+        public async Task<IEnumerable<ProjectTemplate>> GetProjectTemplatesAsync()
         {
-            return  _context.ProjectTemplate.AsNoTracking();
+            return await _context.ProjectTemplate.AsNoTracking().ToListAsync();
         }
+
+
+     
+
+        
 
         public async Task<ProjectTemplate> GetProjectTemplateAndIncludeAll(string id)
         {
             return await _context.ProjectTemplate.Where(x => x.ID == Convert.ToInt32(id)).Include(x => x.TaskTemplates).ThenInclude(y => y.ActivityTemplates).FirstOrDefaultAsync();
+        }
+
+        public async Task<ProjectTemplate> GetProjectTemplateAsync(string id)
+        {
+            return await _context.ProjectTemplate.Where(x => x.ID == Convert.ToInt32(id)).FirstOrDefaultAsync();
         }
 
 

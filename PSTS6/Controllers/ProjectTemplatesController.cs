@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PSTS6.Data;
 using PSTS6.Models;
+using PSTS6.Repository;
 
 namespace PSTS6.Controllers
 {
@@ -17,17 +18,19 @@ namespace PSTS6.Controllers
     {
         private readonly PSTS6Context _context;
         private readonly IMapper _mapper;
+        private readonly IRepository _repo;
 
-        public ProjectTemplatesController(PSTS6Context context, IMapper mapper)
+        public ProjectTemplatesController(PSTS6Context context, IMapper mapper, IRepository repo)
         {
             _context = context;
             _mapper = mapper;
+            _repo = repo;
         }
 
         // GET: ProjectTemplates
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ProjectTemplate.ToListAsync());
+            return View(await _repo.GetProjectTemplatesAsync());
         }
 
         // GET: ProjectTemplates/Details/5
@@ -77,6 +80,8 @@ namespace PSTS6.Controllers
             {
                 return NotFound();
             }
+
+            
 
             var projectTemplate = await _context.ProjectTemplate.Where(x => x.ID == id).Include(x => x.TaskTemplates).FirstOrDefaultAsync();
 

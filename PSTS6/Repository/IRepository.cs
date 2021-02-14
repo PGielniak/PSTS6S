@@ -13,12 +13,14 @@ namespace PSTS6.Repository
     public interface IRepository
     {
 
+       
+
         #region ProjectMethods
         IEnumerable<Project> GetProjects(bool track, bool filter);
         Task<List<Project>> GetProjectsAsync(bool filter);
 
         Task <Project> GetProject(int? id);
-        IEnumerable<ProjectTemplate> GetProjectTemplates();
+     
         
         Task<Project> AddProject(Project project);
         
@@ -58,6 +60,8 @@ namespace PSTS6.Repository
 
         #region ProjectTemplateMethods
         Task<ProjectTemplate> GetProjectTemplateAndIncludeAll(string id);
+        Task<ProjectTemplate> GetProjectTemplateAsync(string id);
+        Task<IEnumerable<ProjectTemplate>> GetProjectTemplatesAsync();
 
         #endregion
 
